@@ -1,0 +1,8297 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>Building A Correlation Matrix on Heat Map with Pandas and Plotly - Mutlucan Tokat's Personal Webpage</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet" />-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://mutcato.github.io/theme/style.css" rel="stylesheet" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body id="index" class="archive">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://mutcato.github.io">Mutlucan Tokat's Personal Webpage</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li><a href="https://mutcato.github.io/tags.html">tags</a></li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          Building A Correlation Matrix on Heat Map with Pandas and Plotly
+        </h2>
+        
+        <div class="text-muted">Prş 03 Mayıs 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
+.ansibold {
+  font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
+  border-color: #ababab;
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
+}
+@media print {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
+  border: 0;
+  border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+div.output_area .mglyph > img {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 1px 0 1px 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+
+
+
+.rendered_html pre,
+
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] 
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install kaggle
+<span class="o">!</span>pip install numpy
+<span class="o">!</span>pip install pandas
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Requirement already satisfied: kaggle in /usr/local/lib/python3.6/dist-packages (1.5.3)
+Requirement already satisfied: urllib3<1.25,>=1.21.1 in /usr/local/lib/python3.6/dist-packages (from kaggle) (1.22)
+Requirement already satisfied: six>=1.10 in /usr/local/lib/python3.6/dist-packages (from kaggle) (1.11.0)
+Requirement already satisfied: certifi in /usr/local/lib/python3.6/dist-packages (from kaggle) (2018.11.29)
+Requirement already satisfied: python-dateutil in /usr/local/lib/python3.6/dist-packages (from kaggle) (2.5.3)
+Requirement already satisfied: requests in /usr/local/lib/python3.6/dist-packages (from kaggle) (2.18.4)
+Requirement already satisfied: tqdm in /usr/local/lib/python3.6/dist-packages (from kaggle) (4.28.1)
+Requirement already satisfied: python-slugify in /usr/local/lib/python3.6/dist-packages (from kaggle) (3.0.0)
+Requirement already satisfied: chardet<3.1.0,>=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests->kaggle) (3.0.4)
+Requirement already satisfied: idna<2.7,>=2.5 in /usr/local/lib/python3.6/dist-packages (from requests->kaggle) (2.6)
+Requirement already satisfied: text-unidecode==1.2 in /usr/local/lib/python3.6/dist-packages (from python-slugify->kaggle) (1.2)
+Requirement already satisfied: numpy in /usr/local/lib/python3.6/dist-packages (1.14.6)
+Requirement already satisfied: pandas in /usr/local/lib/python3.6/dist-packages (0.22.0)
+Requirement already satisfied: python-dateutil>=2 in /usr/local/lib/python3.6/dist-packages (from pandas) (2.5.3)
+Requirement already satisfied: pytz>=2011k in /usr/local/lib/python3.6/dist-packages (from pandas) (2018.9)
+Requirement already satisfied: numpy>=1.9.0 in /usr/local/lib/python3.6/dist-packages (from pandas) (1.14.6)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.6/dist-packages (from python-dateutil>=2->pandas) (1.11.0)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Upload the minimum wage dataset directly from kaggle</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="k">import</span> <span class="n">files</span>
+<span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_html rendered_html output_subarea">
+<input disabled="" id="files-26bd77dd-f951-4435-8dec-91d6b99289fa" multiple="" name="files[]" type="file">
+<output id="result-26bd77dd-f951-4435-8dec-91d6b99289fa">
+      Upload widget is only available when the cell has been executed in the
+      current browser session. Please rerun this cell to enable.
+      </output>
+<script src="/nbextensions/google.colab/files.js"></script>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Saving kaggle.json to kaggle.json
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[2]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>{'kaggle.json': b'{"username":"mcan543","key":"81e0cc5122ef93b900011b04fcb4a6d0"}'}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir ~/.kaggle
+<span class="o">!</span>mv kaggle.json ~/.kaggle
+<span class="o">!</span>chmod <span class="m">600</span> ~/.kaggle/kaggle.json
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>kaggle datasets download -d lislejoem/us-minimum-wage-by-state-from-1968-to-2017
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Downloading us-minimum-wage-by-state-from-1968-to-2017.zip to /content
+  0% 0.00/19.8k [00:00
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ls: cannot access 'data': No such file or directory
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir data
+<span class="o">!</span>unzip us-minimum-wage-by-state-from-1968-to-2017.zip -d data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Archive:  us-minimum-wage-by-state-from-1968-to-2017.zip
+  inflating: data/Minimum Wage Data.csv  
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls data
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>'Minimum Wage Data.csv'
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"data/Minimum Wage Data.csv"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"Latin"</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"data/minWage.csv"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"data/minWage.csv"</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[10]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Unnamed: 0</th>
+<th>Year</th>
+<th>State</th>
+<th>Table_Data</th>
+<th>Footnote</th>
+<th>High.Value</th>
+<th>Low.Value</th>
+<th>CPI.Average</th>
+<th>High.2018</th>
+<th>Low.2018</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>0</td>
+<td>1968</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.00000</td>
+<td>0.00000</td>
+<td>34.783333</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1</th>
+<td>1</td>
+<td>1968</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.10000</td>
+<td>2.10000</td>
+<td>34.783333</td>
+<td>15.12</td>
+<td>15.12</td>
+</tr>
+<tr>
+<th>2</th>
+<td>2</td>
+<td>1968</td>
+<td>Arizona</td>
+<td>18.72 - 26.40/wk(b)</td>
+<td>(b)</td>
+<td>0.66000</td>
+<td>0.46800</td>
+<td>34.783333</td>
+<td>4.75</td>
+<td>3.37</td>
+</tr>
+<tr>
+<th>3</th>
+<td>3</td>
+<td>1968</td>
+<td>Arkansas</td>
+<td>1.25/day(b)</td>
+<td>(b)</td>
+<td>0.15625</td>
+<td>0.15625</td>
+<td>34.783333</td>
+<td>1.12</td>
+<td>1.12</td>
+</tr>
+<tr>
+<th>4</th>
+<td>4</td>
+<td>1968</td>
+<td>California</td>
+<td>1.65(b)</td>
+<td>(b)</td>
+<td>1.65000</td>
+<td>1.65000</td>
+<td>34.783333</td>
+<td>11.88</td>
+<td>11.88</td>
+</tr>
+<tr>
+<th>5</th>
+<td>5</td>
+<td>1968</td>
+<td>Colorado</td>
+<td>1.00 - 1.25(b)</td>
+<td>(b)</td>
+<td>1.25000</td>
+<td>1.00000</td>
+<td>34.783333</td>
+<td>9.00</td>
+<td>7.20</td>
+</tr>
+<tr>
+<th>6</th>
+<td>6</td>
+<td>1968</td>
+<td>Connecticut</td>
+<td>1.40</td>
+<td>NaN</td>
+<td>1.40000</td>
+<td>1.40000</td>
+<td>34.783333</td>
+<td>10.08</td>
+<td>10.08</td>
+</tr>
+<tr>
+<th>7</th>
+<td>7</td>
+<td>1968</td>
+<td>Delaware</td>
+<td>1.25</td>
+<td>NaN</td>
+<td>1.25000</td>
+<td>1.25000</td>
+<td>34.783333</td>
+<td>9.00</td>
+<td>9.00</td>
+</tr>
+<tr>
+<th>8</th>
+<td>8</td>
+<td>1968</td>
+<td>District of Columbia</td>
+<td>1.25 - 1.40</td>
+<td>NaN</td>
+<td>1.40000</td>
+<td>1.25000</td>
+<td>34.783333</td>
+<td>10.08</td>
+<td>9.00</td>
+</tr>
+<tr>
+<th>9</th>
+<td>9</td>
+<td>1968</td>
+<td>Federal (FLSA)</td>
+<td>$1.15 & $1.60</td>
+<td>NaN</td>
+<td>1.60000</td>
+<td>1.15000</td>
+<td>34.783333</td>
+<td>11.52</td>
+<td>8.28</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">grp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"State"</span><span class="p">)</span>
+<span class="n">Alb</span> <span class="o">=</span> <span class="n">grp</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="s2">"Alaska"</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">)</span>
+<span class="n">Alb</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[11]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Unnamed: 0</th>
+<th>State</th>
+<th>Table_Data</th>
+<th>Footnote</th>
+<th>High.Value</th>
+<th>Low.Value</th>
+<th>CPI.Average</th>
+<th>High.2018</th>
+<th>Low.2018</th>
+</tr>
+<tr>
+<th>Year</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1968</th>
+<td>1</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.1</td>
+<td>2.1</td>
+<td>34.783333</td>
+<td>15.12</td>
+<td>15.12</td>
+</tr>
+<tr>
+<th>1969</th>
+<td>56</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.1</td>
+<td>2.1</td>
+<td>36.683333</td>
+<td>14.33</td>
+<td>14.33</td>
+</tr>
+<tr>
+<th>1970</th>
+<td>111</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.1</td>
+<td>2.1</td>
+<td>38.825000</td>
+<td>13.54</td>
+<td>13.54</td>
+</tr>
+<tr>
+<th>1971</th>
+<td>166</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.1</td>
+<td>2.1</td>
+<td>40.491667</td>
+<td>12.99</td>
+<td>12.99</td>
+</tr>
+<tr>
+<th>1972</th>
+<td>221</td>
+<td>Alaska</td>
+<td>2.10</td>
+<td>NaN</td>
+<td>2.1</td>
+<td>2.1</td>
+<td>41.816667</td>
+<td>12.57</td>
+<td>12.57</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="*Pandas-is-like-a-list-of-dictionaries.-Columns-are-dictionary.">*Pandas is like a list of dictionaries. Columns are dictionary.<a class="anchor-link" href="#*Pandas-is-like-a-list-of-dictionaries.-Columns-are-dictionary.">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">min_wage_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">:</span>
+  <span class="k">if</span> <span class="n">min_wage_2018</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="n">min_wage_2018</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">)[[</span><span class="s2">"Low.2018"</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"Low.2018"</span><span class="p">:</span><span class="n">name</span><span class="p">})</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">min_wage_2018</span><span class="o">=</span><span class="n">min_wage_2018</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">)[[</span><span class="s2">"Low.2018"</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"Low.2018"</span><span class="p">:</span><span class="n">name</span><span class="p">}))</span>
+<span class="n">min_wage_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[12]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Alabama</th>
+<th>Alaska</th>
+<th>Arizona</th>
+<th>Arkansas</th>
+<th>California</th>
+<th>Colorado</th>
+<th>Connecticut</th>
+<th>Delaware</th>
+<th>District of Columbia</th>
+<th>Federal (FLSA)</th>
+<th>...</th>
+<th>Tennessee</th>
+<th>Texas</th>
+<th>U.S. Virgin Islands</th>
+<th>Utah</th>
+<th>Vermont</th>
+<th>Virginia</th>
+<th>Washington</th>
+<th>West Virginia</th>
+<th>Wisconsin</th>
+<th>Wyoming</th>
+</tr>
+<tr>
+<th>Year</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1968</th>
+<td>0.0</td>
+<td>15.12</td>
+<td>3.37</td>
+<td>1.12</td>
+<td>11.88</td>
+<td>7.20</td>
+<td>10.08</td>
+<td>9.00</td>
+<td>9.00</td>
+<td>8.28</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.00</td>
+<td>NaN</td>
+<td>7.20</td>
+<td>10.08</td>
+<td>0.00</td>
+<td>11.52</td>
+<td>7.20</td>
+<td>9.00</td>
+<td>8.64</td>
+</tr>
+<tr>
+<th>1969</th>
+<td>0.0</td>
+<td>14.33</td>
+<td>3.19</td>
+<td>1.07</td>
+<td>11.26</td>
+<td>6.83</td>
+<td>9.56</td>
+<td>8.53</td>
+<td>8.53</td>
+<td>7.85</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.00</td>
+<td>NaN</td>
+<td>6.83</td>
+<td>9.56</td>
+<td>0.00</td>
+<td>10.92</td>
+<td>6.83</td>
+<td>8.53</td>
+<td>8.19</td>
+</tr>
+<tr>
+<th>1970</th>
+<td>0.0</td>
+<td>13.54</td>
+<td>3.02</td>
+<td>7.09</td>
+<td>10.64</td>
+<td>6.45</td>
+<td>10.32</td>
+<td>8.06</td>
+<td>10.32</td>
+<td>8.38</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.00</td>
+<td>NaN</td>
+<td>6.45</td>
+<td>10.32</td>
+<td>0.00</td>
+<td>10.32</td>
+<td>6.45</td>
+<td>8.38</td>
+<td>8.38</td>
+</tr>
+<tr>
+<th>1971</th>
+<td>0.0</td>
+<td>12.99</td>
+<td>2.89</td>
+<td>6.80</td>
+<td>10.20</td>
+<td>6.18</td>
+<td>9.89</td>
+<td>7.73</td>
+<td>9.89</td>
+<td>8.04</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.00</td>
+<td>NaN</td>
+<td>6.18</td>
+<td>9.89</td>
+<td>0.00</td>
+<td>9.89</td>
+<td>6.18</td>
+<td>8.04</td>
+<td>8.04</td>
+</tr>
+<tr>
+<th>1972</th>
+<td>0.0</td>
+<td>12.57</td>
+<td>2.80</td>
+<td>7.19</td>
+<td>9.88</td>
+<td>5.99</td>
+<td>11.08</td>
+<td>9.58</td>
+<td>9.58</td>
+<td>9.58</td>
+<td>...</td>
+<td>0.0</td>
+<td>8.38</td>
+<td>NaN</td>
+<td>7.19</td>
+<td>9.58</td>
+<td>0.00</td>
+<td>9.58</td>
+<td>7.19</td>
+<td>8.68</td>
+<td>8.98</td>
+</tr>
+<tr>
+<th>1973</th>
+<td>0.0</td>
+<td>11.84</td>
+<td>2.64</td>
+<td>6.77</td>
+<td>9.31</td>
+<td>5.64</td>
+<td>10.43</td>
+<td>9.02</td>
+<td>9.02</td>
+<td>9.02</td>
+<td>...</td>
+<td>0.0</td>
+<td>7.90</td>
+<td>NaN</td>
+<td>6.77</td>
+<td>9.02</td>
+<td>0.00</td>
+<td>9.02</td>
+<td>6.77</td>
+<td>8.18</td>
+<td>8.46</td>
+</tr>
+<tr>
+<th>1974</th>
+<td>0.0</td>
+<td>10.66</td>
+<td>2.38</td>
+<td>6.09</td>
+<td>8.38</td>
+<td>5.08</td>
+<td>9.39</td>
+<td>8.13</td>
+<td>8.13</td>
+<td>8.13</td>
+<td>...</td>
+<td>0.0</td>
+<td>7.11</td>
+<td>NaN</td>
+<td>6.09</td>
+<td>8.13</td>
+<td>0.00</td>
+<td>8.13</td>
+<td>6.09</td>
+<td>7.36</td>
+<td>7.62</td>
+</tr>
+<tr>
+<th>1975</th>
+<td>0.0</td>
+<td>9.77</td>
+<td>2.18</td>
+<td>5.58</td>
+<td>7.68</td>
+<td>4.65</td>
+<td>8.61</td>
+<td>7.44</td>
+<td>7.44</td>
+<td>7.44</td>
+<td>...</td>
+<td>0.0</td>
+<td>6.51</td>
+<td>NaN</td>
+<td>5.58</td>
+<td>7.44</td>
+<td>0.00</td>
+<td>7.44</td>
+<td>5.58</td>
+<td>6.75</td>
+<td>6.98</td>
+</tr>
+<tr>
+<th>1976</th>
+<td>0.0</td>
+<td>12.32</td>
+<td>0.00</td>
+<td>8.36</td>
+<td>8.80</td>
+<td>4.40</td>
+<td>9.72</td>
+<td>8.80</td>
+<td>9.90</td>
+<td>9.68</td>
+<td>...</td>
+<td>0.0</td>
+<td>6.16</td>
+<td>NaN</td>
+<td>6.82</td>
+<td>10.12</td>
+<td>8.80</td>
+<td>9.68</td>
+<td>8.80</td>
+<td>9.24</td>
+<td>7.04</td>
+</tr>
+<tr>
+<th>1977</th>
+<td>0.0</td>
+<td>11.57</td>
+<td>0.00</td>
+<td>7.85</td>
+<td>8.26</td>
+<td>4.13</td>
+<td>9.13</td>
+<td>8.26</td>
+<td>9.30</td>
+<td>9.09</td>
+<td>...</td>
+<td>0.0</td>
+<td>5.78</td>
+<td>NaN</td>
+<td>6.40</td>
+<td>9.50</td>
+<td>8.26</td>
+<td>9.09</td>
+<td>8.26</td>
+<td>8.68</td>
+<td>6.61</td>
+</tr>
+</tbody>
+</table>
+<p>10 rows × 55 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">min_wage_2018</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[14]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>Alabama                 0.000000
+Alaska                  1.845176
+Arizona                 3.474504
+Arkansas                1.341223
+California              1.187508
+Colorado                1.521052
+Connecticut             1.023613
+Delaware                1.265436
+District of Columbia    1.476133
+Federal (FLSA)          0.887354
+Florida                 3.561576
+Georgia                 1.887927
+Guam                    1.229897
+Hawaii                  0.877401
+Idaho                   1.007240
+Illinois                2.385091
+Indiana                 1.275628
+Iowa                    3.835916
+Kansas                  2.466736
+Kentucky                1.343869
+Louisiana               0.000000
+Maine                   0.938459
+Maryland                0.907239
+Massachusetts           1.121988
+Michigan                1.207345
+Minnesota               1.244004
+Mississippi             0.000000
+Missouri                3.797229
+Montana                 2.251726
+Nebraska                1.426518
+Nevada                  0.866242
+New Hampshire           0.973408
+New Jersey              0.882084
+New Mexico              0.871331
+New York                1.361302
+North Carolina          0.656855
+North Dakota            0.870714
+Ohio                    1.630708
+Oklahoma                2.390070
+Oregon                  1.108701
+Pennsylvania            0.852765
+Puerto Rico             1.258745
+Rhode Island            0.981158
+South Carolina          0.000000
+South Dakota            1.341918
+Tennessee               0.000000
+Texas                   2.202229
+U.S. Virgin Islands     1.590176
+Utah                    0.819367
+Vermont                 0.984647
+Virginia                2.726151
+Washington              1.868613
+West Virginia           0.793673
+Wisconsin               0.762675
+Wyoming                 1.998928
+dtype: float64</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">)[[</span><span class="s2">"Low.2018"</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[15]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Low.2018</th>
+</tr>
+<tr>
+<th>Year</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>15.12</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>3.37</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>1.12</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>11.88</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>7.20</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>10.08</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>9.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>9.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>8.28</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>9.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>9.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>8.28</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>8.28</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>4.68</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>10.08</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>7.20</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>11.52</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>9.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>5.04</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>1968</th>
+<td>7.20</td>
+</tr>
+<tr>
+<th>...</th>
+<td>...</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.92</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.87</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>8.33</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>9.19</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>8.62</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.66</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>9.91</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>8.33</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>2.04</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>9.96</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>5.19</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>9.81</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>8.84</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>0.00</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>4.39</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>10.22</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>11.24</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>8.94</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>7.41</td>
+</tr>
+<tr>
+<th>2017</th>
+<td>5.26</td>
+</tr>
+</tbody>
+</table>
+<p>2750 rows × 1 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"State"</span><span class="p">]</span><span class="o">==</span><span class="s2">"Alabama"</span><span class="p">]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"Year"</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[16]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Unnamed: 0</th>
+<th>State</th>
+<th>Table_Data</th>
+<th>Footnote</th>
+<th>High.Value</th>
+<th>Low.Value</th>
+<th>CPI.Average</th>
+<th>High.2018</th>
+<th>Low.2018</th>
+</tr>
+<tr>
+<th>Year</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1968</th>
+<td>0</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>34.783333</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>1969</th>
+<td>55</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>36.683333</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>1970</th>
+<td>110</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>38.825000</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>1971</th>
+<td>165</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>40.491667</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>1972</th>
+<td>220</td>
+<td>Alabama</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>41.816667</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Correlation</strong>: corr() shows tha changes according to each other. Shows us a correlation matrix. Each coefficent in correlation matrix is between <strong>-1 and +1</strong></p>
+<p><strong>+1 means</strong> that there is perfect dorrelation between these two sets. If one is increases the other increases at the same time with same percentage.</p>
+<p><strong>0 means</strong> that there is no correlation</p>
+<p><strong>-1 means</strong> that there is perfect negative correlation. If the one is increases the other decreases at the same time and same percentage.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [40]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">coor_matrix</span> <span class="o">=</span> <span class="n">min_wage_2018</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="n">coor_matrix</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[40]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Alabama</th>
+<th>Alaska</th>
+<th>Arizona</th>
+<th>Arkansas</th>
+<th>California</th>
+<th>Colorado</th>
+<th>Connecticut</th>
+<th>Delaware</th>
+<th>District of Columbia</th>
+<th>Federal (FLSA)</th>
+<th>...</th>
+<th>Tennessee</th>
+<th>Texas</th>
+<th>U.S. Virgin Islands</th>
+<th>Utah</th>
+<th>Vermont</th>
+<th>Virginia</th>
+<th>Washington</th>
+<th>West Virginia</th>
+<th>Wisconsin</th>
+<th>Wyoming</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Alabama</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>Alaska</th>
+<td>NaN</td>
+<td>1.000000</td>
+<td>0.018638</td>
+<td>-0.377934</td>
+<td>0.717653</td>
+<td>-0.129332</td>
+<td>0.680886</td>
+<td>0.258997</td>
+<td>0.321785</td>
+<td>0.637679</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.522472</td>
+<td>0.277016</td>
+<td>-0.020462</td>
+<td>0.663558</td>
+<td>-0.601640</td>
+<td>0.411593</td>
+<td>0.044814</td>
+<td>0.702570</td>
+<td>0.727932</td>
+</tr>
+<tr>
+<th>Arizona</th>
+<td>NaN</td>
+<td>0.018638</td>
+<td>1.000000</td>
+<td>0.089395</td>
+<td>0.498994</td>
+<td>0.742527</td>
+<td>0.458163</td>
+<td>0.429836</td>
+<td>0.590848</td>
+<td>-0.049914</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.369900</td>
+<td>-0.758607</td>
+<td>0.439344</td>
+<td>0.517960</td>
+<td>0.047405</td>
+<td>0.587975</td>
+<td>0.584596</td>
+<td>0.131588</td>
+<td>0.346528</td>
+</tr>
+<tr>
+<th>Arkansas</th>
+<td>NaN</td>
+<td>-0.377934</td>
+<td>0.089395</td>
+<td>1.000000</td>
+<td>-0.234367</td>
+<td>0.135749</td>
+<td>0.047580</td>
+<td>0.016125</td>
+<td>0.266889</td>
+<td>0.117245</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.503242</td>
+<td>-0.204485</td>
+<td>0.194680</td>
+<td>0.087429</td>
+<td>0.582192</td>
+<td>-0.072343</td>
+<td>0.420819</td>
+<td>0.000470</td>
+<td>-0.250592</td>
+</tr>
+<tr>
+<th>California</th>
+<td>NaN</td>
+<td>0.717653</td>
+<td>0.498994</td>
+<td>-0.234367</td>
+<td>1.000000</td>
+<td>0.483313</td>
+<td>0.876215</td>
+<td>0.479197</td>
+<td>0.596865</td>
+<td>0.371966</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.239533</td>
+<td>-0.417782</td>
+<td>0.392898</td>
+<td>0.877922</td>
+<td>-0.326364</td>
+<td>0.754085</td>
+<td>0.371765</td>
+<td>0.584067</td>
+<td>0.722617</td>
+</tr>
+<tr>
+<th>Colorado</th>
+<td>NaN</td>
+<td>-0.129332</td>
+<td>0.742527</td>
+<td>0.135749</td>
+<td>0.483313</td>
+<td>1.000000</td>
+<td>0.402020</td>
+<td>0.566304</td>
+<td>0.673371</td>
+<td>-0.232035</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.350796</td>
+<td>-0.791134</td>
+<td>0.622330</td>
+<td>0.448485</td>
+<td>0.210271</td>
+<td>0.612637</td>
+<td>0.533623</td>
+<td>0.011501</td>
+<td>0.130053</td>
+</tr>
+<tr>
+<th>Connecticut</th>
+<td>NaN</td>
+<td>0.680886</td>
+<td>0.458163</td>
+<td>0.047580</td>
+<td>0.876215</td>
+<td>0.402020</td>
+<td>1.000000</td>
+<td>0.552613</td>
+<td>0.652488</td>
+<td>0.487750</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.049405</td>
+<td>-0.446165</td>
+<td>0.302538</td>
+<td>0.898469</td>
+<td>-0.310705</td>
+<td>0.715691</td>
+<td>0.400099</td>
+<td>0.585790</td>
+<td>0.814971</td>
+</tr>
+<tr>
+<th>Delaware</th>
+<td>NaN</td>
+<td>0.258997</td>
+<td>0.429836</td>
+<td>0.016125</td>
+<td>0.479197</td>
+<td>0.566304</td>
+<td>0.552613</td>
+<td>1.000000</td>
+<td>0.796457</td>
+<td>-0.009271</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.374150</td>
+<td>-0.688552</td>
+<td>0.501815</td>
+<td>0.487378</td>
+<td>-0.167700</td>
+<td>0.830850</td>
+<td>0.436045</td>
+<td>0.071042</td>
+<td>0.502713</td>
+</tr>
+<tr>
+<th>District of Columbia</th>
+<td>NaN</td>
+<td>0.321785</td>
+<td>0.590848</td>
+<td>0.266889</td>
+<td>0.596865</td>
+<td>0.673371</td>
+<td>0.652488</td>
+<td>0.796457</td>
+<td>1.000000</td>
+<td>0.151129</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.251189</td>
+<td>-0.693560</td>
+<td>0.537581</td>
+<td>0.718686</td>
+<td>0.007414</td>
+<td>0.798094</td>
+<td>0.644477</td>
+<td>0.267017</td>
+<td>0.438793</td>
+</tr>
+<tr>
+<th>Federal (FLSA)</th>
+<td>NaN</td>
+<td>0.637679</td>
+<td>-0.049914</td>
+<td>0.117245</td>
+<td>0.371966</td>
+<td>-0.232035</td>
+<td>0.487750</td>
+<td>-0.009271</td>
+<td>0.151129</td>
+<td>1.000000</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.183950</td>
+<td>0.475240</td>
+<td>0.221539</td>
+<td>0.504419</td>
+<td>-0.105622</td>
+<td>0.075067</td>
+<td>0.272645</td>
+<td>0.870658</td>
+<td>0.328639</td>
+</tr>
+<tr>
+<th>Florida</th>
+<td>NaN</td>
+<td>-0.227059</td>
+<td>0.896702</td>
+<td>0.226320</td>
+<td>0.304550</td>
+<td>0.723439</td>
+<td>0.302979</td>
+<td>0.315927</td>
+<td>0.499002</td>
+<td>-0.197272</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.495635</td>
+<td>-0.786024</td>
+<td>0.435001</td>
+<td>0.410727</td>
+<td>0.326238</td>
+<td>0.482171</td>
+<td>0.593829</td>
+<td>0.010526</td>
+<td>0.167602</td>
+</tr>
+<tr>
+<th>Georgia</th>
+<td>NaN</td>
+<td>-0.569150</td>
+<td>0.088429</td>
+<td>0.473108</td>
+<td>-0.389749</td>
+<td>0.185907</td>
+<td>-0.084139</td>
+<td>0.327308</td>
+<td>0.084435</td>
+<td>-0.295511</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.938427</td>
+<td>-0.546424</td>
+<td>0.122993</td>
+<td>-0.261206</td>
+<td>0.345944</td>
+<td>-0.009650</td>
+<td>0.193438</td>
+<td>-0.438673</td>
+<td>-0.098597</td>
+</tr>
+<tr>
+<th>Guam</th>
+<td>NaN</td>
+<td>0.787915</td>
+<td>0.051210</td>
+<td>0.039593</td>
+<td>0.492052</td>
+<td>-0.192616</td>
+<td>0.632073</td>
+<td>0.179312</td>
+<td>0.335275</td>
+<td>0.881708</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.215773</td>
+<td>0.340597</td>
+<td>0.098186</td>
+<td>0.557049</td>
+<td>-0.452258</td>
+<td>0.223620</td>
+<td>0.147441</td>
+<td>0.738986</td>
+<td>0.542694</td>
+</tr>
+<tr>
+<th>Hawaii</th>
+<td>NaN</td>
+<td>0.672620</td>
+<td>0.168391</td>
+<td>0.204801</td>
+<td>0.519241</td>
+<td>0.069800</td>
+<td>0.621503</td>
+<td>0.466178</td>
+<td>0.603762</td>
+<td>0.472021</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.117635</td>
+<td>-0.195557</td>
+<td>0.099742</td>
+<td>0.692043</td>
+<td>-0.183100</td>
+<td>0.500421</td>
+<td>0.408709</td>
+<td>0.599138</td>
+<td>0.599665</td>
+</tr>
+<tr>
+<th>Idaho</th>
+<td>NaN</td>
+<td>0.371515</td>
+<td>0.448289</td>
+<td>-0.006833</td>
+<td>0.623225</td>
+<td>0.521063</td>
+<td>0.563913</td>
+<td>0.708405</td>
+<td>0.671306</td>
+<td>0.338621</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.094868</td>
+<td>-0.319658</td>
+<td>0.843642</td>
+<td>0.571039</td>
+<td>-0.129944</td>
+<td>0.792100</td>
+<td>0.394586</td>
+<td>0.376538</td>
+<td>0.398222</td>
+</tr>
+<tr>
+<th>Illinois</th>
+<td>NaN</td>
+<td>-0.504884</td>
+<td>0.264556</td>
+<td>0.652497</td>
+<td>-0.241472</td>
+<td>0.253412</td>
+<td>0.008813</td>
+<td>0.226858</td>
+<td>0.214068</td>
+<td>0.017379</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.845295</td>
+<td>-0.590987</td>
+<td>0.459752</td>
+<td>0.009454</td>
+<td>0.657923</td>
+<td>0.123726</td>
+<td>0.506742</td>
+<td>-0.091268</td>
+<td>-0.178508</td>
+</tr>
+<tr>
+<th>Indiana</th>
+<td>NaN</td>
+<td>0.352950</td>
+<td>0.654777</td>
+<td>-0.116454</td>
+<td>0.793831</td>
+<td>0.665580</td>
+<td>0.731378</td>
+<td>0.675197</td>
+<td>0.664098</td>
+<td>0.133628</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.106305</td>
+<td>-0.628925</td>
+<td>0.662085</td>
+<td>0.702334</td>
+<td>-0.192232</td>
+<td>0.884676</td>
+<td>0.390353</td>
+<td>0.272633</td>
+<td>0.576864</td>
+</tr>
+<tr>
+<th>Iowa</th>
+<td>NaN</td>
+<td>-0.592920</td>
+<td>0.385053</td>
+<td>0.278564</td>
+<td>-0.066494</td>
+<td>0.630358</td>
+<td>-0.157868</td>
+<td>0.404753</td>
+<td>0.326553</td>
+<td>-0.515604</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.500361</td>
+<td>-0.591076</td>
+<td>0.684915</td>
+<td>-0.073048</td>
+<td>0.514575</td>
+<td>0.394321</td>
+<td>0.346783</td>
+<td>-0.434578</td>
+<td>-0.306146</td>
+</tr>
+<tr>
+<th>Kansas</th>
+<td>NaN</td>
+<td>-0.578159</td>
+<td>0.444103</td>
+<td>0.354641</td>
+<td>-0.083699</td>
+<td>0.531096</td>
+<td>-0.155792</td>
+<td>-0.121009</td>
+<td>0.122856</td>
+<td>-0.195055</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.435492</td>
+<td>-0.408582</td>
+<td>0.535691</td>
+<td>-0.024197</td>
+<td>0.671656</td>
+<td>0.002368</td>
+<td>0.428738</td>
+<td>-0.154478</td>
+<td>-0.449498</td>
+</tr>
+<tr>
+<th>Kentucky</th>
+<td>NaN</td>
+<td>-0.569134</td>
+<td>0.275070</td>
+<td>0.427054</td>
+<td>-0.152946</td>
+<td>0.497117</td>
+<td>-0.179488</td>
+<td>0.200148</td>
+<td>0.237560</td>
+<td>-0.255126</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.515823</td>
+<td>-0.538445</td>
+<td>0.547048</td>
+<td>0.014395</td>
+<td>0.835081</td>
+<td>0.167597</td>
+<td>0.618312</td>
+<td>-0.176467</td>
+<td>-0.423665</td>
+</tr>
+<tr>
+<th>Louisiana</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>Maine</th>
+<td>NaN</td>
+<td>0.784052</td>
+<td>0.145491</td>
+<td>-0.059840</td>
+<td>0.716943</td>
+<td>0.100846</td>
+<td>0.666562</td>
+<td>0.173486</td>
+<td>0.375888</td>
+<td>0.622760</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.425662</td>
+<td>0.063250</td>
+<td>0.164233</td>
+<td>0.814240</td>
+<td>-0.102664</td>
+<td>0.441776</td>
+<td>0.353293</td>
+<td>0.798669</td>
+<td>0.581278</td>
+</tr>
+<tr>
+<th>Maryland</th>
+<td>NaN</td>
+<td>0.487056</td>
+<td>0.179236</td>
+<td>0.443650</td>
+<td>0.377899</td>
+<td>-0.044345</td>
+<td>0.553702</td>
+<td>0.039299</td>
+<td>0.346281</td>
+<td>0.880329</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.036356</td>
+<td>0.231617</td>
+<td>0.264487</td>
+<td>0.579382</td>
+<td>0.060763</td>
+<td>0.128251</td>
+<td>0.479068</td>
+<td>0.768901</td>
+<td>0.271276</td>
+</tr>
+<tr>
+<th>Massachusetts</th>
+<td>NaN</td>
+<td>0.726248</td>
+<td>0.464345</td>
+<td>-0.136325</td>
+<td>0.942760</td>
+<td>0.469242</td>
+<td>0.905269</td>
+<td>0.537094</td>
+<td>0.656305</td>
+<td>0.416165</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.161525</td>
+<td>-0.410445</td>
+<td>0.341078</td>
+<td>0.887631</td>
+<td>-0.327884</td>
+<td>0.729475</td>
+<td>0.420851</td>
+<td>0.587236</td>
+<td>0.710190</td>
+</tr>
+<tr>
+<th>Michigan</th>
+<td>NaN</td>
+<td>0.606292</td>
+<td>0.400150</td>
+<td>0.113882</td>
+<td>0.654850</td>
+<td>0.184005</td>
+<td>0.747738</td>
+<td>0.142551</td>
+<td>0.379898</td>
+<td>0.737017</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.044027</td>
+<td>-0.107696</td>
+<td>0.167255</td>
+<td>0.753253</td>
+<td>-0.078588</td>
+<td>0.317154</td>
+<td>0.503502</td>
+<td>0.822971</td>
+<td>0.534698</td>
+</tr>
+<tr>
+<th>Minnesota</th>
+<td>NaN</td>
+<td>-0.384472</td>
+<td>-0.280747</td>
+<td>0.452996</td>
+<td>-0.318507</td>
+<td>-0.070367</td>
+<td>-0.357928</td>
+<td>-0.419871</td>
+<td>-0.194168</td>
+<td>0.034715</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.054528</td>
+<td>0.679297</td>
+<td>0.110139</td>
+<td>-0.166611</td>
+<td>0.776257</td>
+<td>-0.401047</td>
+<td>0.309698</td>
+<td>0.038940</td>
+<td>-0.658956</td>
+</tr>
+<tr>
+<th>Mississippi</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>Missouri</th>
+<td>NaN</td>
+<td>-0.581392</td>
+<td>0.427463</td>
+<td>0.294900</td>
+<td>-0.032252</td>
+<td>0.674295</td>
+<td>-0.115342</td>
+<td>0.420662</td>
+<td>0.366246</td>
+<td>-0.517992</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.510830</td>
+<td>-0.644936</td>
+<td>0.683692</td>
+<td>-0.029966</td>
+<td>0.520307</td>
+<td>0.420633</td>
+<td>0.373698</td>
+<td>-0.413789</td>
+<td>-0.278509</td>
+</tr>
+<tr>
+<th>Montana</th>
+<td>NaN</td>
+<td>-0.390705</td>
+<td>-0.082904</td>
+<td>0.561894</td>
+<td>-0.431631</td>
+<td>-0.061791</td>
+<td>-0.158155</td>
+<td>0.125122</td>
+<td>0.102815</td>
+<td>0.061879</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.700668</td>
+<td>0.078925</td>
+<td>0.115730</td>
+<td>-0.280792</td>
+<td>0.325911</td>
+<td>-0.218922</td>
+<td>0.225311</td>
+<td>-0.207176</td>
+<td>-0.318183</td>
+</tr>
+<tr>
+<th>Nebraska</th>
+<td>NaN</td>
+<td>-0.142350</td>
+<td>0.521086</td>
+<td>0.180337</td>
+<td>0.232873</td>
+<td>0.736112</td>
+<td>0.185571</td>
+<td>0.752485</td>
+<td>0.734443</td>
+<td>-0.250411</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.441389</td>
+<td>-0.674095</td>
+<td>0.627678</td>
+<td>0.280478</td>
+<td>0.279120</td>
+<td>0.616860</td>
+<td>0.640071</td>
+<td>-0.149191</td>
+<td>0.017794</td>
+</tr>
+<tr>
+<th>Nevada</th>
+<td>NaN</td>
+<td>0.713637</td>
+<td>0.180330</td>
+<td>-0.005549</td>
+<td>0.537317</td>
+<td>0.085357</td>
+<td>0.632557</td>
+<td>0.559386</td>
+<td>0.522322</td>
+<td>0.759930</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.029926</td>
+<td>0.031378</td>
+<td>0.363154</td>
+<td>0.631186</td>
+<td>-0.263976</td>
+<td>0.503730</td>
+<td>0.384722</td>
+<td>0.758705</td>
+<td>0.553051</td>
+</tr>
+<tr>
+<th>New Hampshire</th>
+<td>NaN</td>
+<td>0.817509</td>
+<td>0.020688</td>
+<td>-0.192707</td>
+<td>0.559870</td>
+<td>-0.147020</td>
+<td>0.544013</td>
+<td>0.084726</td>
+<td>0.186286</td>
+<td>0.905728</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.412862</td>
+<td>0.442664</td>
+<td>0.154479</td>
+<td>0.582379</td>
+<td>-0.331121</td>
+<td>0.196878</td>
+<td>0.214541</td>
+<td>0.887207</td>
+<td>0.468841</td>
+</tr>
+<tr>
+<th>New Jersey</th>
+<td>NaN</td>
+<td>0.726091</td>
+<td>0.302372</td>
+<td>-0.093417</td>
+<td>0.643447</td>
+<td>0.045434</td>
+<td>0.529780</td>
+<td>0.185884</td>
+<td>0.403857</td>
+<td>0.640923</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.409694</td>
+<td>0.091681</td>
+<td>0.265946</td>
+<td>0.693909</td>
+<td>-0.190364</td>
+<td>0.412325</td>
+<td>0.395980</td>
+<td>0.812427</td>
+<td>0.436620</td>
+</tr>
+<tr>
+<th>New Mexico</th>
+<td>NaN</td>
+<td>0.521504</td>
+<td>0.513394</td>
+<td>0.042759</td>
+<td>0.538274</td>
+<td>0.213957</td>
+<td>0.532646</td>
+<td>0.205677</td>
+<td>0.453302</td>
+<td>0.610602</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.060169</td>
+<td>-0.234809</td>
+<td>0.294331</td>
+<td>0.710200</td>
+<td>0.009612</td>
+<td>0.389211</td>
+<td>0.605957</td>
+<td>0.718676</td>
+<td>0.454799</td>
+</tr>
+<tr>
+<th>New York</th>
+<td>NaN</td>
+<td>0.881634</td>
+<td>0.327045</td>
+<td>-0.236279</td>
+<td>0.763132</td>
+<td>0.002463</td>
+<td>0.776332</td>
+<td>0.291382</td>
+<td>0.403779</td>
+<td>0.640902</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.265179</td>
+<td>-0.053314</td>
+<td>0.058499</td>
+<td>0.757560</td>
+<td>-0.511473</td>
+<td>0.473884</td>
+<td>0.234554</td>
+<td>0.713399</td>
+<td>0.760379</td>
+</tr>
+<tr>
+<th>North Carolina</th>
+<td>NaN</td>
+<td>0.454404</td>
+<td>0.312699</td>
+<td>0.413676</td>
+<td>0.450594</td>
+<td>0.212403</td>
+<td>0.629509</td>
+<td>0.353903</td>
+<td>0.528760</td>
+<td>0.790967</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.133016</td>
+<td>-0.085740</td>
+<td>0.444775</td>
+<td>0.673769</td>
+<td>0.080863</td>
+<td>0.370435</td>
+<td>0.584352</td>
+<td>0.798152</td>
+<td>0.389918</td>
+</tr>
+<tr>
+<th>North Dakota</th>
+<td>NaN</td>
+<td>-0.002899</td>
+<td>0.216693</td>
+<td>0.304853</td>
+<td>0.204418</td>
+<td>0.314025</td>
+<td>0.114565</td>
+<td>0.183239</td>
+<td>0.364079</td>
+<td>0.348061</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.083873</td>
+<td>-0.161238</td>
+<td>0.717899</td>
+<td>0.411121</td>
+<td>0.694305</td>
+<td>0.344417</td>
+<td>0.729502</td>
+<td>0.430561</td>
+<td>-0.143981</td>
+</tr>
+<tr>
+<th>Ohio</th>
+<td>NaN</td>
+<td>-0.181850</td>
+<td>0.586746</td>
+<td>0.296669</td>
+<td>0.072433</td>
+<td>0.380842</td>
+<td>-0.047880</td>
+<td>0.060297</td>
+<td>0.240203</td>
+<td>0.157740</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.254739</td>
+<td>-0.143925</td>
+<td>0.562027</td>
+<td>0.207507</td>
+<td>0.517172</td>
+<td>0.179547</td>
+<td>0.620148</td>
+<td>0.273079</td>
+<td>-0.209855</td>
+</tr>
+<tr>
+<th>Oklahoma</th>
+<td>NaN</td>
+<td>0.308927</td>
+<td>-0.664922</td>
+<td>-0.212602</td>
+<td>-0.315364</td>
+<td>-0.751726</td>
+<td>-0.332086</td>
+<td>-0.417430</td>
+<td>-0.475629</td>
+<td>0.428560</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.468869</td>
+<td>0.887827</td>
+<td>-0.389910</td>
+<td>-0.367283</td>
+<td>-0.348896</td>
+<td>-0.580610</td>
+<td>-0.439351</td>
+<td>0.234480</td>
+<td>-0.187603</td>
+</tr>
+<tr>
+<th>Oregon</th>
+<td>NaN</td>
+<td>-0.008462</td>
+<td>0.471916</td>
+<td>0.274903</td>
+<td>0.439329</td>
+<td>0.648864</td>
+<td>0.378981</td>
+<td>0.509889</td>
+<td>0.622831</td>
+<td>0.004197</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.258532</td>
+<td>-0.644913</td>
+<td>0.714570</td>
+<td>0.582661</td>
+<td>0.557279</td>
+<td>0.692279</td>
+<td>0.741230</td>
+<td>0.227386</td>
+<td>0.121308</td>
+</tr>
+<tr>
+<th>Pennsylvania</th>
+<td>NaN</td>
+<td>0.610814</td>
+<td>0.091265</td>
+<td>0.159923</td>
+<td>0.429061</td>
+<td>-0.136195</td>
+<td>0.531769</td>
+<td>0.038750</td>
+<td>0.159928</td>
+<td>0.942402</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.144614</td>
+<td>0.372872</td>
+<td>0.221608</td>
+<td>0.561921</td>
+<td>-0.083234</td>
+<td>0.136328</td>
+<td>0.327921</td>
+<td>0.903752</td>
+<td>0.381637</td>
+</tr>
+<tr>
+<th>Puerto Rico</th>
+<td>NaN</td>
+<td>-0.038118</td>
+<td>0.653221</td>
+<td>0.232186</td>
+<td>0.512712</td>
+<td>0.657364</td>
+<td>0.626712</td>
+<td>0.427616</td>
+<td>0.513618</td>
+<td>0.011784</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.481174</td>
+<td>-0.714259</td>
+<td>0.462028</td>
+<td>0.596942</td>
+<td>0.271512</td>
+<td>0.619444</td>
+<td>0.566506</td>
+<td>0.131132</td>
+<td>0.387868</td>
+</tr>
+<tr>
+<th>Rhode Island</th>
+<td>NaN</td>
+<td>0.652353</td>
+<td>0.436086</td>
+<td>0.003498</td>
+<td>0.780916</td>
+<td>0.429852</td>
+<td>0.802485</td>
+<td>0.772410</td>
+<td>0.820135</td>
+<td>0.266963</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.024386</td>
+<td>-0.650355</td>
+<td>0.336389</td>
+<td>0.830723</td>
+<td>-0.255180</td>
+<td>0.838952</td>
+<td>0.496287</td>
+<td>0.419292</td>
+<td>0.697238</td>
+</tr>
+<tr>
+<th>South Carolina</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>South Dakota</th>
+<td>NaN</td>
+<td>-0.326316</td>
+<td>0.317413</td>
+<td>0.800116</td>
+<td>-0.036787</td>
+<td>0.399137</td>
+<td>0.105707</td>
+<td>0.318865</td>
+<td>0.525490</td>
+<td>0.098267</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.554082</td>
+<td>-0.454006</td>
+<td>0.601715</td>
+<td>0.258611</td>
+<td>0.716035</td>
+<td>0.295611</td>
+<td>0.704726</td>
+<td>0.040677</td>
+<td>-0.201014</td>
+</tr>
+<tr>
+<th>Tennessee</th>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>...</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>Texas</th>
+<td>NaN</td>
+<td>-0.522472</td>
+<td>0.369900</td>
+<td>0.503242</td>
+<td>-0.239533</td>
+<td>0.350796</td>
+<td>0.049405</td>
+<td>0.374150</td>
+<td>0.251189</td>
+<td>-0.183950</td>
+<td>...</td>
+<td>NaN</td>
+<td>1.000000</td>
+<td>-0.774288</td>
+<td>0.280569</td>
+<td>-0.081087</td>
+<td>0.393889</td>
+<td>0.122014</td>
+<td>0.407241</td>
+<td>-0.314403</td>
+<td>-0.026144</td>
+</tr>
+<tr>
+<th>U.S. Virgin Islands</th>
+<td>NaN</td>
+<td>0.277016</td>
+<td>-0.758607</td>
+<td>-0.204485</td>
+<td>-0.417782</td>
+<td>-0.791134</td>
+<td>-0.446165</td>
+<td>-0.688552</td>
+<td>-0.693560</td>
+<td>0.475240</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.774288</td>
+<td>1.000000</td>
+<td>-0.279471</td>
+<td>-0.448950</td>
+<td>-0.311968</td>
+<td>-0.714599</td>
+<td>-0.574276</td>
+<td>0.277972</td>
+<td>-0.532409</td>
+</tr>
+<tr>
+<th>Utah</th>
+<td>NaN</td>
+<td>-0.020462</td>
+<td>0.439344</td>
+<td>0.194680</td>
+<td>0.392898</td>
+<td>0.622330</td>
+<td>0.302538</td>
+<td>0.501815</td>
+<td>0.537581</td>
+<td>0.221539</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.280569</td>
+<td>-0.279471</td>
+<td>1.000000</td>
+<td>0.405379</td>
+<td>0.358808</td>
+<td>0.602834</td>
+<td>0.571100</td>
+<td>0.271399</td>
+<td>0.006982</td>
+</tr>
+<tr>
+<th>Vermont</th>
+<td>NaN</td>
+<td>0.663558</td>
+<td>0.517960</td>
+<td>0.087429</td>
+<td>0.877922</td>
+<td>0.448485</td>
+<td>0.898469</td>
+<td>0.487378</td>
+<td>0.718686</td>
+<td>0.504419</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.081087</td>
+<td>-0.448950</td>
+<td>0.405379</td>
+<td>1.000000</td>
+<td>-0.068156</td>
+<td>0.752854</td>
+<td>0.578411</td>
+<td>0.687823</td>
+<td>0.694873</td>
+</tr>
+<tr>
+<th>Virginia</th>
+<td>NaN</td>
+<td>-0.601640</td>
+<td>0.047405</td>
+<td>0.582192</td>
+<td>-0.326364</td>
+<td>0.210271</td>
+<td>-0.310705</td>
+<td>-0.167700</td>
+<td>0.007414</td>
+<td>-0.105622</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.393889</td>
+<td>-0.311968</td>
+<td>0.358808</td>
+<td>-0.068156</td>
+<td>1.000000</td>
+<td>-0.119992</td>
+<td>0.537564</td>
+<td>-0.062605</td>
+<td>-0.547361</td>
+</tr>
+<tr>
+<th>Washington</th>
+<td>NaN</td>
+<td>0.411593</td>
+<td>0.587975</td>
+<td>-0.072343</td>
+<td>0.754085</td>
+<td>0.612637</td>
+<td>0.715691</td>
+<td>0.830850</td>
+<td>0.798094</td>
+<td>0.075067</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.122014</td>
+<td>-0.714599</td>
+<td>0.602834</td>
+<td>0.752854</td>
+<td>-0.119992</td>
+<td>1.000000</td>
+<td>0.482333</td>
+<td>0.260386</td>
+<td>0.632205</td>
+</tr>
+<tr>
+<th>West Virginia</th>
+<td>NaN</td>
+<td>0.044814</td>
+<td>0.584596</td>
+<td>0.420819</td>
+<td>0.371765</td>
+<td>0.533623</td>
+<td>0.400099</td>
+<td>0.436045</td>
+<td>0.644477</td>
+<td>0.272645</td>
+<td>...</td>
+<td>NaN</td>
+<td>0.407241</td>
+<td>-0.574276</td>
+<td>0.571100</td>
+<td>0.578411</td>
+<td>0.537564</td>
+<td>0.482333</td>
+<td>1.000000</td>
+<td>0.375219</td>
+<td>0.099333</td>
+</tr>
+<tr>
+<th>Wisconsin</th>
+<td>NaN</td>
+<td>0.702570</td>
+<td>0.131588</td>
+<td>0.000470</td>
+<td>0.584067</td>
+<td>0.011501</td>
+<td>0.585790</td>
+<td>0.071042</td>
+<td>0.267017</td>
+<td>0.870658</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.314403</td>
+<td>0.277972</td>
+<td>0.271399</td>
+<td>0.687823</td>
+<td>-0.062605</td>
+<td>0.260386</td>
+<td>0.375219</td>
+<td>1.000000</td>
+<td>0.413167</td>
+</tr>
+<tr>
+<th>Wyoming</th>
+<td>NaN</td>
+<td>0.727932</td>
+<td>0.346528</td>
+<td>-0.250592</td>
+<td>0.722617</td>
+<td>0.130053</td>
+<td>0.814971</td>
+<td>0.502713</td>
+<td>0.438793</td>
+<td>0.328639</td>
+<td>...</td>
+<td>NaN</td>
+<td>-0.026144</td>
+<td>-0.532409</td>
+<td>0.006982</td>
+<td>0.694873</td>
+<td>-0.547361</td>
+<td>0.632205</td>
+<td>0.099333</td>
+<td>0.413167</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+<p>55 rows × 55 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [41]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">list_of_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">coor_matrix</span><span class="p">:</span>
+    <span class="c1">#list_of_list.append(list(min_wage_2018[column].values))</span>
+    <span class="n">list_of_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">coor_matrix</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">list_of_list</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[41]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>[[nan,
+  0.7279324726561317,
+  0.3465278045011255,
+  -0.2505921051835471,
+  0.7226174244963097,
+  0.130052894389403,
+  0.8149713172137464,
+  0.5027132942058373,
+  0.43879293724732316,
+  0.3286385262945919,
+  0.16760173573608997,
+  -0.09859744013821946,
+  0.5426943909474776,
+  0.5996645636090199,
+  0.39822188230380484,
+  -0.17850809176188243,
+  0.5768637781093335,
+  -0.3061459837473328,
+  -0.4494981612604545,
+  -0.4236649638014657,
+  nan,
+  0.581277895968721,
+  0.2712755792012645,
+  0.7101901113353004,
+  0.5346980221535902,
+  -0.6589560341739858,
+  nan,
+  -0.2785094011905136,
+  -0.318183100476422,
+  0.017793762680447436,
+  0.5530506471178422,
+  0.4688411146841934,
+  0.43662021929029765,
+  0.45479924380373565,
+  0.760378864526884,
+  0.38991833214147426,
+  -0.14398061258083772,
+  -0.20985539493246766,
+  -0.18760346418009743,
+  0.12130750213394237,
+  0.3816367623260494,
+  0.38786843449468034,
+  0.6972380919264204,
+  nan,
+  -0.20101362446389676,
+  nan,
+  -0.026143627529640064,
+  -0.5324089328317041,
+  0.006982303086114248,
+  0.6948727446322877,
+  -0.547360629741825,
+  0.632205485206964,
+  0.09933270603204879,
+  0.4131671390045898,
+  1.0],
+ [nan,
+  0.7025702757656146,
+  0.13158816401329443,
+  0.00047012374884475793,
+  0.5840671006550702,
+  0.01150076156983362,
+  0.5857903102062462,
+  0.07104248524951434,
+  0.267017200895878,
+  0.8706575666885231,
+  0.010525725512647025,
+  -0.43867257979243374,
+  0.738985730665329,
+  0.5991383044874277,
+  0.37653792113933204,
+  -0.09126797399287288,
+  0.272633235408454,
+  -0.4345776767333592,
+  -0.15447826557047348,
+  -0.17646744216912813,
+  nan,
+  0.7986694281519623,
+  0.7689013638870471,
+  0.5872364647849543,
+  0.8229713735404725,
+  0.03894003818982377,
+  nan,
+  -0.4137891895801912,
+  -0.20717622852461268,
+  -0.14919076755685176,
+  0.7587047582614335,
+  0.8872066482994104,
+  0.8124273877961357,
+  0.7186755523784286,
+  0.7133990014477655,
+  0.7981517273632944,
+  0.4305610768217493,
+  0.27307925954149553,
+  0.23447989754959633,
+  0.22738611609007453,
+  0.9037521262147236,
+  0.13113197608416285,
+  0.41929243123260546,
+  nan,
+  0.04067652048704528,
+  nan,
+  -0.3144027572160867,
+  0.27797235321667735,
+  0.2713991868963475,
+  0.6878226927873202,
+  -0.06260504176624697,
+  0.26038628971134486,
+  0.37521879708968403,
+  1.0,
+  0.4131671390045898],
+ [nan,
+  0.04481375001255983,
+  0.5845960223460829,
+  0.4208190876734145,
+  0.37176464412975185,
+  0.5336229317228608,
+  0.40009880448571883,
+  0.43604466165402295,
+  0.644477121762745,
+  0.27264540078457183,
+  0.5938293908934403,
+  0.19343750653581665,
+  0.14744062129175825,
+  0.40870852555993936,
+  0.39458584696256654,
+  0.5067420014423568,
+  0.39035312873776734,
+  0.3467825250811999,
+  0.42873769716412924,
+  0.6183122375672157,
+  nan,
+  0.3532932990723891,
+  0.4790675815799031,
+  0.4208510459141506,
+  0.5035020547398574,
+  0.3096983286051412,
+  nan,
+  0.37369802609441843,
+  0.22531073757899234,
+  0.6400713645277374,
+  0.3847224209812141,
+  0.21454075239356768,
+  0.3959799144295671,
+  0.6059571464420737,
+  0.23455436226359777,
+  0.5843520770370294,
+  0.729502472419503,
+  0.6201478600103071,
+  -0.43935083472685765,
+  0.741230338461912,
+  0.3279211943863175,
+  0.5665056979186421,
+  0.49628724527822377,
+  nan,
+  0.7047255329262894,
+  nan,
+  0.40724100192484197,
+  -0.5742763713585844,
+  0.5710997850033875,
+  0.5784106528363575,
+  0.5375640621951091,
+  0.482333334954417,
+  1.0,
+  0.37521879708968403,
+  0.09933270603204879],
+ [nan,
+  0.4115926667405589,
+  0.5879751663691777,
+  -0.07234345725741466,
+  0.754085002668875,
+  0.6126371829460526,
+  0.7156913212972569,
+  0.8308501858568604,
+  0.7980935420000997,
+  0.07506665461836967,
+  0.4821705147895264,
+  -0.00964976886953909,
+  0.22362033556197652,
+  0.5004211962420355,
+  0.79209997637491,
+  0.12372564053276883,
+  0.8846755386685301,
+  0.3943205093452754,
+  0.0023678629124794445,
+  0.16759727416925344,
+  nan,
+  0.4417756880143457,
+  0.12825055257961548,
+  0.7294746918361962,
+  0.3171537468209076,
+  -0.401047349225472,
+  nan,
+  0.42063307374441916,
+  -0.2189223410547286,
+  0.6168603050697499,
+  0.5037298101315679,
+  0.19687802291981601,
+  0.41232528493005943,
+  0.3892113996341078,
+  0.47388353837767905,
+  0.3704350758626458,
+  0.3444168006803385,
+  0.1795472700054434,
+  -0.580610221988626,
+  0.6922790985762727,
+  0.13632785155640692,
+  0.6194443372537863,
+  0.8389518479360124,
+  nan,
+  0.29561102872998885,
+  nan,
+  0.12201364798032951,
+  -0.7145989635505275,
+  0.6028336593652514,
+  0.7528542740715016,
+  -0.11999216423616524,
+  1.0,
+  0.482333334954417,
+  0.26038628971134486,
+  0.632205485206964],
+ [nan,
+  -0.6016396527531412,
+  0.04740493877917899,
+  0.5821924688860324,
+  -0.3263642968843342,
+  0.2102711743496153,
+  -0.31070502661653426,
+  -0.1677003572590003,
+  0.007413972192747845,
+  -0.10562186577463455,
+  0.32623846001251516,
+  0.34594405611831314,
+  -0.45225831111639025,
+  -0.1830999953961129,
+  -0.12994444303664354,
+  0.6579234237005338,
+  -0.19223164195245585,
+  0.5145750693550555,
+  0.6716559058248464,
+  0.835081316057626,
+  nan,
+  -0.10266354994323004,
+  0.06076338782486067,
+  -0.3278837656453434,
+  -0.07858762773110363,
+  0.7762574664558415,
+  nan,
+  0.5203066467593959,
+  0.3259108973625116,
+  0.27912038655760285,
+  -0.2639755012898374,
+  -0.33112122231489094,
+  -0.19036448061084024,
+  0.009612093546869161,
+  -0.5114734665418939,
+  0.08086311529150585,
+  0.694305212032453,
+  0.517171709232567,
+  -0.3488956498122911,
+  0.5572793134219713,
+  -0.08323439703398244,
+  0.2715122767299362,
+  -0.25517997624281114,
+  nan,
+  0.7160347354937993,
+  nan,
+  0.393888578612461,
+  -0.31196791057312945,
+  0.35880763308373237,
+  -0.06815557665912234,
+  1.0,
+  -0.11999216423616524,
+  0.5375640621951091,
+  -0.06260504176624697,
+  -0.547360629741825],
+ [nan,
+  0.6635581991052278,
+  0.5179596130895673,
+  0.08742893844792732,
+  0.8779223843654749,
+  0.4484849092593788,
+  0.8984693419334313,
+  0.4873775456212344,
+  0.7186855897042002,
+  0.5044194824592962,
+  0.41072716660985487,
+  -0.26120554993670236,
+  0.5570494080982868,
+  0.6920427348967703,
+  0.5710388747890629,
+  0.009453784534800027,
+  0.7023337255208125,
+  -0.0730477820018439,
+  -0.02419731288378296,
+  0.014395312943891516,
+  nan,
+  0.8142396076469386,
+  0.5793821776054481,
+  0.8876313978935413,
+  0.7532525471424821,
+  -0.16661092008296638,
+  nan,
+  -0.029965681336120847,
+  -0.2807916783347751,
+  0.2804777064120176,
+  0.6311857432649239,
+  0.5823791783136505,
+  0.6939094024501714,
+  0.7101995107015302,
+  0.7575601312148604,
+  0.6737687860513851,
+  0.41112143908526744,
+  0.207507439684395,
+  -0.36728319008850563,
+  0.5826612151353884,
+  0.5619212180624876,
+  0.5969417148744195,
+  0.8307234182667887,
+  nan,
+  0.25861135225615606,
+  nan,
+  -0.08108652315574308,
+  -0.44894954856216374,
+  0.40537870272251875,
+  1.0,
+  -0.06815557665912234,
+  0.7528542740715016,
+  0.5784106528363575,
+  0.6878226927873202,
+  0.6948727446322877],
+ [nan,
+  -0.020461869807636025,
+  0.439344479991636,
+  0.19468008329590256,
+  0.3928977903657941,
+  0.6223302489427206,
+  0.3025382998642059,
+  0.501815069350424,
+  0.5375808040631015,
+  0.2215394570474156,
+  0.4350006591285541,
+  0.12299306924584172,
+  0.0981857026478477,
+  0.09974170536752448,
+  0.8436424028271402,
+  0.4597519631632867,
+  0.6620850442982659,
+  0.6849147907786837,
+  0.5356906495660839,
+  0.5470479510096852,
+  nan,
+  0.1642332843336142,
+  0.2644867927909411,
+  0.34107835456074104,
+  0.16725454837146375,
+  0.11013857233277281,
+  nan,
+  0.6836920503975307,
+  0.11573037248414694,
+  0.6276779570168348,
+  0.36315446150199554,
+  0.15447862000215584,
+  0.2659462885162787,
+  0.2943305111988615,
+  0.05849913155970473,
+  0.44477489974326356,
+  0.7178989994625744,
+  0.5620265181268138,
+  -0.3899101217499612,
+  0.7145701187324148,
+  0.2216083313816155,
+  0.4620276436817303,
+  0.33638945489837974,
+  nan,
+  0.601714507421337,
+  nan,
+  0.2805687633358779,
+  -0.27947072602824147,
+  1.0,
+  0.40537870272251875,
+  0.35880763308373237,
+  0.6028336593652514,
+  0.5710997850033875,
+  0.2713991868963475,
+  0.006982303086114248],
+ [nan,
+  0.277015634267168,
+  -0.758607161758422,
+  -0.20448486573494595,
+  -0.41778248934234063,
+  -0.7911342697633827,
+  -0.4461653244514118,
+  -0.6885517874602358,
+  -0.6935597088233261,
+  0.4752398588101791,
+  -0.7860238841327857,
+  -0.5464240354248697,
+  0.34059736963560144,
+  -0.19555676197731578,
+  -0.3196576963680829,
+  -0.5909867524420898,
+  -0.6289246521028427,
+  -0.5910763531969373,
+  -0.4085815529969549,
+  -0.5384447351292676,
+  nan,
+  0.06325025956214515,
+  0.23161696159236259,
+  -0.4104448896484557,
+  -0.10769562707069823,
+  0.6792973915177946,
+  nan,
+  -0.6449363384713775,
+  0.07892521986006537,
+  -0.6740952335648643,
+  0.03137812537376987,
+  0.44266377256018374,
+  0.09168094685225622,
+  -0.2348093174531639,
+  -0.053314339092216244,
+  -0.085739859223739,
+  -0.16123822080792552,
+  -0.14392474775779926,
+  0.8878270410862544,
+  -0.6449126880089039,
+  0.3728720765744912,
+  -0.7142588793805396,
+  -0.6503553155360542,
+  nan,
+  -0.45400590041509414,
+  nan,
+  -0.7742881727317426,
+  1.0,
+  -0.27947072602824147,
+  -0.44894954856216374,
+  -0.31196791057312945,
+  -0.7145989635505275,
+  -0.5742763713585844,
+  0.27797235321667735,
+  -0.5324089328317041],
+ [nan,
+  -0.5224719159843919,
+  0.36990049737697916,
+  0.503241582064411,
+  -0.23953281821518863,
+  0.35079629726241457,
+  0.04940450488308904,
+  0.3741504176612779,
+  0.25118916528488927,
+  -0.1839499936452513,
+  0.4956348742617071,
+  0.9384274249467772,
+  -0.215772998990586,
+  -0.11763527735588215,
+  0.09486841667869043,
+  0.8452953343161959,
+  0.10630508771233421,
+  0.5003608245537481,
+  0.43549248163958365,
+  0.5158231820982507,
+  nan,
+  -0.42566225343912784,
+  0.03635633507471591,
+  -0.16152525438868628,
+  -0.04402690000899762,
+  0.05452796415647781,
+  nan,
+  0.5108296523685726,
+  0.7006680340560879,
+  0.44138897853678377,
+  -0.029925796577240562,
+  -0.41286238218996346,
+  -0.40969388004249635,
+  -0.06016862417935503,
+  -0.2651791086283763,
+  0.13301619636605624,
+  0.08387329702968349,
+  0.25473938248831274,
+  -0.4688691111088608,
+  0.2585323575248461,
+  -0.14461405990563417,
+  0.4811744931884505,
+  -0.02438589869070057,
+  nan,
+  0.5540815957534296,
+  nan,
+  1.0,
+  -0.7742881727317426,
+  0.2805687633358779,
+  -0.08108652315574308,
+  0.393888578612461,
+  0.12201364798032951,
+  0.40724100192484197,
+  -0.3144027572160867,
+  -0.026143627529640064],
+ [nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan],
+ [nan,
+  -0.32631588544331175,
+  0.3174125558755363,
+  0.8001162917822879,
+  -0.036786888045834076,
+  0.39913743320392153,
+  0.1057069314707217,
+  0.3188653887448142,
+  0.5254896215652589,
+  0.09826654324754912,
+  0.453816777036206,
+  0.4316398864022876,
+  -0.02246017214115092,
+  0.19720996723675183,
+  0.36102834247726096,
+  0.7230667853845066,
+  0.2178095036777936,
+  0.5967742361145691,
+  0.5687805473851107,
+  0.7549470987236238,
+  nan,
+  0.051051203375847454,
+  0.36925957558735006,
+  -0.012229862356473942,
+  0.0941370936674002,
+  0.4561915103536069,
+  nan,
+  0.6042747852128115,
+  0.46829057375321664,
+  0.6053022978920819,
+  0.15695327724116342,
+  -0.13671368830151104,
+  0.019043489577434018,
+  0.22014283869402698,
+  -0.18522896248527593,
+  0.4404174517399204,
+  0.6761926649753376,
+  0.5709836756776381,
+  -0.43088568348170714,
+  0.6647904766828199,
+  0.10296611131457088,
+  0.4154854223393379,
+  0.23278399290987198,
+  nan,
+  1.0,
+  nan,
+  0.5540815957534296,
+  -0.45400590041509414,
+  0.601714507421337,
+  0.25861135225615606,
+  0.7160347354937993,
+  0.29561102872998885,
+  0.7047255329262894,
+  0.04067652048704528,
+  -0.20101362446389676],
+ [nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan],
+ [nan,
+  0.6523529230672913,
+  0.43608636868803213,
+  0.003498051639693815,
+  0.7809161645121869,
+  0.42985151979583724,
+  0.8024853027475042,
+  0.7724095332735954,
+  0.8201345133408539,
+  0.26696269405872003,
+  0.27389890632204966,
+  -0.12177192706879196,
+  0.4728137378624818,
+  0.7411918073967184,
+  0.6087073288320705,
+  -0.07333366965308445,
+  0.6763119289852307,
+  0.04008919172521798,
+  -0.24306033670134908,
+  -0.006552664659341226,
+  nan,
+  0.640188252522357,
+  0.35018993560221084,
+  0.8037575965719176,
+  0.47412007693238006,
+  -0.30605443519773784,
+  nan,
+  0.07216049652831712,
+  -0.1721349760949427,
+  0.5124811195376793,
+  0.6506622622021281,
+  0.41356542499448884,
+  0.5819251743229071,
+  0.5136188008589697,
+  0.6701613549514218,
+  0.4926515187735593,
+  0.2624773211850784,
+  0.06658036101663682,
+  -0.29726187188892317,
+  0.5552026553191682,
+  0.31393694863036903,
+  0.40361737351776,
+  1.0,
+  nan,
+  0.23278399290987198,
+  nan,
+  -0.02438589869070057,
+  -0.6503553155360542,
+  0.33638945489837974,
+  0.8307234182667887,
+  -0.25517997624281114,
+  0.8389518479360124,
+  0.49628724527822377,
+  0.41929243123260546,
+  0.6972380919264204],
+ [nan,
+  -0.03811779069843851,
+  0.6532211956007637,
+  0.23218639239593128,
+  0.5127119221231454,
+  0.6573641557418082,
+  0.6267120403262874,
+  0.4276158516604883,
+  0.5136175999621488,
+  0.011784177612748482,
+  0.6981336610956869,
+  0.29127174671601663,
+  -0.0028101375367179985,
+  0.09749146306764829,
+  0.38471484052893,
+  0.4504307164367542,
+  0.7107459197632474,
+  0.37708221655367435,
+  0.45996547501162105,
+  0.4143292911670845,
+  nan,
+  0.18497306384765733,
+  0.17884494158874495,
+  0.5082164081592591,
+  0.4106654757197225,
+  -0.11108254672088913,
+  nan,
+  0.42291996190944287,
+  -0.03360628330270995,
+  0.4087803798052583,
+  0.1043807083988629,
+  -0.05133186030405521,
+  0.03551340401946541,
+  0.30317931676795756,
+  0.17441468152742678,
+  0.34195501635521325,
+  0.3103962818177835,
+  0.16909922752402817,
+  -0.8662609447311512,
+  0.6124408735698239,
+  0.06566788021113353,
+  1.0,
+  0.40361737351776,
+  nan,
+  0.4154854223393379,
+  nan,
+  0.4811744931884505,
+  -0.7142588793805396,
+  0.4620276436817303,
+  0.5969417148744195,
+  0.2715122767299362,
+  0.6194443372537863,
+  0.5665056979186421,
+  0.13113197608416285,
+  0.38786843449468034],
+ [nan,
+  0.6108144077424659,
+  0.09126450988628579,
+  0.159922552943693,
+  0.4290611551984016,
+  -0.13619479226477804,
+  0.531768890015918,
+  0.03874970284886869,
+  0.1599277080173401,
+  0.9424019433498191,
+  -0.05976345997848588,
+  -0.25469353530978905,
+  0.8144428387317384,
+  0.5170407426115469,
+  0.3367622889388038,
+  0.07815172270292761,
+  0.1690522299127299,
+  -0.4583031614794127,
+  -0.22187852486759882,
+  -0.23780511439392232,
+  nan,
+  0.6494497284487287,
+  0.8697141166982221,
+  0.4676948327790442,
+  0.8112663141195577,
+  0.0048468945985441015,
+  nan,
+  -0.4532371448742458,
+  0.021180850439721965,
+  -0.24724662711941697,
+  0.7768064960365981,
+  0.8811872548563434,
+  0.6983294336397359,
+  0.6446102815413249,
+  0.6758595644866235,
+  0.8207317627160133,
+  0.3382494440256738,
+  0.2798066680829118,
+  0.33469207386154204,
+  0.07449480669700624,
+  1.0,
+  0.06566788021113353,
+  0.31393694863036903,
+  nan,
+  0.10296611131457088,
+  nan,
+  -0.14461405990563417,
+  0.3728720765744912,
+  0.2216083313816155,
+  0.5619212180624876,
+  -0.08323439703398244,
+  0.13632785155640692,
+  0.3279211943863175,
+  0.9037521262147236,
+  0.3816367623260494],
+ [nan,
+  -0.00846169166512296,
+  0.47191609575833904,
+  0.27490284567618034,
+  0.4393288496719571,
+  0.6488641067986168,
+  0.37898074997291276,
+  0.5098894644085598,
+  0.6228305247560514,
+  0.004196593071818004,
+  0.5790634040115998,
+  0.13206372189072865,
+  -0.1252966196376695,
+  0.27134886283385223,
+  0.5184763278247349,
+  0.4481897153013023,
+  0.5450958838909353,
+  0.6239133969416581,
+  0.4262591229835086,
+  0.67957624401651,
+  nan,
+  0.3653792682701434,
+  0.14549344964851552,
+  0.3845642001529156,
+  0.24672662868950831,
+  0.29273546068448664,
+  nan,
+  0.6516050646379831,
+  -0.027753204589313907,
+  0.6683863612317048,
+  0.22080617148779524,
+  -0.00962847004865985,
+  0.2676898183282504,
+  0.34015879271019167,
+  0.061983218519816884,
+  0.33606392334624474,
+  0.7904518298812148,
+  0.4863121205746208,
+  -0.6369673214180099,
+  1.0,
+  0.07449480669700624,
+  0.6124408735698239,
+  0.5552026553191682,
+  nan,
+  0.6647904766828199,
+  nan,
+  0.2585323575248461,
+  -0.6449126880089039,
+  0.7145701187324148,
+  0.5826612151353884,
+  0.5572793134219713,
+  0.6922790985762727,
+  0.741230338461912,
+  0.22738611609007453,
+  0.12130750213394237],
+ [nan,
+  0.30892700202530227,
+  -0.6649218908344137,
+  -0.21260177773759847,
+  -0.3153638667014204,
+  -0.7517256001068275,
+  -0.3320857295801199,
+  -0.4174298295770548,
+  -0.47562941349806676,
+  0.42856036081890775,
+  -0.7728144589584854,
+  -0.3284936405474209,
+  0.3985031021932344,
+  0.046429225500537,
+  -0.2669816583553647,
+  -0.39533784114421044,
+  -0.6119610416309608,
+  -0.636080894916193,
+  -0.5300477978973016,
+  -0.5524100143534837,
+  nan,
+  0.03691046686325351,
+  0.2100936048931159,
+  -0.28030518164966234,
+  -0.039705582868966305,
+  0.08286512940907836,
+  nan,
+  -0.6757150887072932,
+  0.10453240235726678,
+  -0.5570721593525929,
+  0.2036492929630933,
+  0.42297794534391525,
+  0.17337574105565623,
+  -0.08333327880992544,
+  0.12493527982290376,
+  -0.003385643254404323,
+  -0.22738263828052274,
+  -0.20718899590617224,
+  1.0,
+  -0.6369673214180099,
+  0.33469207386154204,
+  -0.8662609447311512,
+  -0.29726187188892317,
+  nan,
+  -0.43088568348170714,
+  nan,
+  -0.4688691111088608,
+  0.8878270410862544,
+  -0.3899101217499612,
+  -0.36728319008850563,
+  -0.3488956498122911,
+  -0.580610221988626,
+  -0.43935083472685765,
+  0.23447989754959633,
+  -0.18760346418009743],
+ [nan,
+  -0.18185030074376418,
+  0.5867456679133348,
+  0.2966685575643344,
+  0.07243258116332203,
+  0.38084194197934923,
+  -0.047879974795601944,
+  0.06029735243291293,
+  0.24020302792715253,
+  0.1577396585691583,
+  0.5984220511247212,
+  0.047362981136444056,
+  -0.035121319103624246,
+  0.08457529617465943,
+  0.3222363021621079,
+  0.428359904472868,
+  0.18866013322587122,
+  0.43254588440627123,
+  0.598756686135874,
+  0.5790648003582545,
+  nan,
+  0.1410888374441861,
+  0.32854219364150306,
+  0.015704707719020224,
+  0.21857389060235036,
+  0.34491622349970413,
+  nan,
+  0.4369492675532718,
+  0.13927885791676867,
+  0.399989227576769,
+  0.20585648074611387,
+  0.10212822197854979,
+  0.36717654323466636,
+  0.4749731740697282,
+  0.064821576750684,
+  0.34556557209253386,
+  0.6216386774597071,
+  1.0,
+  -0.20718899590617224,
+  0.4863121205746208,
+  0.2798066680829118,
+  0.16909922752402817,
+  0.06658036101663682,
+  nan,
+  0.5709836756776381,
+  nan,
+  0.25473938248831274,
+  -0.14392474775779926,
+  0.5620265181268138,
+  0.207507439684395,
+  0.517171709232567,
+  0.1795472700054434,
+  0.6201478600103071,
+  0.27307925954149553,
+  -0.20985539493246766],
+ [nan,
+  -0.0028990490586714456,
+  0.21669309752718,
+  0.3048525841685952,
+  0.2044179252763113,
+  0.314024813344812,
+  0.11456488269476534,
+  0.18323857661977958,
+  0.36407929626654234,
+  0.34806102905716807,
+  0.30585660393206127,
+  -0.06059394441656172,
+  0.05934830369449648,
+  0.20732958466051452,
+  0.4325416508008993,
+  0.4054956627905785,
+  0.26063123128467863,
+  0.4108406028617452,
+  0.45763100663496636,
+  0.6659565515165295,
+  nan,
+  0.4021921688149773,
+  0.370564938356644,
+  0.17200174610500288,
+  0.27064158709547886,
+  0.5131285183010197,
+  nan,
+  0.4128581752529677,
+  0.03380179657049575,
+  0.4560763549452636,
+  0.30404803122793833,
+  0.25712134284422256,
+  0.3917009332529245,
+  0.4583496931879797,
+  0.014887717018263554,
+  0.4881523609002123,
+  1.0,
+  0.6216386774597071,
+  -0.22738263828052274,
+  0.7904518298812148,
+  0.3382494440256738,
+  0.3103962818177835,
+  0.2624773211850784,
+  nan,
+  0.6761926649753376,
+  nan,
+  0.08387329702968349,
+  -0.16123822080792552,
+  0.7178989994625744,
+  0.41112143908526744,
+  0.694305212032453,
+  0.3444168006803385,
+  0.729502472419503,
+  0.4305610768217493,
+  -0.14398061258083772],
+ [nan,
+  0.454404190982279,
+  0.312698822909292,
+  0.41367632727451376,
+  0.4505939899723893,
+  0.2124031333094075,
+  0.6295094898834355,
+  0.3539033578627769,
+  0.5287601806870328,
+  0.7909670464127914,
+  0.19084881386069813,
+  -0.02338527142465423,
+  0.7173870054968644,
+  0.6517031127345182,
+  0.5419749146933319,
+  0.26374454785730345,
+  0.38584620872075326,
+  -0.14837696079273865,
+  0.0063298847652871,
+  0.06357278708540615,
+  nan,
+  0.600065787123933,
+  0.8214446826989363,
+  0.5156061281329742,
+  0.7626032791542035,
+  -0.0202716800937291,
+  nan,
+  -0.1232666719885797,
+  0.11879132185038631,
+  0.18633452691647892,
+  0.7945061822330909,
+  0.6890260002027127,
+  0.6244948941392933,
+  0.7022631149510569,
+  0.534644431704969,
+  1.0,
+  0.4881523609002123,
+  0.34556557209253386,
+  -0.003385643254404323,
+  0.33606392334624474,
+  0.8207317627160133,
+  0.34195501635521325,
+  0.4926515187735593,
+  nan,
+  0.4404174517399204,
+  nan,
+  0.13301619636605624,
+  -0.085739859223739,
+  0.44477489974326356,
+  0.6737687860513851,
+  0.08086311529150585,
+  0.3704350758626458,
+  0.5843520770370294,
+  0.7981517273632944,
+  0.38991833214147426],
+ [nan,
+  0.8816337190521906,
+  0.3270451918538667,
+  -0.23627863924260273,
+  0.7631322243166433,
+  0.0024629037953349205,
+  0.776332032695331,
+  0.291382411968998,
+  0.4037785600554416,
+  0.6409019731320404,
+  0.11229226232304652,
+  -0.40003783119998537,
+  0.7907764263629287,
+  0.6512695999553377,
+  0.39863340900714217,
+  -0.2578927628569561,
+  0.452018701213713,
+  -0.49309028052602183,
+  -0.3729891828847038,
+  -0.457451540909226,
+  nan,
+  0.7123755485327405,
+  0.6174751203889943,
+  0.779709658420803,
+  0.7431934105354348,
+  -0.3668814459529571,
+  nan,
+  -0.47076024497345886,
+  -0.22491659042335033,
+  -0.08361753742256724,
+  0.7119576155967265,
+  0.7662469777713823,
+  0.797838006390543,
+  0.6458337809588436,
+  1.0,
+  0.534644431704969,
+  0.014887717018263554,
+  0.064821576750684,
+  0.12493527982290376,
+  0.061983218519816884,
+  0.6758595644866235,
+  0.17441468152742678,
+  0.6701613549514218,
+  nan,
+  -0.18522896248527593,
+  nan,
+  -0.2651791086283763,
+  -0.053314339092216244,
+  0.05849913155970473,
+  0.7575601312148604,
+  -0.5114734665418939,
+  0.47388353837767905,
+  0.23455436226359777,
+  0.7133990014477655,
+  0.760378864526884],
+ [nan,
+  0.5215041296539276,
+  0.5133936891104859,
+  0.042758671060428334,
+  0.5382741513311724,
+  0.2139571142018397,
+  0.5326456722249094,
+  0.20567699404082326,
+  0.4533023811674333,
+  0.6106023529466718,
+  0.38866871072502757,
+  -0.3048439383827087,
+  0.5495881533464487,
+  0.6336162830376595,
+  0.3840365841085448,
+  -0.014208816968140843,
+  0.42228377782153803,
+  -0.20077067547339172,
+  0.060115325382496365,
+  0.07472562864388109,
+  nan,
+  0.6921311653908897,
+  0.5854273220942442,
+  0.5244203527348776,
+  0.6704323787004756,
+  -0.09791247779373478,
+  nan,
+  -0.19063504545995785,
+  -0.2422056641314363,
+  0.1846918201815513,
+  0.5894564119057534,
+  0.6985467062373909,
+  0.7546177011986035,
+  1.0,
+  0.6458337809588436,
+  0.7022631149510569,
+  0.4583496931879797,
+  0.4749731740697282,
+  -0.08333327880992544,
+  0.34015879271019167,
+  0.6446102815413249,
+  0.30317931676795756,
+  0.5136188008589697,
+  nan,
+  0.22014283869402698,
+  nan,
+  -0.06016862417935503,
+  -0.2348093174531639,
+  0.2943305111988615,
+  0.7101995107015302,
+  0.009612093546869161,
+  0.3892113996341078,
+  0.6059571464420737,
+  0.7186755523784286,
+  0.45479924380373565],
+ [nan,
+  0.726090520607127,
+  0.3023715203271525,
+  -0.0934169897139028,
+  0.6434474919254561,
+  0.04543393971166767,
+  0.5297804144007217,
+  0.18588405503868474,
+  0.4038574170066174,
+  0.6409234235477322,
+  0.1405740487477099,
+  -0.5577651741314936,
+  0.6565978242585389,
+  0.7027736781912108,
+  0.441150249752826,
+  -0.23581966140452335,
+  0.3653061832163366,
+  -0.2894713729593497,
+  -0.18655421047357074,
+  -0.19489850710737416,
+  nan,
+  0.7362946595594027,
+  0.6173384207962199,
+  0.6225102513965789,
+  0.6384283322001499,
+  -0.061042807404126063,
+  nan,
+  -0.2739885452081383,
+  -0.2735991011444857,
+  0.02165243172680251,
+  0.6628369350400154,
+  0.7556536709492837,
+  1.0,
+  0.7546177011986035,
+  0.797838006390543,
+  0.6244948941392933,
+  0.3917009332529245,
+  0.36717654323466636,
+  0.17337574105565623,
+  0.2676898183282504,
+  0.6983294336397359,
+  0.03551340401946541,
+  0.5819251743229071,
+  nan,
+  0.019043489577434018,
+  nan,
+  -0.40969388004249635,
+  0.09168094685225622,
+  0.2659462885162787,
+  0.6939094024501714,
+  -0.19036448061084024,
+  0.41232528493005943,
+  0.3959799144295671,
+  0.8124273877961357,
+  0.43662021929029765],
+ [nan,
+  0.8175085575749518,
+  0.02068754343255063,
+  -0.1927071200475429,
+  0.5598696388631443,
+  -0.14701956030551286,
+  0.5440129535561794,
+  0.08472581675456434,
+  0.18628597718866802,
+  0.9057280301328122,
+  -0.20049844238011946,
+  -0.5218470096559893,
+  0.8486512563493233,
+  0.5413850090242537,
+  0.3822372630516476,
+  -0.2996618333397484,
+  0.25283639608505537,
+  -0.578511061847954,
+  -0.35826567544835874,
+  -0.3615742936928517,
+  nan,
+  0.7572056931148955,
+  0.7038102788232817,
+  0.5710779264902112,
+  0.7316715211283393,
+  -0.14492852612940765,
+  nan,
+  -0.5844947489684648,
+  -0.2454254702631593,
+  -0.18842586371020076,
+  0.7945513431525276,
+  1.0,
+  0.7556536709492837,
+  0.6985467062373909,
+  0.7662469777713823,
+  0.6890260002027127,
+  0.25712134284422256,
+  0.10212822197854979,
+  0.42297794534391525,
+  -0.00962847004865985,
+  0.8811872548563434,
+  -0.05133186030405521,
+  0.41356542499448884,
+  nan,
+  -0.13671368830151104,
+  nan,
+  -0.41286238218996346,
+  0.44266377256018374,
+  0.15447862000215584,
+  0.5823791783136505,
+  -0.33112122231489094,
+  0.19687802291981601,
+  0.21454075239356768,
+  0.8872066482994104,
+  0.4688411146841934],
+ [nan,
+  0.7136368636797664,
+  0.18032976497873662,
+  -0.00554905297203995,
+  0.5373172528272064,
+  0.08535685914098548,
+  0.6325572316834729,
+  0.5593858648215736,
+  0.522322385627439,
+  0.7599299735761824,
+  -0.028864820455375362,
+  -0.1164510059441515,
+  0.7862311953120336,
+  0.6799054673771396,
+  0.6318368452515711,
+  0.0351585254838061,
+  0.417548282557368,
+  -0.25657657337531015,
+  -0.33962758297077905,
+  -0.15308519797649056,
+  nan,
+  0.6209106373420465,
+  0.6658482727794713,
+  0.5935363307099787,
+  0.6464373161589481,
+  -0.2546276623880077,
+  nan,
+  -0.24861285499924324,
+  0.062223407003038744,
+  0.2050581083250241,
+  1.0,
+  0.7945513431525276,
+  0.6628369350400154,
+  0.5894564119057534,
+  0.7119576155967265,
+  0.7945061822330909,
+  0.30404803122793833,
+  0.20585648074611387,
+  0.2036492929630933,
+  0.22080617148779524,
+  0.7768064960365981,
+  0.1043807083988629,
+  0.6506622622021281,
+  nan,
+  0.15695327724116342,
+  nan,
+  -0.029925796577240562,
+  0.03137812537376987,
+  0.36315446150199554,
+  0.6311857432649239,
+  -0.2639755012898374,
+  0.5037298101315679,
+  0.3847224209812141,
+  0.7587047582614335,
+  0.5530506471178422],
+ [nan,
+  -0.14234972382983105,
+  0.5210861409384454,
+  0.18033667785024451,
+  0.2328734574424507,
+  0.736111630429231,
+  0.18557123286174942,
+  0.7524846699161923,
+  0.7344426544361976,
+  -0.2504106930717075,
+  0.5205438738456633,
+  0.3284880242212748,
+  -0.18586197376193198,
+  0.19932581339334945,
+  0.5678537673364296,
+  0.3162839850207935,
+  0.5232567199527486,
+  0.7064809399825074,
+  0.40216831552418275,
+  0.6686281834178501,
+  nan,
+  0.015072152277764617,
+  -0.09838119574011824,
+  0.25027107306490337,
+  -0.07895174986892739,
+  0.01603961790854329,
+  nan,
+  0.7166225410182274,
+  0.16092936537945499,
+  1.0,
+  0.2050581083250241,
+  -0.18842586371020076,
+  0.02165243172680251,
+  0.1846918201815513,
+  -0.08361753742256724,
+  0.18633452691647892,
+  0.4560763549452636,
+  0.399989227576769,
+  -0.5570721593525929,
+  0.6683863612317048,
+  -0.24724662711941697,
+  0.4087803798052583,
+  0.5124811195376793,
+  nan,
+  0.6053022978920819,
+  nan,
+  0.44138897853678377,
+  -0.6740952335648643,
+  0.6276779570168348,
+  0.2804777064120176,
+  0.27912038655760285,
+  0.6168603050697499,
+  0.6400713645277374,
+  -0.14919076755685176,
+  0.017793762680447436],
+ [nan,
+  -0.39070534766413334,
+  -0.08290370591861775,
+  0.5618935013279721,
+  -0.43163071432861316,
+  -0.061790512831337796,
+  -0.15815474158106227,
+  0.12512188262771604,
+  0.10281474604367315,
+  0.06187869785525904,
+  0.005941760809870269,
+  0.7276677928546224,
+  0.031239037498517253,
+  -0.10196346370949101,
+  -0.05679781261322276,
+  0.7134971441344525,
+  -0.3121104828346899,
+  0.20263813811854378,
+  0.20541480559205216,
+  0.24758748475769482,
+  nan,
+  -0.47243848425135276,
+  0.27221031647387345,
+  -0.3063580916142533,
+  -0.05036204743136509,
+  0.34523753241402094,
+  nan,
+  0.19946450157240136,
+  1.0,
+  0.16092936537945499,
+  0.062223407003038744,
+  -0.2454254702631593,
+  -0.2735991011444857,
+  -0.2422056641314363,
+  -0.22491659042335033,
+  0.11879132185038631,
+  0.03380179657049575,
+  0.13927885791676867,
+  0.10453240235726678,
+  -0.027753204589313907,
+  0.021180850439721965,
+  -0.03360628330270995,
+  -0.1721349760949427,
+  nan,
+  0.46829057375321664,
+  nan,
+  0.7006680340560879,
+  0.07892521986006537,
+  0.11573037248414694,
+  -0.2807916783347751,
+  0.3259108973625116,
+  -0.2189223410547286,
+  0.22531073757899234,
+  -0.20717622852461268,
+  -0.318183100476422],
+ [nan,
+  -0.5813917405409232,
+  0.42746341551822975,
+  0.29489993944110554,
+  -0.03225159759784624,
+  0.6742953155916923,
+  -0.11534248127688825,
+  0.4206617229206224,
+  0.36624629314761287,
+  -0.517992058638692,
+  0.5695314721572051,
+  0.45445604420436814,
+  -0.5623450010644652,
+  -0.2298088819298162,
+  0.41873677930899794,
+  0.556588630137134,
+  0.39340201066673125,
+  0.9953221940922101,
+  0.6401557516697326,
+  0.7314065811189321,
+  nan,
+  -0.3496198613511529,
+  -0.32494810252044,
+  -0.0895503781676118,
+  -0.36719413240472615,
+  0.1575318343594252,
+  nan,
+  1.0,
+  0.19946450157240136,
+  0.7166225410182274,
+  -0.24861285499924324,
+  -0.5844947489684648,
+  -0.2739885452081383,
+  -0.19063504545995785,
+  -0.47076024497345886,
+  -0.1232666719885797,
+  0.4128581752529677,
+  0.4369492675532718,
+  -0.6757150887072932,
+  0.6516050646379831,
+  -0.4532371448742458,
+  0.42291996190944287,
+  0.07216049652831712,
+  nan,
+  0.6042747852128115,
+  nan,
+  0.5108296523685726,
+  -0.6449363384713775,
+  0.6836920503975307,
+  -0.029965681336120847,
+  0.5203066467593959,
+  0.42063307374441916,
+  0.37369802609441843,
+  -0.4137891895801912,
+  -0.2785094011905136],
+ [nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan],
+ [nan,
+  -0.3844721609495479,
+  -0.2807467300699423,
+  0.45299607906518663,
+  -0.31850681725720215,
+  -0.07036680215742311,
+  -0.3579277701171759,
+  -0.4198705182224427,
+  -0.19416830059143003,
+  0.03471534903856013,
+  -0.055384127886959865,
+  0.0894290378154637,
+  -0.28161692906941316,
+  -0.18149354069655393,
+  -0.31992869091627635,
+  0.31194023965700357,
+  -0.45222487062298256,
+  0.16208126693428387,
+  0.47113135962279556,
+  0.5707993497438606,
+  nan,
+  -0.005286158758630102,
+  0.16958488053084397,
+  -0.3212674725940189,
+  -0.0302161540441927,
+  1.0,
+  nan,
+  0.1575318343594252,
+  0.34523753241402094,
+  0.01603961790854329,
+  -0.2546276623880077,
+  -0.14492852612940765,
+  -0.061042807404126063,
+  -0.09791247779373478,
+  -0.3668814459529571,
+  -0.0202716800937291,
+  0.5131285183010197,
+  0.34491622349970413,
+  0.08286512940907836,
+  0.29273546068448664,
+  0.0048468945985441015,
+  -0.11108254672088913,
+  -0.30605443519773784,
+  nan,
+  0.4561915103536069,
+  nan,
+  0.05452796415647781,
+  0.6792973915177946,
+  0.11013857233277281,
+  -0.16661092008296638,
+  0.7762574664558415,
+  -0.401047349225472,
+  0.3096983286051412,
+  0.03894003818982377,
+  -0.6589560341739858],
+ [nan,
+  0.6062915856051914,
+  0.4001501003086733,
+  0.11388246335221222,
+  0.6548502244060415,
+  0.18400473864848996,
+  0.7477382477778147,
+  0.14255068080104577,
+  0.37989783105225794,
+  0.7370166956474263,
+  0.25138034306509704,
+  -0.22764694526420934,
+  0.6900236845401337,
+  0.4873913157468642,
+  0.2883161106956927,
+  0.06975643570631278,
+  0.335275307982984,
+  -0.4099913188682717,
+  -0.08610804091693687,
+  -0.18647066561505013,
+  nan,
+  0.6770436881926153,
+  0.7848595968519143,
+  0.6837122157011103,
+  1.0,
+  -0.0302161540441927,
+  nan,
+  -0.36719413240472615,
+  -0.05036204743136509,
+  -0.07895174986892739,
+  0.6464373161589481,
+  0.7316715211283393,
+  0.6384283322001499,
+  0.6704323787004756,
+  0.7431934105354348,
+  0.7626032791542035,
+  0.27064158709547886,
+  0.21857389060235036,
+  -0.039705582868966305,
+  0.24672662868950831,
+  0.8112663141195577,
+  0.4106654757197225,
+  0.47412007693238006,
+  nan,
+  0.0941370936674002,
+  nan,
+  -0.04402690000899762,
+  -0.10769562707069823,
+  0.16725454837146375,
+  0.7532525471424821,
+  -0.07858762773110363,
+  0.3171537468209076,
+  0.5035020547398574,
+  0.8229713735404725,
+  0.5346980221535902],
+ [nan,
+  0.7262475752815822,
+  0.4643447929507129,
+  -0.1363245616709437,
+  0.9427595370283913,
+  0.4692416424947869,
+  0.905269170419269,
+  0.537093515894333,
+  0.656305180113504,
+  0.4161650195247294,
+  0.2546524761019422,
+  -0.29722026030462284,
+  0.5571302770868392,
+  0.6041663190083689,
+  0.576311216925254,
+  -0.17845654539642286,
+  0.7262658532491622,
+  -0.12842828847764506,
+  -0.14812868505636687,
+  -0.17814298082687915,
+  nan,
+  0.6958308164543415,
+  0.4586110757013861,
+  1.0,
+  0.6837122157011103,
+  -0.3212674725940189,
+  nan,
+  -0.0895503781676118,
+  -0.3063580916142533,
+  0.25027107306490337,
+  0.5935363307099787,
+  0.5710779264902112,
+  0.6225102513965789,
+  0.5244203527348776,
+  0.779709658420803,
+  0.5156061281329742,
+  0.17200174610500288,
+  0.015704707719020224,
+  -0.28030518164966234,
+  0.3845642001529156,
+  0.4676948327790442,
+  0.5082164081592591,
+  0.8037575965719176,
+  nan,
+  -0.012229862356473942,
+  nan,
+  -0.16152525438868628,
+  -0.4104448896484557,
+  0.34107835456074104,
+  0.8876313978935413,
+  -0.3278837656453434,
+  0.7294746918361962,
+  0.4208510459141506,
+  0.5872364647849543,
+  0.7101901113353004],
+ [nan,
+  0.48705628964701964,
+  0.17923552034160517,
+  0.443650200230277,
+  0.3778991106889452,
+  -0.04434542036039198,
+  0.5537024180768557,
+  0.03929876225610069,
+  0.34628065561705407,
+  0.8803290452677238,
+  0.060947423983549714,
+  -0.12109949460362868,
+  0.8241039544258385,
+  0.5174469641620083,
+  0.3128300036731841,
+  0.24022709077339588,
+  0.15664116252174123,
+  -0.3459606240720962,
+  0.01873340201945714,
+  -0.10238363775017506,
+  nan,
+  0.5408410378766803,
+  1.0,
+  0.4586110757013861,
+  0.7848595968519143,
+  0.16958488053084397,
+  nan,
+  -0.32494810252044,
+  0.27221031647387345,
+  -0.09838119574011824,
+  0.6658482727794713,
+  0.7038102788232817,
+  0.6173384207962199,
+  0.5854273220942442,
+  0.6174751203889943,
+  0.8214446826989363,
+  0.370564938356644,
+  0.32854219364150306,
+  0.2100936048931159,
+  0.14549344964851552,
+  0.8697141166982221,
+  0.17884494158874495,
+  0.35018993560221084,
+  nan,
+  0.36925957558735006,
+  nan,
+  0.03635633507471591,
+  0.23161696159236259,
+  0.2644867927909411,
+  0.5793821776054481,
+  0.06076338782486067,
+  0.12825055257961548,
+  0.4790675815799031,
+  0.7689013638870471,
+  0.2712755792012645],
+ [nan,
+  0.7840518215491613,
+  0.1454908357711401,
+  -0.059839767976236864,
+  0.7169426451166946,
+  0.1008455451072436,
+  0.6665621799594832,
+  0.17348570366909752,
+  0.37588843253894594,
+  0.6227596227495548,
+  0.02886449237113559,
+  -0.5158430331240086,
+  0.5759158699179419,
+  0.7162903135372044,
+  0.33830992106617475,
+  -0.301019110494174,
+  0.37450396425732346,
+  -0.3706033675477179,
+  -0.23236380816474914,
+  -0.1074612467836376,
+  nan,
+  1.0,
+  0.5408410378766803,
+  0.6958308164543415,
+  0.6770436881926153,
+  -0.005286158758630102,
+  nan,
+  -0.3496198613511529,
+  -0.47243848425135276,
+  0.015072152277764617,
+  0.6209106373420465,
+  0.7572056931148955,
+  0.7362946595594027,
+  0.6921311653908897,
+  0.7123755485327405,
+  0.600065787123933,
+  0.4021921688149773,
+  0.1410888374441861,
+  0.03691046686325351,
+  0.3653792682701434,
+  0.6494497284487287,
+  0.18497306384765733,
+  0.640188252522357,
+  nan,
+  0.051051203375847454,
+  nan,
+  -0.42566225343912784,
+  0.06325025956214515,
+  0.1642332843336142,
+  0.8142396076469386,
+  -0.10266354994323004,
+  0.4417756880143457,
+  0.3532932990723891,
+  0.7986694281519623,
+  0.581277895968721],
+ [nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan],
+ [nan,
+  -0.5691335637230552,
+  0.2750695479566303,
+  0.4270537070472637,
+  -0.15294611562231308,
+  0.4971169630134873,
+  -0.17948798552332412,
+  0.200148465043517,
+  0.2375600791991238,
+  -0.2551260418169042,
+  0.48572290512355715,
+  0.4368387553865046,
+  -0.5016513004032987,
+  -0.14171358726505912,
+  0.15061829230914792,
+  0.5796622383714909,
+  0.15307994848370463,
+  0.7327835819286573,
+  0.745805356525264,
+  1.0,
+  nan,
+  -0.1074612467836376,
+  -0.10238363775017506,
+  -0.17814298082687915,
+  -0.18647066561505013,
+  0.5707993497438606,
+  nan,
+  0.7314065811189321,
+  0.24758748475769482,
+  0.6686281834178501,
+  -0.15308519797649056,
+  -0.3615742936928517,
+  -0.19489850710737416,
+  0.07472562864388109,
+  -0.457451540909226,
+  0.06357278708540615,
+  0.6659565515165295,
+  0.5790648003582545,
+  -0.5524100143534837,
+  0.67957624401651,
+  -0.23780511439392232,
+  0.4143292911670845,
+  -0.006552664659341226,
+  nan,
+  0.7549470987236238,
+  nan,
+  0.5158231820982507,
+  -0.5384447351292676,
+  0.5470479510096852,
+  0.014395312943891516,
+  0.835081316057626,
+  0.16759727416925344,
+  0.6183122375672157,
+  -0.17646744216912813,
+  -0.4236649638014657],
+ [nan,
+  -0.5781587361002917,
+  0.44410340531310294,
+  0.3546408311314829,
+  -0.08369862366031347,
+  0.5310962192713505,
+  -0.15579249587765223,
+  -0.1210089901748478,
+  0.1228559261289706,
+  -0.19505462287679148,
+  0.6006910563224028,
+  0.254049535383763,
+  -0.37366526244038123,
+  -0.3825565496469317,
+  0.12753902874003936,
+  0.48836532350287304,
+  0.1944891182009486,
+  0.6281530103649245,
+  1.0,
+  0.745805356525264,
+  nan,
+  -0.23236380816474914,
+  0.01873340201945714,
+  -0.14812868505636687,
+  -0.08610804091693687,
+  0.47113135962279556,
+  nan,
+  0.6401557516697326,
+  0.20541480559205216,
+  0.40216831552418275,
+  -0.33962758297077905,
+  -0.35826567544835874,
+  -0.18655421047357074,
+  0.060115325382496365,
+  -0.3729891828847038,
+  0.0063298847652871,
+  0.45763100663496636,
+  0.598756686135874,
+  -0.5300477978973016,
+  0.4262591229835086,
+  -0.22187852486759882,
+  0.45996547501162105,
+  -0.24306033670134908,
+  nan,
+  0.5687805473851107,
+  nan,
+  0.43549248163958365,
+  -0.4085815529969549,
+  0.5356906495660839,
+  -0.02419731288378296,
+  0.6716559058248464,
+  0.0023678629124794445,
+  0.42873769716412924,
+  -0.15447826557047348,
+  -0.4494981612604545],
+ [nan,
+  -0.5929198685734465,
+  0.3850533877841676,
+  0.27856397913832903,
+  -0.06649405328879028,
+  0.630357751474443,
+  -0.15786841955854217,
+  0.4047530562474062,
+  0.3265530528396439,
+  -0.5156043263180671,
+  0.5289523208735115,
+  0.4525778690609682,
+  -0.5678039291637613,
+  -0.24937590332918821,
+  0.4201592249877265,
+  0.5478912274657792,
+  0.3744199985210582,
+  1.0,
+  0.6281530103649245,
+  0.7327835819286573,
+  nan,
+  -0.3706033675477179,
+  -0.3459606240720962,
+  -0.12842828847764506,
+  -0.4099913188682717,
+  0.16208126693428387,
+  nan,
+  0.9953221940922101,
+  0.20263813811854378,
+  0.7064809399825074,
+  -0.25657657337531015,
+  -0.578511061847954,
+  -0.2894713729593497,
+  -0.20077067547339172,
+  -0.49309028052602183,
+  -0.14837696079273865,
+  0.4108406028617452,
+  0.43254588440627123,
+  -0.636080894916193,
+  0.6239133969416581,
+  -0.4583031614794127,
+  0.37708221655367435,
+  0.04008919172521798,
+  nan,
+  0.5967742361145691,
+  nan,
+  0.5003608245537481,
+  -0.5910763531969373,
+  0.6849147907786837,
+  -0.0730477820018439,
+  0.5145750693550555,
+  0.3943205093452754,
+  0.3467825250811999,
+  -0.4345776767333592,
+  -0.3061459837473328],
+ [nan,
+  0.35295023193827174,
+  0.6547772073274832,
+  -0.11645406360857291,
+  0.7938309956380989,
+  0.6655804652377095,
+  0.731378323004461,
+  0.6751970191807104,
+  0.6640983628297448,
+  0.13362799864680194,
+  0.5174012944234204,
+  -0.07635850796199184,
+  0.26217494255003504,
+  0.31129211009381524,
+  0.8324654144189466,
+  0.046012710893748324,
+  1.0,
+  0.3744199985210582,
+  0.1944891182009486,
+  0.15307994848370463,
+  nan,
+  0.37450396425732346,
+  0.15664116252174123,
+  0.7262658532491622,
+  0.335275307982984,
+  -0.45222487062298256,
+  nan,
+  0.39340201066673125,
+  -0.3121104828346899,
+  0.5232567199527486,
+  0.417548282557368,
+  0.25283639608505537,
+  0.3653061832163366,
+  0.42228377782153803,
+  0.452018701213713,
+  0.38584620872075326,
+  0.26063123128467863,
+  0.18866013322587122,
+  -0.6119610416309608,
+  0.5450958838909353,
+  0.1690522299127299,
+  0.7107459197632474,
+  0.6763119289852307,
+  nan,
+  0.2178095036777936,
+  nan,
+  0.10630508771233421,
+  -0.6289246521028427,
+  0.6620850442982659,
+  0.7023337255208125,
+  -0.19223164195245585,
+  0.8846755386685301,
+  0.39035312873776734,
+  0.272633235408454,
+  0.5768637781093335],
+ [nan,
+  -0.5048844064460509,
+  0.26455584632379187,
+  0.6524973184609093,
+  -0.24147249844479965,
+  0.2534116331717899,
+  0.008813443602363115,
+  0.22685815313575397,
+  0.21406803878871253,
+  0.017379435425375744,
+  0.4583522914131394,
+  0.7765224470972361,
+  -0.15502804392811803,
+  -0.09429349223705381,
+  0.1627440566734854,
+  1.0,
+  0.046012710893748324,
+  0.5478912274657792,
+  0.48836532350287304,
+  0.5796622383714909,
+  nan,
+  -0.301019110494174,
+  0.24022709077339588,
+  -0.17845654539642286,
+  0.06975643570631278,
+  0.31194023965700357,
+  nan,
+  0.556588630137134,
+  0.7134971441344525,
+  0.3162839850207935,
+  0.0351585254838061,
+  -0.2996618333397484,
+  -0.23581966140452335,
+  -0.014208816968140843,
+  -0.2578927628569561,
+  0.26374454785730345,
+  0.4054956627905785,
+  0.428359904472868,
+  -0.39533784114421044,
+  0.4481897153013023,
+  0.07815172270292761,
+  0.4504307164367542,
+  -0.07333366965308445,
+  nan,
+  0.7230667853845066,
+  nan,
+  0.8452953343161959,
+  -0.5909867524420898,
+  0.4597519631632867,
+  0.009453784534800027,
+  0.6579234237005338,
+  0.12372564053276883,
+  0.5067420014423568,
+  -0.09126797399287288,
+  -0.17850809176188243],
+ [nan,
+  0.37151526056479983,
+  0.44828868956877527,
+  -0.006833010758007913,
+  0.6232246579239058,
+  0.5210626892305016,
+  0.5639130931239646,
+  0.7084046506778733,
+  0.6713063754846142,
+  0.3386212989995655,
+  0.2983146609644657,
+  -0.046962177615872326,
+  0.4106073462432188,
+  0.36809085457279184,
+  1.0,
+  0.1627440566734854,
+  0.8324654144189466,
+  0.4201592249877265,
+  0.12753902874003936,
+  0.15061829230914792,
+  nan,
+  0.33830992106617475,
+  0.3128300036731841,
+  0.576311216925254,
+  0.2883161106956927,
+  -0.31992869091627635,
+  nan,
+  0.41873677930899794,
+  -0.05679781261322276,
+  0.5678537673364296,
+  0.6318368452515711,
+  0.3822372630516476,
+  0.441150249752826,
+  0.3840365841085448,
+  0.39863340900714217,
+  0.5419749146933319,
+  0.4325416508008993,
+  0.3222363021621079,
+  -0.2669816583553647,
+  0.5184763278247349,
+  0.3367622889388038,
+  0.38471484052893,
+  0.6087073288320705,
+  nan,
+  0.36102834247726096,
+  nan,
+  0.09486841667869043,
+  -0.3196576963680829,
+  0.8436424028271402,
+  0.5710388747890629,
+  -0.12994444303664354,
+  0.79209997637491,
+  0.39458584696256654,
+  0.37653792113933204,
+  0.39822188230380484],
+ [nan,
+  0.6726199265314057,
+  0.16839098218989274,
+  0.20480081559516314,
+  0.519241182057788,
+  0.06980035685088151,
+  0.6215030229908073,
+  0.4661780072939187,
+  0.6037615578893363,
+  0.472020543708462,
+  0.04159710766855526,
+  -0.16050333414639423,
+  0.5908436511753504,
+  1.0,
+  0.36809085457279184,
+  -0.09429349223705381,
+  0.31129211009381524,
+  -0.24937590332918821,
+  -0.3825565496469317,
+  -0.14171358726505912,
+  nan,
+  0.7162903135372044,
+  0.5174469641620083,
+  0.6041663190083689,
+  0.4873913157468642,
+  -0.18149354069655393,
+  nan,
+  -0.2298088819298162,
+  -0.10196346370949101,
+  0.19932581339334945,
+  0.6799054673771396,
+  0.5413850090242537,
+  0.7027736781912108,
+  0.6336162830376595,
+  0.6512695999553377,
+  0.6517031127345182,
+  0.20732958466051452,
+  0.08457529617465943,
+  0.046429225500537,
+  0.27134886283385223,
+  0.5170407426115469,
+  0.09749146306764829,
+  0.7411918073967184,
+  nan,
+  0.19720996723675183,
+  nan,
+  -0.11763527735588215,
+  -0.19555676197731578,
+  0.09974170536752448,
+  0.6920427348967703,
+  -0.1830999953961129,
+  0.5004211962420355,
+  0.40870852555993936,
+  0.5991383044874277,
+  0.5996645636090199],
+ [nan,
+  0.7879152886264909,
+  0.05120975517805246,
+  0.03959323453231246,
+  0.4920520631800896,
+  -0.19261569068839135,
+  0.6320730993755251,
+  0.17931196500184438,
+  0.3352747250054147,
+  0.8817078390484651,
+  -0.19171651740462872,
+  -0.32663290218536967,
+  1.0,
+  0.5908436511753504,
+  0.4106073462432188,
+  -0.15502804392811803,
+  0.26217494255003504,
+  -0.5678039291637613,
+  -0.37366526244038123,
+  -0.5016513004032987,
+  nan,
+  0.5759158699179419,
+  0.8241039544258385,
+  0.5571302770868392,
+  0.6900236845401337,
+  -0.28161692906941316,
+  nan,
+  -0.5623450010644652,
+  0.031239037498517253,
+  -0.18586197376193198,
+  0.7862311953120336,
+  0.8486512563493233,
+  0.6565978242585389,
+  0.5495881533464487,
+  0.7907764263629287,
+  0.7173870054968644,
+  0.05934830369449648,
+  -0.035121319103624246,
+  0.3985031021932344,
+  -0.1252966196376695,
+  0.8144428387317384,
+  -0.0028101375367179985,
+  0.4728137378624818,
+  nan,
+  -0.02246017214115092,
+  nan,
+  -0.215772998990586,
+  0.34059736963560144,
+  0.0981857026478477,
+  0.5570494080982868,
+  -0.45225831111639025,
+  0.22362033556197652,
+  0.14744062129175825,
+  0.738985730665329,
+  0.5426943909474776],
+ [nan,
+  -0.569149553017062,
+  0.08842913129006139,
+  0.47310819064426063,
+  -0.38974893933358684,
+  0.18590708819875454,
+  -0.08413909471380593,
+  0.3273077166258883,
+  0.08443451097744886,
+  -0.29551146852029725,
+  0.2494120304053095,
+  1.0,
+  -0.32663290218536967,
+  -0.16050333414639423,
+  -0.046962177615872326,
+  0.7765224470972361,
+  -0.07635850796199184,
+  0.4525778690609682,
+  0.254049535383763,
+  0.4368387553865046,
+  nan,
+  -0.5158430331240086,
+  -0.12109949460362868,
+  -0.29722026030462284,
+  -0.22764694526420934,
+  0.0894290378154637,
+  nan,
+  0.45445604420436814,
+  0.7276677928546224,
+  0.3284880242212748,
+  -0.1164510059441515,
+  -0.5218470096559893,
+  -0.5577651741314936,
+  -0.3048439383827087,
+  -0.40003783119998537,
+  -0.02338527142465423,
+  -0.06059394441656172,
+  0.047362981136444056,
+  -0.3284936405474209,
+  0.13206372189072865,
+  -0.25469353530978905,
+  0.29127174671601663,
+  -0.12177192706879196,
+  nan,
+  0.4316398864022876,
+  nan,
+  0.9384274249467772,
+  -0.5464240354248697,
+  0.12299306924584172,
+  -0.26120554993670236,
+  0.34594405611831314,
+  -0.00964976886953909,
+  0.19343750653581665,
+  -0.43867257979243374,
+  -0.09859744013821946],
+ [nan,
+  -0.227059408665161,
+  0.896701634150322,
+  0.2263196721607317,
+  0.3045504134902108,
+  0.7234388196282729,
+  0.30297914169569845,
+  0.3159273763525641,
+  0.4990019045003918,
+  -0.1972715422651132,
+  1.0,
+  0.2494120304053095,
+  -0.19171651740462872,
+  0.04159710766855526,
+  0.2983146609644657,
+  0.4583522914131394,
+  0.5174012944234204,
+  0.5289523208735115,
+  0.6006910563224028,
+  0.48572290512355715,
+  nan,
+  0.02886449237113559,
+  0.060947423983549714,
+  0.2546524761019422,
+  0.25138034306509704,
+  -0.055384127886959865,
+  nan,
+  0.5695314721572051,
+  0.005941760809870269,
+  0.5205438738456633,
+  -0.028864820455375362,
+  -0.20049844238011946,
+  0.1405740487477099,
+  0.38866871072502757,
+  0.11229226232304652,
+  0.19084881386069813,
+  0.30585660393206127,
+  0.5984220511247212,
+  -0.7728144589584854,
+  0.5790634040115998,
+  -0.05976345997848588,
+  0.6981336610956869,
+  0.27389890632204966,
+  nan,
+  0.453816777036206,
+  nan,
+  0.4956348742617071,
+  -0.7860238841327857,
+  0.4350006591285541,
+  0.41072716660985487,
+  0.32623846001251516,
+  0.4821705147895264,
+  0.5938293908934403,
+  0.010525725512647025,
+  0.16760173573608997],
+ [nan,
+  0.6376790586761266,
+  -0.04991433450552465,
+  0.11724472095107515,
+  0.371966487530356,
+  -0.23203546075024184,
+  0.4877502823522473,
+  -0.009271044719703133,
+  0.15112907518598465,
+  1.0,
+  -0.1972715422651132,
+  -0.29551146852029725,
+  0.8817078390484651,
+  0.472020543708462,
+  0.3386212989995655,
+  0.017379435425375744,
+  0.13362799864680194,
+  -0.5156043263180671,
+  -0.19505462287679148,
+  -0.2551260418169042,
+  nan,
+  0.6227596227495548,
+  0.8803290452677238,
+  0.4161650195247294,
+  0.7370166956474263,
+  0.03471534903856013,
+  nan,
+  -0.517992058638692,
+  0.06187869785525904,
+  -0.2504106930717075,
+  0.7599299735761824,
+  0.9057280301328122,
+  0.6409234235477322,
+  0.6106023529466718,
+  0.6409019731320404,
+  0.7909670464127914,
+  0.34806102905716807,
+  0.1577396585691583,
+  0.42856036081890775,
+  0.004196593071818004,
+  0.9424019433498191,
+  0.011784177612748482,
+  0.26696269405872003,
+  nan,
+  0.09826654324754912,
+  nan,
+  -0.1839499936452513,
+  0.4752398588101791,
+  0.2215394570474156,
+  0.5044194824592962,
+  -0.10562186577463455,
+  0.07506665461836967,
+  0.27264540078457183,
+  0.8706575666885231,
+  0.3286385262945919],
+ [nan,
+  0.32178540922488613,
+  0.5908480803228592,
+  0.266888781607246,
+  0.5968646802031365,
+  0.6733709219104315,
+  0.6524884536019774,
+  0.7964574484151726,
+  1.0,
+  0.15112907518598465,
+  0.4990019045003918,
+  0.08443451097744886,
+  0.3352747250054147,
+  0.6037615578893363,
+  0.6713063754846142,
+  0.21406803878871253,
+  0.6640983628297448,
+  0.3265530528396439,
+  0.1228559261289706,
+  0.2375600791991238,
+  nan,
+  0.37588843253894594,
+  0.34628065561705407,
+  0.656305180113504,
+  0.37989783105225794,
+  -0.19416830059143003,
+  nan,
+  0.36624629314761287,
+  0.10281474604367315,
+  0.7344426544361976,
+  0.522322385627439,
+  0.18628597718866802,
+  0.4038574170066174,
+  0.4533023811674333,
+  0.4037785600554416,
+  0.5287601806870328,
+  0.36407929626654234,
+  0.24020302792715253,
+  -0.47562941349806676,
+  0.6228305247560514,
+  0.1599277080173401,
+  0.5136175999621488,
+  0.8201345133408539,
+  nan,
+  0.5254896215652589,
+  nan,
+  0.25118916528488927,
+  -0.6935597088233261,
+  0.5375808040631015,
+  0.7186855897042002,
+  0.007413972192747845,
+  0.7980935420000997,
+  0.644477121762745,
+  0.267017200895878,
+  0.43879293724732316],
+ [nan,
+  0.2589969292730277,
+  0.429836491574737,
+  0.016124643448992945,
+  0.4791972016041721,
+  0.5663037954138388,
+  0.5526127880792686,
+  1.0,
+  0.7964574484151726,
+  -0.009271044719703133,
+  0.3159273763525641,
+  0.3273077166258883,
+  0.17931196500184438,
+  0.4661780072939187,
+  0.7084046506778733,
+  0.22685815313575397,
+  0.6751970191807104,
+  0.4047530562474062,
+  -0.1210089901748478,
+  0.200148465043517,
+  nan,
+  0.17348570366909752,
+  0.03929876225610069,
+  0.537093515894333,
+  0.14255068080104577,
+  -0.4198705182224427,
+  nan,
+  0.4206617229206224,
+  0.12512188262771604,
+  0.7524846699161923,
+  0.5593858648215736,
+  0.08472581675456434,
+  0.18588405503868474,
+  0.20567699404082326,
+  0.291382411968998,
+  0.3539033578627769,
+  0.18323857661977958,
+  0.06029735243291293,
+  -0.4174298295770548,
+  0.5098894644085598,
+  0.03874970284886869,
+  0.4276158516604883,
+  0.7724095332735954,
+  nan,
+  0.3188653887448142,
+  nan,
+  0.3741504176612779,
+  -0.6885517874602358,
+  0.501815069350424,
+  0.4873775456212344,
+  -0.1677003572590003,
+  0.8308501858568604,
+  0.43604466165402295,
+  0.07104248524951434,
+  0.5027132942058373],
+ [nan,
+  0.6808863937759396,
+  0.45816347677370584,
+  0.04758033523882268,
+  0.8762149166215558,
+  0.4020195275454354,
+  1.0,
+  0.5526127880792686,
+  0.6524884536019774,
+  0.4877502823522473,
+  0.30297914169569845,
+  -0.08413909471380593,
+  0.6320730993755251,
+  0.6215030229908073,
+  0.5639130931239646,
+  0.008813443602363115,
+  0.731378323004461,
+  -0.15786841955854217,
+  -0.15579249587765223,
+  -0.17948798552332412,
+  nan,
+  0.6665621799594832,
+  0.5537024180768557,
+  0.905269170419269,
+  0.7477382477778147,
+  -0.3579277701171759,
+  nan,
+  -0.11534248127688825,
+  -0.15815474158106227,
+  0.18557123286174942,
+  0.6325572316834729,
+  0.5440129535561794,
+  0.5297804144007217,
+  0.5326456722249094,
+  0.776332032695331,
+  0.6295094898834355,
+  0.11456488269476534,
+  -0.047879974795601944,
+  -0.3320857295801199,
+  0.37898074997291276,
+  0.531768890015918,
+  0.6267120403262874,
+  0.8024853027475042,
+  nan,
+  0.1057069314707217,
+  nan,
+  0.04940450488308904,
+  -0.4461653244514118,
+  0.3025382998642059,
+  0.8984693419334313,
+  -0.31070502661653426,
+  0.7156913212972569,
+  0.40009880448571883,
+  0.5857903102062462,
+  0.8149713172137464],
+ [nan,
+  -0.12933228728688828,
+  0.742527488592198,
+  0.13574884978240037,
+  0.48331347095126914,
+  1.0,
+  0.4020195275454354,
+  0.5663037954138388,
+  0.6733709219104315,
+  -0.23203546075024184,
+  0.7234388196282729,
+  0.18590708819875454,
+  -0.19261569068839135,
+  0.06980035685088151,
+  0.5210626892305016,
+  0.2534116331717899,
+  0.6655804652377095,
+  0.630357751474443,
+  0.5310962192713505,
+  0.4971169630134873,
+  nan,
+  0.1008455451072436,
+  -0.04434542036039198,
+  0.4692416424947869,
+  0.18400473864848996,
+  -0.07036680215742311,
+  nan,
+  0.6742953155916923,
+  -0.061790512831337796,
+  0.736111630429231,
+  0.08535685914098548,
+  -0.14701956030551286,
+  0.04543393971166767,
+  0.2139571142018397,
+  0.0024629037953349205,
+  0.2124031333094075,
+  0.314024813344812,
+  0.38084194197934923,
+  -0.7517256001068275,
+  0.6488641067986168,
+  -0.13619479226477804,
+  0.6573641557418082,
+  0.42985151979583724,
+  nan,
+  0.39913743320392153,
+  nan,
+  0.35079629726241457,
+  -0.7911342697633827,
+  0.6223302489427206,
+  0.4484849092593788,
+  0.2102711743496153,
+  0.6126371829460526,
+  0.5336229317228608,
+  0.01150076156983362,
+  0.130052894389403],
+ [nan,
+  0.7176529409754963,
+  0.49899441885417295,
+  -0.23436741437340392,
+  1.0,
+  0.48331347095126914,
+  0.8762149166215558,
+  0.4791972016041721,
+  0.5968646802031365,
+  0.371966487530356,
+  0.3045504134902108,
+  -0.38974893933358684,
+  0.4920520631800896,
+  0.519241182057788,
+  0.6232246579239058,
+  -0.24147249844479965,
+  0.7938309956380989,
+  -0.06649405328879028,
+  -0.08369862366031347,
+  -0.15294611562231308,
+  nan,
+  0.7169426451166946,
+  0.3778991106889452,
+  0.9427595370283913,
+  0.6548502244060415,
+  -0.31850681725720215,
+  nan,
+  -0.03225159759784624,
+  -0.43163071432861316,
+  0.2328734574424507,
+  0.5373172528272064,
+  0.5598696388631443,
+  0.6434474919254561,
+  0.5382741513311724,
+  0.7631322243166433,
+  0.4505939899723893,
+  0.2044179252763113,
+  0.07243258116332203,
+  -0.3153638667014204,
+  0.4393288496719571,
+  0.4290611551984016,
+  0.5127119221231454,
+  0.7809161645121869,
+  nan,
+  -0.036786888045834076,
+  nan,
+  -0.23953281821518863,
+  -0.41778248934234063,
+  0.3928977903657941,
+  0.8779223843654749,
+  -0.3263642968843342,
+  0.754085002668875,
+  0.37176464412975185,
+  0.5840671006550702,
+  0.7226174244963097],
+ [nan,
+  -0.3779341006603469,
+  0.08939535891608252,
+  1.0,
+  -0.23436741437340392,
+  0.13574884978240037,
+  0.04758033523882268,
+  0.016124643448992945,
+  0.266888781607246,
+  0.11724472095107515,
+  0.2263196721607317,
+  0.47310819064426063,
+  0.03959323453231246,
+  0.20480081559516314,
+  -0.006833010758007913,
+  0.6524973184609093,
+  -0.11645406360857291,
+  0.27856397913832903,
+  0.3546408311314829,
+  0.4270537070472637,
+  nan,
+  -0.059839767976236864,
+  0.443650200230277,
+  -0.1363245616709437,
+  0.11388246335221222,
+  0.45299607906518663,
+  nan,
+  0.29489993944110554,
+  0.5618935013279721,
+  0.18033667785024451,
+  -0.00554905297203995,
+  -0.1927071200475429,
+  -0.0934169897139028,
+  0.042758671060428334,
+  -0.23627863924260273,
+  0.41367632727451376,
+  0.3048525841685952,
+  0.2966685575643344,
+  -0.21260177773759847,
+  0.27490284567618034,
+  0.159922552943693,
+  0.23218639239593128,
+  0.003498051639693815,
+  nan,
+  0.8001162917822879,
+  nan,
+  0.503241582064411,
+  -0.20448486573494595,
+  0.19468008329590256,
+  0.08742893844792732,
+  0.5821924688860324,
+  -0.07234345725741466,
+  0.4208190876734145,
+  0.00047012374884475793,
+  -0.2505921051835471],
+ [nan,
+  0.0186381148804844,
+  1.0,
+  0.08939535891608252,
+  0.49899441885417295,
+  0.742527488592198,
+  0.45816347677370584,
+  0.429836491574737,
+  0.5908480803228592,
+  -0.04991433450552465,
+  0.896701634150322,
+  0.08842913129006139,
+  0.05120975517805246,
+  0.16839098218989274,
+  0.44828868956877527,
+  0.26455584632379187,
+  0.6547772073274832,
+  0.3850533877841676,
+  0.44410340531310294,
+  0.2750695479566303,
+  nan,
+  0.1454908357711401,
+  0.17923552034160517,
+  0.4643447929507129,
+  0.4001501003086733,
+  -0.2807467300699423,
+  nan,
+  0.42746341551822975,
+  -0.08290370591861775,
+  0.5210861409384454,
+  0.18032976497873662,
+  0.02068754343255063,
+  0.3023715203271525,
+  0.5133936891104859,
+  0.3270451918538667,
+  0.312698822909292,
+  0.21669309752718,
+  0.5867456679133348,
+  -0.6649218908344137,
+  0.47191609575833904,
+  0.09126450988628579,
+  0.6532211956007637,
+  0.43608636868803213,
+  nan,
+  0.3174125558755363,
+  nan,
+  0.36990049737697916,
+  -0.758607161758422,
+  0.439344479991636,
+  0.5179596130895673,
+  0.04740493877917899,
+  0.5879751663691777,
+  0.5845960223460829,
+  0.13158816401329443,
+  0.3465278045011255],
+ [nan,
+  1.0,
+  0.0186381148804844,
+  -0.3779341006603469,
+  0.7176529409754963,
+  -0.12933228728688828,
+  0.6808863937759396,
+  0.2589969292730277,
+  0.32178540922488613,
+  0.6376790586761266,
+  -0.227059408665161,
+  -0.569149553017062,
+  0.7879152886264909,
+  0.6726199265314057,
+  0.37151526056479983,
+  -0.5048844064460509,
+  0.35295023193827174,
+  -0.5929198685734465,
+  -0.5781587361002917,
+  -0.5691335637230552,
+  nan,
+  0.7840518215491613,
+  0.48705628964701964,
+  0.7262475752815822,
+  0.6062915856051914,
+  -0.3844721609495479,
+  nan,
+  -0.5813917405409232,
+  -0.39070534766413334,
+  -0.14234972382983105,
+  0.7136368636797664,
+  0.8175085575749518,
+  0.726090520607127,
+  0.5215041296539276,
+  0.8816337190521906,
+  0.454404190982279,
+  -0.0028990490586714456,
+  -0.18185030074376418,
+  0.30892700202530227,
+  -0.00846169166512296,
+  0.6108144077424659,
+  -0.03811779069843851,
+  0.6523529230672913,
+  nan,
+  -0.32631588544331175,
+  nan,
+  -0.5224719159843919,
+  0.277015634267168,
+  -0.020461869807636025,
+  0.6635581991052278,
+  -0.6016396527531412,
+  0.4115926667405589,
+  0.04481375001255983,
+  0.7025702757656146,
+  0.7279324726561317],
+ [nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan,
+  nan]]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [0]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install plotly
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Requirement already satisfied: plotly in /usr/local/lib/python3.6/dist-packages (3.6.1)
+Requirement already satisfied: requests in /usr/local/lib/python3.6/dist-packages (from plotly) (2.18.4)
+Requirement already satisfied: retrying>=1.3.3 in /usr/local/lib/python3.6/dist-packages (from plotly) (1.3.3)
+Requirement already satisfied: nbformat>=4.2 in /usr/local/lib/python3.6/dist-packages (from plotly) (4.4.0)
+Requirement already satisfied: six in /usr/local/lib/python3.6/dist-packages (from plotly) (1.11.0)
+Requirement already satisfied: decorator>=4.0.6 in /usr/local/lib/python3.6/dist-packages (from plotly) (4.3.2)
+Requirement already satisfied: pytz in /usr/local/lib/python3.6/dist-packages (from plotly) (2018.9)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.6/dist-packages (from requests->plotly) (2018.11.29)
+Requirement already satisfied: idna<2.7,>=2.5 in /usr/local/lib/python3.6/dist-packages (from requests->plotly) (2.6)
+Requirement already satisfied: chardet<3.1.0,>=3.0.2 in /usr/local/lib/python3.6/dist-packages (from requests->plotly) (3.0.4)
+Requirement already satisfied: urllib3<1.23,>=1.21.1 in /usr/local/lib/python3.6/dist-packages (from requests->plotly) (1.22)
+Requirement already satisfied: jupyter-core in /usr/local/lib/python3.6/dist-packages (from nbformat>=4.2->plotly) (4.4.0)
+Requirement already satisfied: jsonschema!=2.5.0,>=2.4 in /usr/local/lib/python3.6/dist-packages (from nbformat>=4.2->plotly) (2.6.0)
+Requirement already satisfied: traitlets>=4.1 in /usr/local/lib/python3.6/dist-packages (from nbformat>=4.2->plotly) (4.3.2)
+Requirement already satisfied: ipython-genutils in /usr/local/lib/python3.6/dist-packages (from nbformat>=4.2->plotly) (0.2.0)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [42]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">coor_matrix</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[42]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>['Wyoming',
+ 'Wisconsin',
+ 'West Virginia',
+ 'Washington',
+ 'Virginia',
+ 'Vermont',
+ 'Utah',
+ 'U.S. Virgin Islands',
+ 'Texas',
+ 'Tennessee',
+ 'South Dakota',
+ 'South Carolina',
+ 'Rhode Island',
+ 'Puerto Rico',
+ 'Pennsylvania',
+ 'Oregon',
+ 'Oklahoma',
+ 'Ohio',
+ 'North Dakota',
+ 'North Carolina',
+ 'New York',
+ 'New Mexico',
+ 'New Jersey',
+ 'New Hampshire',
+ 'Nevada',
+ 'Nebraska',
+ 'Montana',
+ 'Missouri',
+ 'Mississippi',
+ 'Minnesota',
+ 'Michigan',
+ 'Massachusetts',
+ 'Maryland',
+ 'Maine',
+ 'Louisiana',
+ 'Kentucky',
+ 'Kansas',
+ 'Iowa',
+ 'Indiana',
+ 'Illinois',
+ 'Idaho',
+ 'Hawaii',
+ 'Guam',
+ 'Georgia',
+ 'Florida',
+ 'Federal (FLSA)',
+ 'District of Columbia',
+ 'Delaware',
+ 'Connecticut',
+ 'Colorado',
+ 'California',
+ 'Arkansas',
+ 'Arizona',
+ 'Alaska',
+ 'Alabama']</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [43]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">plotly</span>
+<span class="kn">import</span> <span class="nn">plotly.plotly</span> <span class="k">as</span> <span class="nn">py</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+
+<span class="c1">#plotting the heated correlation matrix</span>
+
+<span class="n">plotly</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">set_credentials_file</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">'mcan543'</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s1">'BiAQMhiNhZyKIV0Z46Li'</span><span class="p">)</span>
+
+<span class="n">trace</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Heatmap</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">list_of_list</span><span class="p">,</span>
+                   <span class="n">x</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">coor_matrix</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span>
+                   <span class="n">y</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">coor_matrix</span><span class="o">.</span><span class="n">columns</span><span class="p">))))</span>
+<span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">]</span>
+<span class="n">py</span><span class="o">.</span><span class="n">iplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">'labelled-heatmap'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>High five! You successfully sent some data to your account on plotly. View your plot in your browser at https://plot.ly/~mcan543/0 or inside your plot.ly account where it is named 'labelled-heatmap'
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt output_prompt">Out[43]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<iframe height="525px" id="igraph" scrolling="no" seamless="seamless" src="https://plot.ly/~mcan543/0.embed" style="border:none;" width="100%"></iframe>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are a lot of white rows and columns. They are comes from zero <code>Low.2018</code> values. If we can get rid of 0 values. It will be more elegant.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [45]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Which states Low.2018 column is 0 at least in one year.</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"Low.2018"</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">][</span><span class="s2">"State"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[45]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array(['Alabama', 'Florida', 'Georgia', 'Illinois', 'Iowa', 'Kansas',
+       'Louisiana', 'Mississippi', 'Missouri', 'Montana',
+       'South Carolina', 'Tennessee', 'Texas', 'Virginia', 'Arizona'],
+      dtype=object)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [46]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1">#dropna(axis=0) drops all the row if a cell is NaN in that row. Which is default.</span>
+<span class="c1">#dropna(axis=1) drops all the column if a cell is NaN in that column.</span>
+<span class="n">min_wage_2018</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[46]:</div>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>Alaska</th>
+<th>Arkansas</th>
+<th>California</th>
+<th>Colorado</th>
+<th>Connecticut</th>
+<th>Delaware</th>
+<th>District of Columbia</th>
+<th>Federal (FLSA)</th>
+<th>Guam</th>
+<th>Hawaii</th>
+<th>...</th>
+<th>Pennsylvania</th>
+<th>Puerto Rico</th>
+<th>Rhode Island</th>
+<th>South Dakota</th>
+<th>Utah</th>
+<th>Vermont</th>
+<th>Washington</th>
+<th>West Virginia</th>
+<th>Wisconsin</th>
+<th>Wyoming</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>Alaska</th>
+<td>1.000000</td>
+<td>-0.377934</td>
+<td>0.717653</td>
+<td>-0.129332</td>
+<td>0.680886</td>
+<td>0.258997</td>
+<td>0.321785</td>
+<td>0.637679</td>
+<td>0.787915</td>
+<td>0.672620</td>
+<td>...</td>
+<td>0.610814</td>
+<td>-0.038118</td>
+<td>0.652353</td>
+<td>-0.326316</td>
+<td>-0.020462</td>
+<td>0.663558</td>
+<td>0.411593</td>
+<td>0.044814</td>
+<td>0.702570</td>
+<td>0.727932</td>
+</tr>
+<tr>
+<th>Arkansas</th>
+<td>-0.377934</td>
+<td>1.000000</td>
+<td>-0.234367</td>
+<td>0.135749</td>
+<td>0.047580</td>
+<td>0.016125</td>
+<td>0.266889</td>
+<td>0.117245</td>
+<td>0.039593</td>
+<td>0.204801</td>
+<td>...</td>
+<td>0.159923</td>
+<td>0.232186</td>
+<td>0.003498</td>
+<td>0.800116</td>
+<td>0.194680</td>
+<td>0.087429</td>
+<td>-0.072343</td>
+<td>0.420819</td>
+<td>0.000470</td>
+<td>-0.250592</td>
+</tr>
+<tr>
+<th>California</th>
+<td>0.717653</td>
+<td>-0.234367</td>
+<td>1.000000</td>
+<td>0.483313</td>
+<td>0.876215</td>
+<td>0.479197</td>
+<td>0.596865</td>
+<td>0.371966</td>
+<td>0.492052</td>
+<td>0.519241</td>
+<td>...</td>
+<td>0.429061</td>
+<td>0.512712</td>
+<td>0.780916</td>
+<td>-0.036787</td>
+<td>0.392898</td>
+<td>0.877922</td>
+<td>0.754085</td>
+<td>0.371765</td>
+<td>0.584067</td>
+<td>0.722617</td>
+</tr>
+<tr>
+<th>Colorado</th>
+<td>-0.129332</td>
+<td>0.135749</td>
+<td>0.483313</td>
+<td>1.000000</td>
+<td>0.402020</td>
+<td>0.566304</td>
+<td>0.673371</td>
+<td>-0.232035</td>
+<td>-0.192616</td>
+<td>0.069800</td>
+<td>...</td>
+<td>-0.136195</td>
+<td>0.657364</td>
+<td>0.429852</td>
+<td>0.399137</td>
+<td>0.622330</td>
+<td>0.448485</td>
+<td>0.612637</td>
+<td>0.533623</td>
+<td>0.011501</td>
+<td>0.130053</td>
+</tr>
+<tr>
+<th>Connecticut</th>
+<td>0.680886</td>
+<td>0.047580</td>
+<td>0.876215</td>
+<td>0.402020</td>
+<td>1.000000</td>
+<td>0.552613</td>
+<td>0.652488</td>
+<td>0.487750</td>
+<td>0.632073</td>
+<td>0.621503</td>
+<td>...</td>
+<td>0.531769</td>
+<td>0.626712</td>
+<td>0.802485</td>
+<td>0.105707</td>
+<td>0.302538</td>
+<td>0.898469</td>
+<td>0.715691</td>
+<td>0.400099</td>
+<td>0.585790</td>
+<td>0.814971</td>
+</tr>
+<tr>
+<th>Delaware</th>
+<td>0.258997</td>
+<td>0.016125</td>
+<td>0.479197</td>
+<td>0.566304</td>
+<td>0.552613</td>
+<td>1.000000</td>
+<td>0.796457</td>
+<td>-0.009271</td>
+<td>0.179312</td>
+<td>0.466178</td>
+<td>...</td>
+<td>0.038750</td>
+<td>0.427616</td>
+<td>0.772410</td>
+<td>0.318865</td>
+<td>0.501815</td>
+<td>0.487378</td>
+<td>0.830850</td>
+<td>0.436045</td>
+<td>0.071042</td>
+<td>0.502713</td>
+</tr>
+<tr>
+<th>District of Columbia</th>
+<td>0.321785</td>
+<td>0.266889</td>
+<td>0.596865</td>
+<td>0.673371</td>
+<td>0.652488</td>
+<td>0.796457</td>
+<td>1.000000</td>
+<td>0.151129</td>
+<td>0.335275</td>
+<td>0.603762</td>
+<td>...</td>
+<td>0.159928</td>
+<td>0.513618</td>
+<td>0.820135</td>
+<td>0.525490</td>
+<td>0.537581</td>
+<td>0.718686</td>
+<td>0.798094</td>
+<td>0.644477</td>
+<td>0.267017</td>
+<td>0.438793</td>
+</tr>
+<tr>
+<th>Federal (FLSA)</th>
+<td>0.637679</td>
+<td>0.117245</td>
+<td>0.371966</td>
+<td>-0.232035</td>
+<td>0.487750</td>
+<td>-0.009271</td>
+<td>0.151129</td>
+<td>1.000000</td>
+<td>0.881708</td>
+<td>0.472021</td>
+<td>...</td>
+<td>0.942402</td>
+<td>0.011784</td>
+<td>0.266963</td>
+<td>0.098267</td>
+<td>0.221539</td>
+<td>0.504419</td>
+<td>0.075067</td>
+<td>0.272645</td>
+<td>0.870658</td>
+<td>0.328639</td>
+</tr>
+<tr>
+<th>Guam</th>
+<td>0.787915</td>
+<td>0.039593</td>
+<td>0.492052</td>
+<td>-0.192616</td>
+<td>0.632073</td>
+<td>0.179312</td>
+<td>0.335275</td>
+<td>0.881708</td>
+<td>1.000000</td>
+<td>0.590844</td>
+<td>...</td>
+<td>0.814443</td>
+<td>-0.002810</td>
+<td>0.472814</td>
+<td>-0.022460</td>
+<td>0.098186</td>
+<td>0.557049</td>
+<td>0.223620</td>
+<td>0.147441</td>
+<td>0.738986</td>
+<td>0.542694</td>
+</tr>
+<tr>
+<th>Hawaii</th>
+<td>0.672620</td>
+<td>0.204801</td>
+<td>0.519241</td>
+<td>0.069800</td>
+<td>0.621503</td>
+<td>0.466178</td>
+<td>0.603762</td>
+<td>0.472021</td>
+<td>0.590844</td>
+<td>1.000000</td>
+<td>...</td>
+<td>0.517041</td>
+<td>0.097491</td>
+<td>0.741192</td>
+<td>0.197210</td>
+<td>0.099742</td>
+<td>0.692043</td>
+<td>0.500421</td>
+<td>0.408709</td>
+<td>0.599138</td>
+<td>0.599665</td>
+</tr>
+<tr>
+<th>Idaho</th>
+<td>0.371515</td>
+<td>-0.006833</td>
+<td>0.623225</td>
+<td>0.521063</td>
+<td>0.563913</td>
+<td>0.708405</td>
+<td>0.671306</td>
+<td>0.338621</td>
+<td>0.410607</td>
+<td>0.368091</td>
+<td>...</td>
+<td>0.336762</td>
+<td>0.384715</td>
+<td>0.608707</td>
+<td>0.361028</td>
+<td>0.843642</td>
+<td>0.571039</td>
+<td>0.792100</td>
+<td>0.394586</td>
+<td>0.376538</td>
+<td>0.398222</td>
+</tr>
+<tr>
+<th>Indiana</th>
+<td>0.352950</td>
+<td>-0.116454</td>
+<td>0.793831</td>
+<td>0.665580</td>
+<td>0.731378</td>
+<td>0.675197</td>
+<td>0.664098</td>
+<td>0.133628</td>
+<td>0.262175</td>
+<td>0.311292</td>
+<td>...</td>
+<td>0.169052</td>
+<td>0.710746</td>
+<td>0.676312</td>
+<td>0.217810</td>
+<td>0.662085</td>
+<td>0.702334</td>
+<td>0.884676</td>
+<td>0.390353</td>
+<td>0.272633</td>
+<td>0.576864</td>
+</tr>
+<tr>
+<th>Kentucky</th>
+<td>-0.569134</td>
+<td>0.427054</td>
+<td>-0.152946</td>
+<td>0.497117</td>
+<td>-0.179488</td>
+<td>0.200148</td>
+<td>0.237560</td>
+<td>-0.255126</td>
+<td>-0.501651</td>
+<td>-0.141714</td>
+<td>...</td>
+<td>-0.237805</td>
+<td>0.414329</td>
+<td>-0.006553</td>
+<td>0.754947</td>
+<td>0.547048</td>
+<td>0.014395</td>
+<td>0.167597</td>
+<td>0.618312</td>
+<td>-0.176467</td>
+<td>-0.423665</td>
+</tr>
+<tr>
+<th>Maine</th>
+<td>0.784052</td>
+<td>-0.059840</td>
+<td>0.716943</td>
+<td>0.100846</td>
+<td>0.666562</td>
+<td>0.173486</td>
+<td>0.375888</td>
+<td>0.622760</td>
+<td>0.575916</td>
+<td>0.716290</td>
+<td>...</td>
+<td>0.649450</td>
+<td>0.184973</td>
+<td>0.640188</td>
+<td>0.051051</td>
+<td>0.164233</td>
+<td>0.814240</td>
+<td>0.441776</td>
+<td>0.353293</td>
+<td>0.798669</td>
+<td>0.581278</td>
+</tr>
+<tr>
+<th>Maryland</th>
+<td>0.487056</td>
+<td>0.443650</td>
+<td>0.377899</td>
+<td>-0.044345</td>
+<td>0.553702</td>
+<td>0.039299</td>
+<td>0.346281</td>
+<td>0.880329</td>
+<td>0.824104</td>
+<td>0.517447</td>
+<td>...</td>
+<td>0.869714</td>
+<td>0.178845</td>
+<td>0.350190</td>
+<td>0.369260</td>
+<td>0.264487</td>
+<td>0.579382</td>
+<td>0.128251</td>
+<td>0.479068</td>
+<td>0.768901</td>
+<td>0.271276</td>
+</tr>
+<tr>
+<th>Massachusetts</th>
+<td>0.726248</td>
+<td>-0.136325</td>
+<td>0.942760</td>
+<td>0.469242</td>
+<td>0.905269</td>
+<td>0.537094</td>
+<td>0.656305</td>
+<td>0.416165</td>
+<td>0.557130</td>
+<td>0.604166</td>
+<td>...</td>
+<td>0.467695</td>
+<td>0.508216</td>
+<td>0.803758</td>
+<td>-0.012230</td>
+<td>0.341078</td>
+<td>0.887631</td>
+<td>0.729475</td>
+<td>0.420851</td>
+<td>0.587236</td>
+<td>0.710190</td>
+</tr>
+<tr>
+<th>Michigan</th>
+<td>0.606292</td>
+<td>0.113882</td>
+<td>0.654850</td>
+<td>0.184005</td>
+<td>0.747738</td>
+<td>0.142551</td>
+<td>0.379898</td>
+<td>0.737017</td>
+<td>0.690024</td>
+<td>0.487391</td>
+<td>...</td>
+<td>0.811266</td>
+<td>0.410665</td>
+<td>0.474120</td>
+<td>0.094137</td>
+<td>0.167255</td>
+<td>0.753253</td>
+<td>0.317154</td>
+<td>0.503502</td>
+<td>0.822971</td>
+<td>0.534698</td>
+</tr>
+<tr>
+<th>Minnesota</th>
+<td>-0.384472</td>
+<td>0.452996</td>
+<td>-0.318507</td>
+<td>-0.070367</td>
+<td>-0.357928</td>
+<td>-0.419871</td>
+<td>-0.194168</td>
+<td>0.034715</td>
+<td>-0.281617</td>
+<td>-0.181494</td>
+<td>...</td>
+<td>0.004847</td>
+<td>-0.111083</td>
+<td>-0.306054</td>
+<td>0.456192</td>
+<td>0.110139</td>
+<td>-0.166611</td>
+<td>-0.401047</td>
+<td>0.309698</td>
+<td>0.038940</td>
+<td>-0.658956</td>
+</tr>
+<tr>
+<th>Nebraska</th>
+<td>-0.142350</td>
+<td>0.180337</td>
+<td>0.232873</td>
+<td>0.736112</td>
+<td>0.185571</td>
+<td>0.752485</td>
+<td>0.734443</td>
+<td>-0.250411</td>
+<td>-0.185862</td>
+<td>0.199326</td>
+<td>...</td>
+<td>-0.247247</td>
+<td>0.408780</td>
+<td>0.512481</td>
+<td>0.605302</td>
+<td>0.627678</td>
+<td>0.280478</td>
+<td>0.616860</td>
+<td>0.640071</td>
+<td>-0.149191</td>
+<td>0.017794</td>
+</tr>
+<tr>
+<th>Nevada</th>
+<td>0.713637</td>
+<td>-0.005549</td>
+<td>0.537317</td>
+<td>0.085357</td>
+<td>0.632557</td>
+<td>0.559386</td>
+<td>0.522322</td>
+<td>0.759930</td>
+<td>0.786231</td>
+<td>0.679905</td>
+<td>...</td>
+<td>0.776806</td>
+<td>0.104381</td>
+<td>0.650662</td>
+<td>0.156953</td>
+<td>0.363154</td>
+<td>0.631186</td>
+<td>0.503730</td>
+<td>0.384722</td>
+<td>0.758705</td>
+<td>0.553051</td>
+</tr>
+<tr>
+<th>New Hampshire</th>
+<td>0.817509</td>
+<td>-0.192707</td>
+<td>0.559870</td>
+<td>-0.147020</td>
+<td>0.544013</td>
+<td>0.084726</td>
+<td>0.186286</td>
+<td>0.905728</td>
+<td>0.848651</td>
+<td>0.541385</td>
+<td>...</td>
+<td>0.881187</td>
+<td>-0.051332</td>
+<td>0.413565</td>
+<td>-0.136714</td>
+<td>0.154479</td>
+<td>0.582379</td>
+<td>0.196878</td>
+<td>0.214541</td>
+<td>0.887207</td>
+<td>0.468841</td>
+</tr>
+<tr>
+<th>New Jersey</th>
+<td>0.726091</td>
+<td>-0.093417</td>
+<td>0.643447</td>
+<td>0.045434</td>
+<td>0.529780</td>
+<td>0.185884</td>
+<td>0.403857</td>
+<td>0.640923</td>
+<td>0.656598</td>
+<td>0.702774</td>
+<td>...</td>
+<td>0.698329</td>
+<td>0.035513</td>
+<td>0.581925</td>
+<td>0.019043</td>
+<td>0.265946</td>
+<td>0.693909</td>
+<td>0.412325</td>
+<td>0.395980</td>
+<td>0.812427</td>
+<td>0.436620</td>
+</tr>
+<tr>
+<th>New Mexico</th>
+<td>0.521504</td>
+<td>0.042759</td>
+<td>0.538274</td>
+<td>0.213957</td>
+<td>0.532646</td>
+<td>0.205677</td>
+<td>0.453302</td>
+<td>0.610602</td>
+<td>0.549588</td>
+<td>0.633616</td>
+<td>...</td>
+<td>0.644610</td>
+<td>0.303179</td>
+<td>0.513619</td>
+<td>0.220143</td>
+<td>0.294331</td>
+<td>0.710200</td>
+<td>0.389211</td>
+<td>0.605957</td>
+<td>0.718676</td>
+<td>0.454799</td>
+</tr>
+<tr>
+<th>New York</th>
+<td>0.881634</td>
+<td>-0.236279</td>
+<td>0.763132</td>
+<td>0.002463</td>
+<td>0.776332</td>
+<td>0.291382</td>
+<td>0.403779</td>
+<td>0.640902</td>
+<td>0.790776</td>
+<td>0.651270</td>
+<td>...</td>
+<td>0.675860</td>
+<td>0.174415</td>
+<td>0.670161</td>
+<td>-0.185229</td>
+<td>0.058499</td>
+<td>0.757560</td>
+<td>0.473884</td>
+<td>0.234554</td>
+<td>0.713399</td>
+<td>0.760379</td>
+</tr>
+<tr>
+<th>North Carolina</th>
+<td>0.454404</td>
+<td>0.413676</td>
+<td>0.450594</td>
+<td>0.212403</td>
+<td>0.629509</td>
+<td>0.353903</td>
+<td>0.528760</td>
+<td>0.790967</td>
+<td>0.717387</td>
+<td>0.651703</td>
+<td>...</td>
+<td>0.820732</td>
+<td>0.341955</td>
+<td>0.492652</td>
+<td>0.440417</td>
+<td>0.444775</td>
+<td>0.673769</td>
+<td>0.370435</td>
+<td>0.584352</td>
+<td>0.798152</td>
+<td>0.389918</td>
+</tr>
+<tr>
+<th>North Dakota</th>
+<td>-0.002899</td>
+<td>0.304853</td>
+<td>0.204418</td>
+<td>0.314025</td>
+<td>0.114565</td>
+<td>0.183239</td>
+<td>0.364079</td>
+<td>0.348061</td>
+<td>0.059348</td>
+<td>0.207330</td>
+<td>...</td>
+<td>0.338249</td>
+<td>0.310396</td>
+<td>0.262477</td>
+<td>0.676193</td>
+<td>0.717899</td>
+<td>0.411121</td>
+<td>0.344417</td>
+<td>0.729502</td>
+<td>0.430561</td>
+<td>-0.143981</td>
+</tr>
+<tr>
+<th>Ohio</th>
+<td>-0.181850</td>
+<td>0.296669</td>
+<td>0.072433</td>
+<td>0.380842</td>
+<td>-0.047880</td>
+<td>0.060297</td>
+<td>0.240203</td>
+<td>0.157740</td>
+<td>-0.035121</td>
+<td>0.084575</td>
+<td>...</td>
+<td>0.279807</td>
+<td>0.169099</td>
+<td>0.066580</td>
+<td>0.570984</td>
+<td>0.562027</td>
+<td>0.207507</td>
+<td>0.179547</td>
+<td>0.620148</td>
+<td>0.273079</td>
+<td>-0.209855</td>
+</tr>
+<tr>
+<th>Oklahoma</th>
+<td>0.308927</td>
+<td>-0.212602</td>
+<td>-0.315364</td>
+<td>-0.751726</td>
+<td>-0.332086</td>
+<td>-0.417430</td>
+<td>-0.475629</td>
+<td>0.428560</td>
+<td>0.398503</td>
+<td>0.046429</td>
+<td>...</td>
+<td>0.334692</td>
+<td>-0.866261</td>
+<td>-0.297262</td>
+<td>-0.430886</td>
+<td>-0.389910</td>
+<td>-0.367283</td>
+<td>-0.580610</td>
+<td>-0.439351</td>
+<td>0.234480</td>
+<td>-0.187603</td>
+</tr>
+<tr>
+<th>Oregon</th>
+<td>-0.008462</td>
+<td>0.274903</td>
+<td>0.439329</td>
+<td>0.648864</td>
+<td>0.378981</td>
+<td>0.509889</td>
+<td>0.622831</td>
+<td>0.004197</td>
+<td>-0.125297</td>
+<td>0.271349</td>
+<td>...</td>
+<td>0.074495</td>
+<td>0.612441</td>
+<td>0.555203</td>
+<td>0.664790</td>
+<td>0.714570</td>
+<td>0.582661</td>
+<td>0.692279</td>
+<td>0.741230</td>
+<td>0.227386</td>
+<td>0.121308</td>
+</tr>
+<tr>
+<th>Pennsylvania</th>
+<td>0.610814</td>
+<td>0.159923</td>
+<td>0.429061</td>
+<td>-0.136195</td>
+<td>0.531769</td>
+<td>0.038750</td>
+<td>0.159928</td>
+<td>0.942402</td>
+<td>0.814443</td>
+<td>0.517041</td>
+<td>...</td>
+<td>1.000000</td>
+<td>0.065668</td>
+<td>0.313937</td>
+<td>0.102966</td>
+<td>0.221608</td>
+<td>0.561921</td>
+<td>0.136328</td>
+<td>0.327921</td>
+<td>0.903752</td>
+<td>0.381637</td>
+</tr>
+<tr>
+<th>Puerto Rico</th>
+<td>-0.038118</td>
+<td>0.232186</td>
+<td>0.512712</td>
+<td>0.657364</td>
+<td>0.626712</td>
+<td>0.427616</td>
+<td>0.513618</td>
+<td>0.011784</td>
+<td>-0.002810</td>
+<td>0.097491</td>
+<td>...</td>
+<td>0.065668</td>
+<td>1.000000</td>
+<td>0.403617</td>
+<td>0.415485</td>
+<td>0.462028</td>
+<td>0.596942</td>
+<td>0.619444</td>
+<td>0.566506</td>
+<td>0.131132</td>
+<td>0.387868</td>
+</tr>
+<tr>
+<th>Rhode Island</th>
+<td>0.652353</td>
+<td>0.003498</td>
+<td>0.780916</td>
+<td>0.429852</td>
+<td>0.802485</td>
+<td>0.772410</td>
+<td>0.820135</td>
+<td>0.266963</td>
+<td>0.472814</td>
+<td>0.741192</td>
+<td>...</td>
+<td>0.313937</td>
+<td>0.403617</td>
+<td>1.000000</td>
+<td>0.232784</td>
+<td>0.336389</td>
+<td>0.830723</td>
+<td>0.838952</td>
+<td>0.496287</td>
+<td>0.419292</td>
+<td>0.697238</td>
+</tr>
+<tr>
+<th>South Dakota</th>
+<td>-0.326316</td>
+<td>0.800116</td>
+<td>-0.036787</td>
+<td>0.399137</td>
+<td>0.105707</td>
+<td>0.318865</td>
+<td>0.525490</td>
+<td>0.098267</td>
+<td>-0.022460</td>
+<td>0.197210</td>
+<td>...</td>
+<td>0.102966</td>
+<td>0.415485</td>
+<td>0.232784</td>
+<td>1.000000</td>
+<td>0.601715</td>
+<td>0.258611</td>
+<td>0.295611</td>
+<td>0.704726</td>
+<td>0.040677</td>
+<td>-0.201014</td>
+</tr>
+<tr>
+<th>Utah</th>
+<td>-0.020462</td>
+<td>0.194680</td>
+<td>0.392898</td>
+<td>0.622330</td>
+<td>0.302538</td>
+<td>0.501815</td>
+<td>0.537581</td>
+<td>0.221539</td>
+<td>0.098186</td>
+<td>0.099742</td>
+<td>...</td>
+<td>0.221608</td>
+<td>0.462028</td>
+<td>0.336389</td>
+<td>0.601715</td>
+<td>1.000000</td>
+<td>0.405379</td>
+<td>0.602834</td>
+<td>0.571100</td>
+<td>0.271399</td>
+<td>0.006982</td>
+</tr>
+<tr>
+<th>Vermont</th>
+<td>0.663558</td>
+<td>0.087429</td>
+<td>0.877922</td>
+<td>0.448485</td>
+<td>0.898469</td>
+<td>0.487378</td>
+<td>0.718686</td>
+<td>0.504419</td>
+<td>0.557049</td>
+<td>0.692043</td>
+<td>...</td>
+<td>0.561921</td>
+<td>0.596942</td>
+<td>0.830723</td>
+<td>0.258611</td>
+<td>0.405379</td>
+<td>1.000000</td>
+<td>0.752854</td>
+<td>0.578411</td>
+<td>0.687823</td>
+<td>0.694873</td>
+</tr>
+<tr>
+<th>Washington</th>
+<td>0.411593</td>
+<td>-0.072343</td>
+<td>0.754085</td>
+<td>0.612637</td>
+<td>0.715691</td>
+<td>0.830850</td>
+<td>0.798094</td>
+<td>0.075067</td>
+<td>0.223620</td>
+<td>0.500421</td>
+<td>...</td>
+<td>0.136328</td>
+<td>0.619444</td>
+<td>0.838952</td>
+<td>0.295611</td>
+<td>0.602834</td>
+<td>0.752854</td>
+<td>1.000000</td>
+<td>0.482333</td>
+<td>0.260386</td>
+<td>0.632205</td>
+</tr>
+<tr>
+<th>West Virginia</th>
+<td>0.044814</td>
+<td>0.420819</td>
+<td>0.371765</td>
+<td>0.533623</td>
+<td>0.400099</td>
+<td>0.436045</td>
+<td>0.644477</td>
+<td>0.272645</td>
+<td>0.147441</td>
+<td>0.408709</td>
+<td>...</td>
+<td>0.327921</td>
+<td>0.566506</td>
+<td>0.496287</td>
+<td>0.704726</td>
+<td>0.571100</td>
+<td>0.578411</td>
+<td>0.482333</td>
+<td>1.000000</td>
+<td>0.375219</td>
+<td>0.099333</td>
+</tr>
+<tr>
+<th>Wisconsin</th>
+<td>0.702570</td>
+<td>0.000470</td>
+<td>0.584067</td>
+<td>0.011501</td>
+<td>0.585790</td>
+<td>0.071042</td>
+<td>0.267017</td>
+<td>0.870658</td>
+<td>0.738986</td>
+<td>0.599138</td>
+<td>...</td>
+<td>0.903752</td>
+<td>0.131132</td>
+<td>0.419292</td>
+<td>0.040677</td>
+<td>0.271399</td>
+<td>0.687823</td>
+<td>0.260386</td>
+<td>0.375219</td>
+<td>1.000000</td>
+<td>0.413167</td>
+</tr>
+<tr>
+<th>Wyoming</th>
+<td>0.727932</td>
+<td>-0.250592</td>
+<td>0.722617</td>
+<td>0.130053</td>
+<td>0.814971</td>
+<td>0.502713</td>
+<td>0.438793</td>
+<td>0.328639</td>
+<td>0.542694</td>
+<td>0.599665</td>
+<td>...</td>
+<td>0.381637</td>
+<td>0.387868</td>
+<td>0.697238</td>
+<td>-0.201014</td>
+<td>0.006982</td>
+<td>0.694873</td>
+<td>0.632205</td>
+<td>0.099333</td>
+<td>0.413167</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+<p>39 rows × 39 columns</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="https://mutcato.github.io/category/data.html"><div class="fa fa-lg fa-folder-open"></div> Data</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="https://mutcato.github.io/tag/data-visualition.html"><div class="fa fa-lg fa-tag"></div> data visualition</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="https://mutcato.github.io/tag/pandas.html"><div class="fa fa-lg fa-tag"></div> pandas</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="https://mutcato.github.io/tag/kaggle.html"><div class="fa fa-lg fa-tag"></div> kaggle</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="https://mutcato.github.io/tag/python.html"><div class="fa fa-lg fa-tag"></div> python</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="https://mutcato.github.io/tag/plotly.html"><div class="fa fa-lg fa-tag"></div> plotly</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    </section>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-text">&copy; <a href="https://mutcato.github.io">Mutlucan Tokat's Personal Webpage</a> powered by <a href="http://getpelican.com/">pelican</a> and <a href="http://nodotcom.org">nikhil</a></p>
+      </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-36295151-11', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>
