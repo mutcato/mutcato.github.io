@@ -8,7 +8,7 @@
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Things that i have learned</title>
+    <title>What is Yield (Python Generators) - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -80,7 +80,8 @@
     <div class="container" id="main-container">
       <div class="row">
         <div class="col-md-9" id="content">
-    <article>
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
 <abbr class="article-header-date">
   Cts 09 Haziran 2018
 </abbr> <h1>
@@ -96,9 +97,9 @@
       Programming</a>
     &nbsp;&nbsp;
   </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		<p>To understand what the mean of the yield keyword is in Python, there is some consepts needs to be known before.</p>
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<p>To understand what the mean of the yield keyword is in Python, there is some consepts needs to be known before.</p>
 
 <ul>
 <li>What is iterators?</li>
@@ -113,188 +114,102 @@
 
 <p><p>In above code;</p>
 <ul>
-<li>First; for loop calls <strong>iter</strong>() function …</li></ul></p>
-		<p class="content-emphasis"><a href="https://mutcato.github.io/what-is-yield-python-generators.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
+<li>First; for loop calls <strong>iter</strong>() function of my_list object. This call returns an iterator that can iterate itself.</li>
+<li>Then; for loop calls <strong>next</strong>() function in each iteration. <strong>next</strong>() function returns next elemnt of that iterable object.</li>
+</ul></p>
+<p>In above code we have created my_list object. That loaded into memory and iterated it with __next__() function. 
+Generators has __next__() function like iterators. However they don't load all the items in memory. 
+Generators generates the next item when the loop calls __next__() function.</p>
 
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Paz 03 Haziran 2018
-</abbr> <h1>
-  <a href="https://mutcato.github.io/python-object-oriented-programming-basics-inheritence-and-encapsulation.html" rel="bookmark"
-     title="Permalink to Python Object Oriented Programming Basics (Inheritence and Encapsulation)">
-    Python Object Oriented Programming Basics (Inheritence and Encapsulation)
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/programming.html">
-      Programming</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		<h2>Introduction</h2>
+<h3>Lets jump intto an example:</h3>
 
-<p>
-Python is counting as a scripting language but it has also powerfull object oriented features. Nothing less than any OOP language C++ or Java
-There will be talked about inheritence method in Python.
-</p>
+<p>Somebody ask us to sum all prime numbers below two million. <a href="https://projecteuler.net/problem=10">Project Euler (Problem:10)</a></p>
 
-<ul>
-<li>It helps us avoid duplicate code </li>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 
-<li>Changes to the superclass passcode is instantly reflected in all …</li></ul>
-		<p class="content-emphasis"><a href="https://mutcato.github.io/python-object-oriented-programming-basics-inheritence-and-encapsulation.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">number</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="n">current</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
 
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Prş 03 Mayıs 2018
-</abbr> <h1>
-  <a href="https://mutcato.github.io/building-a-correlation-matrix-on-heat-map-with-pandas-and-plotly.html" rel="bookmark"
-     title="Permalink to Building A Correlation Matrix on Heat Map with Pandas and Plotly">
-    Building A Correlation Matrix on Heat Map with Pandas and Plotly
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/data.html">
-      Data</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-		<p class="content-emphasis"><a href="https://mutcato.github.io/building-a-correlation-matrix-on-heat-map-with-pandas-and-plotly.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
 
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Cts 14 Nisan 2018
-</abbr> <h1>
-  <a href="https://mutcato.github.io/pytorch-for-linear-regression.html" rel="bookmark"
-     title="Permalink to PyTorch for Linear Regression">
-    PyTorch for Linear Regression
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/data.html">
-      Data</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		<h2>Introduction</h2>
+<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">start</span>
 
-<p>
-PyTorch is a automatic differentiation and gpu computation tool and also 
-one of the most popular deep learning framewoks.
-</p>
-
-<p>
-I will build very simple linear regression model with both PyTorch and
-pure Python and try to indicate pure Python equivalents of the 
-PyTorch code.
-
-</p>
-
-<h3>Linear Regression with PyTorch</h3>
-
-<p><img alt="World's simplest linear regression" src="https://mutcato.github.io/images/LinearRegression.png">
-<p>Lets …</p></p>
-		<p class="content-emphasis"><a href="https://mutcato.github.io/pytorch-for-linear-regression.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
-
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Pzt 02 Nisan 2018
-</abbr> <h1>
-  <a href="https://mutcato.github.io/pandas-toolkit.html" rel="bookmark"
-     title="Permalink to Pandas Toolkit">
-    Pandas Toolkit
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/data.html">
-      Data</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-		<p class="content-emphasis"><a href="https://mutcato.github.io/pandas-toolkit.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
-
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Cum 03 Aralık 2010
-</abbr> <h1>
-  <a href="https://mutcato.github.io/my-first-review.html" rel="bookmark"
-     title="Permalink to My First Review">
-    My First Review
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/review.html">
-      Review</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->  
-      <div class="summary">
-		<p>There are two ways to specify the identifier:</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad_fn</span><span class="p">)</span>     <span class="c1"># None</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">grad_fn</span><span class="p">)</span>     <span class="c1"># The Function that create the Variable y</span>
+<span class="k">def</span> <span class="nf">solve_number_10</span><span class="p">():</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">next_prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">next_prime</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">2000000</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">next_prime</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+            <span class="k">return</span>
 </pre></div>
 
 
-<p>To display line numbers, use a path-less shebang instead of colons:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Variable …</span></pre></div></td></tr></table>
-		<p class="content-emphasis"><a href="https://mutcato.github.io/my-first-review.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
+<p><p>
+The code above throws an error which the return value of get_primes() in for next_prime in get_primes(3): is not iterable. It is right. Because get_primes()
+returns an integer and integers are not iterable.
+When functions return they are done. Even if we guarentee the function would be called, 
+there is no way to say that continue in next call from where you left in the previous one. 
+Functions have one chance to return. 
+Thus, they must return all results at once.</p>
+<p>If a def body contains a yield keyword, even if it contains return keyword also, it turns into automatically generators(coroutuines)</p>
+<p>If we change the get_primes subroutine with a generator(co-routine) It will be work. Because generators generates an iterable objects.
+</p></p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">number</span>
+        <span class="n">number</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
 
-    <hr />
 
-<nav class="index-pager">
+<p>Yield both passes a value to whoever called the next() and saves the state of the generator function.
+<ul>
+<li>When we pass the first value (3) to generator. is_prime catches that 3 is a prime number. Then passes the 3 value to for loop in solve_number_10 function.</li>
+<li>After sum with the total the for loop calls next() functions of e generator and requests the next element of the get_primes()</li>
+<li>This time instead of starting the get_primes function from beginning, It will continue where it lefts which is the yield keyword.</li>
+<li>number was 3 and it will be increased in number += 1 line. Then the new number is 4</li>
+<li>4 is not satisfy the is_prime function. So it will incease one more.</li>
+<li>5 is a prime number. So the generator yields a value which is 5.</li>
+<li>solve_number_10() functions sums the 5 with the total. Then calls the next() function of the generator again.</li>
+<li>Generator continues from the line number += 1, so the new number is 6 and it is not a prime number.</li>
+<li>It goes until 2 million</li>
+</ul>
+ </p>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="https://mutcato.github.io/tag/python.html"><i class="fas fa-tag"></i>python</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
 
-</nav> <!-- /index-pager -->
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="https://mutcato.github.io/what-is-yield-python-generators.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
         </div><!-- /content -->
 
         <div class="col-md-3 sidebar-nav" id="sidebar">
@@ -401,5 +316,30 @@ PyTorch code.
             crossorigin="anonymous"></script>
 
 
-  </body>
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
 </html>
