@@ -8,7 +8,7 @@
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Python Object Oriented Programming Basics (Inheritence and Encapsulation) - Things that i have learned</title>
+    <title>Creating Virtual Environments in Linux - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -83,106 +83,62 @@
 <article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
   <header class="article-header">
 <abbr class="article-header-date">
-  Paz 03 Haziran 2018
+  Paz 17 Haziran 2018
 </abbr> <h1>
-  <a href="https://mutcato.github.io/python-object-oriented-programming-basics-inheritence-and-encapsulation.html" rel="bookmark"
-     title="Permalink to Python Object Oriented Programming Basics (Inheritence and Encapsulation)">
-    Python Object Oriented Programming Basics (Inheritence and Encapsulation)
+  <a href="https://mutcato.github.io/creating-virtual-environments-in-linux.html" rel="bookmark"
+     title="Permalink to Creating Virtual Environments in Linux">
+    Creating Virtual Environments in Linux
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
     in 
-    <a href="https://mutcato.github.io/category/programming.html">
-      Programming</a>
+    <a href="https://mutcato.github.io/category/system.html">
+      System</a>
     &nbsp;&nbsp;
   </p>
 </div> <!-- /.article-header-info -->  </header>
   <div class="content-body" itemprop="text articleBody">
-	<h2>Introduction</h2>
+	<p>I don't write about benefits of virtual environments and seperating dependencies of each project. 
+There are a lot of blog post on internet which talks about these things.
+I will write commands that I frequently use.</p>
 
-<p>
-Python is counting as a scripting language but it has also powerfull object oriented features. Nothing less than any OOP language C++ or Java
-There will be talked about inheritence method in Python.
-</p>
+<p>Install virtualenv and virtualenvwrapper</p>
 
-<ul>
-<li>It helps us avoid duplicate code </li>
-
-<li>Changes to the superclass passcode is instantly reflected in all of the subclasses</li>
-
-<li>User knows that all subclasses have all of the methods automatically that are created inside of the superclass </li>
-</ul>
-
-<p><img src="https://i.imgur.com/dAdRahu.png"> </p>
-<p>Whenever you are going to be creating
-super classes like we have here with
-animal subclasses like we
-have here with bird and other subclasses
-such as dog, you're going to figure out
-what things are similar between all
-these subclasses and then you are going
-to abstract out those similar
-features into the superclass.</p>
-
-<p>For the example above, Subclasses inherits all the fields from superclass. Both bird and dog objects instenciated from Bird and Dog classes will have heigh and weight attributes and has some common methods like Animal, eat, move, setname, getname</p>
-
-<p>Move method is overrided in Bird subclass. Because bird moves dfferent than most other animals.</p>
-
-<p><p>"Is A" and "Has A" questions help us to figure out if the class can be inherited from another super class. (e.g. Is dog an animal? or Has dog have a height property?)</p></p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
-    <span class="c1">#double underscore makes PRIVATE VARIABLE</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__height</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__weight</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="nd">@property</span> <span class="c1">#puppy.height</span>
-    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span>
-
-    <span class="nd">@property</span> <span class="c1">#puppy.name</span>
-    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
-
-    <span class="k">def</span> <span class="nf">setHeight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__height</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">setName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newName</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">newName</span>
-
-<span class="k">class</span> <span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">digHole</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;{self.name} digs hole&quot;</span><span class="p">)</span>
-
-<span class="n">puppy</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">puppy</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="c1">#0</span>
-<span class="n">puppy</span><span class="o">.</span><span class="n">setHeight</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">puppy</span><span class="o">.</span><span class="n">height</span><span class="p">)</span> <span class="c1">#5</span>
-<span class="n">puppy</span><span class="o">.</span><span class="n">setName</span><span class="p">(</span><span class="s2">&quot;Puppy&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">puppy</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">#Puppy</span>
-<span class="n">puppy</span><span class="o">.</span><span class="n">digHole</span><span class="p">()</span> <span class="c1">#Puppy digs hole</span>
+<div class="highlight"><pre><span></span><span class="err">$</span> <span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenv</span> <span class="n">virtualenvwrapper</span>
+<span class="err">$</span> <span class="n">sudo</span> <span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">~/.</span><span class="n">cache</span><span class="o">/</span><span class="n">pip</span>
 </pre></div>
 
 
-<p>Code above shows the scheme which talked earlier. Animal is superclass. Dog is subclass. Dog class inherits whole Animal class.
-It it needs to inherited only a spesific part of the super class we use super( method.
-Like super().__init__() method inherits only __init__ function of the superclass</p>
+<p>Set or create a ~/.profile file in your home directory</p>
 
-<p>We have created private properties in __init__ method of the Animal class. These private properties cannot be accessed outside of the class.
-I mean running puppy.__height will throw an error. This is called encapsulation which is protecting the data from user. Because some other userdoesn't have to know
-the height and weight must be positive. They may be try to set the weight property directly with puppy.__height = -10</p>
+<div class="highlight"><pre><span></span><span class="c1"># virtualenv and virtualenvwrapper</span>
+<span class="n">export</span> <span class="n">WORKON_HOME</span><span class="o">=</span><span class="err">$</span><span class="n">HOME</span><span class="o">/.</span><span class="n">virtualenvs</span>
+<span class="n">export</span> <span class="n">VIRTUALENVWRAPPER_PYTHON</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">virtualenvwrapper</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
 
-<p>Maybe later we will make a library with this classes and some other people will use our library. 
-They don't have to know taht weight parameter must be positive. As a developer we have to solve this issue while we developing thelibrary.
- id est We want to prevent the user by encapsulation technik to set or get unwanted properties or parameters.</p>
+
+<p>Then reload the .profile file by typing just source ~/.profile</p>
+
+<p>Then create a virtual environment with name myfirstenv</p>
+
+<div class="highlight"><pre><span></span><span class="n">mkvirtualenv</span> <span class="n">cv</span> <span class="o">-</span><span class="n">p</span> <span class="n">python3</span>
+</pre></div>
+
+
+<p>Then get in it./p>
+
+    :::python
+    $ source ~/.profile
+    $ workon cv
   </div>
   
 <div class="article-tag-list">
 <span class="label label-default">Tags</span>
-	<a href="https://mutcato.github.io/tag/oop.html"><i class="fas fa-tag"></i>OOP</a>&nbsp;
 	<a href="https://mutcato.github.io/tag/python.html"><i class="fas fa-tag"></i>python</a>&nbsp;
+	<a href="https://mutcato.github.io/tag/linux.html"><i class="fas fa-tag"></i>linux</a>&nbsp;
+	<a href="https://mutcato.github.io/tag/ubuntu.html"><i class="fas fa-tag"></i>ubuntu</a>&nbsp;
 </div>  <hr />
   <div class="well well-sm">  <!-- Social media sharing buttons -->
 
@@ -193,7 +149,7 @@ They don't have to know taht weight parameter must be positive. As a developer w
 
     <!-- Facebook -->
     <div class="fb-like" 
-        data-href="https://mutcato.github.io/python-object-oriented-programming-basics-inheritence-and-encapsulation.html" 
+        data-href="https://mutcato.github.io/creating-virtual-environments-in-linux.html" 
         data-layout="button_count" 
         data-action="like" data-show-faces="true" 
         data-share="true">
