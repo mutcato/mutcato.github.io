@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content=" Posts tagged with pandas" />
+    <meta name="description" content="" />
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Tag:pandas - Things that i have learned</title>
+    <title>Sequence Models Recurrent Neural Networks and LSTMs - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -80,68 +80,119 @@
     <div class="container" id="main-container">
       <div class="row">
         <div class="col-md-9" id="content">
-<ol class="breadcrumb">
-    <li><a href="https://mutcato.github.io/" title="Home" rel="home">
-		<i class="fas fa-home fa-fw fa-lg"></i> </a></li>
-    <li>Tags </li>
-    <li class="active">pandas</li>
-</ol>
-    <article>
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
 <abbr class="article-header-date">
-  Prş 03 Mayıs 2018
+  Cum 01 Şubat 2019
 </abbr> <h1>
-  <a href="https://mutcato.github.io/building-a-correlation-matrix-on-heat-map-with-pandas-and-plotly.html" rel="bookmark"
-     title="Permalink to Building A Correlation Matrix on Heat Map with Pandas and Plotly">
-    Building A Correlation Matrix on Heat Map with Pandas and Plotly
+  <a href="https://mutcato.github.io/sequence-models-recurrent-neural-networks-and-lstms.html" rel="bookmark"
+     title="Permalink to Sequence Models Recurrent Neural Networks and LSTMs">
+    Sequence Models Recurrent Neural Networks and LSTMs
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
     in 
-    <a href="https://mutcato.github.io/category/data.html">
-      Data</a>
+    <a href="https://mutcato.github.io/category/ai.html">
+      AI</a>
     &nbsp;&nbsp;
   </p>
-</div> <!-- /.article-header-info -->
-      <div class="summary">
-		
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-		<p class="content-emphasis"><a href="https://mutcato.github.io/building-a-correlation-matrix-on-heat-map-with-pandas-and-plotly.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
-    <hr />
-    <article>
-<abbr class="article-header-date">
-  Pzt 02 Nisan 2018
-</abbr> <h1>
-  <a href="https://mutcato.github.io/pandas-toolkit.html" rel="bookmark"
-     title="Permalink to Pandas Toolkit">
-    Pandas Toolkit
-  </a>
-</h1><div class="article-header-info">
-  <p>
-      Posted by <a href="https://mutcato.github.io/author/mutlucan.html">mutlucan</a>
-    in 
-    <a href="https://mutcato.github.io/category/data.html">
-      Data</a>
-    &nbsp;&nbsp;
-  </p>
-</div> <!-- /.article-header-info -->
-      <div class="summary">
-		
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-		<p class="content-emphasis"><a href="https://mutcato.github.io/pandas-toolkit.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
-    <hr />
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<h2>Introduction</h2>
 
-<nav class="index-pager">
+<p>
+In sequence models is usefull where the sequence of the inputs are matters. For example speech recognising, NLP, music generation
+etc. 
+</p>
 
-</nav> <!-- /index-pager -->
+<h3>What is the problem about regular neural networks?</h3>
+
+<p><img alt="handicap of normal NN" src="https://i.imgur.com/2nELIiP.png"> </p>
+<p>Regular neural networks are good at generalization with generating a non linear function. However,
+they don't care about the sequence of the inputs. You can feed x<1> instead of x<2>. 
+There is no difference for Regularneural networks. But in sequence models like NLP order of works is matters. </p>
+
+<h2>Examples of neural networks</h2>
+
+<p><img alt="many2many & many2one" src="https://i.imgur.com/ir1bqh7.png"></p>
+<p><img alt="one2many & many2many" src="https://i.imgur.com/OLj7I9o.png">
+<p>There is also one to many like music generation and many to many with different input and output sizes. The example of 
+different input and output sizes RNN is machine translation.
+In these RNNs there is an encoder and decoder parts. While the encoder reads all the inputs, decoder writes the outputs 
+at once</p></p>
+<h3>Summary</h3>
+
+<p><img alt="summary" src="https://i.imgur.com/1DYIWPT.png">
+<ul>
+<li>One to one  e.g. regular NNs</li>
+<li>one to many e.g. music generation</li>
+<li>many to one e.g. sentiment analysis</li>
+<li>many to many with same input and output sizes --&gt; e.g name entity recognising</li>
+<li>many to many with different input and output sizes --&gt; machine translation</li>
+</ul></p>
+<h2>Basic problem of RNNs: Vanishing Gradient</h2>
+
+<p>
+RNNs are not good at capturing long term dependencies.
+For example in sentecce below were and was words are depended to whether the noun is pulural or singular.
+</p>
+
+<p><img alt="Vanishing Gradients" src="https://i.imgur.com/MKpJOQ3g.png"></p>
+<p>
+If the our ordinary neural network was wery deep network. It has, let say 100 layers. Then vanishing gradient situation occurs again.
+
+In language model, sentences may be too long.
+
+Result of thin problem: The output y^<3> is mainly influenced by values close to y^<3>
+
+<b>Exploding gradients:</b> The opposite of the <b>vanishing gradient problem</b> is <b>exploding gradients</b>. But the solution of the exploding gradiets are easy.
+
+You can clip the gradients bigger than some treshold
+
+</p>
+
+<h3>Solutuions for Vanishing gradients</h3>
+
+<p><img alt="GRU" src="https://i.imgur.com/NmReADW.png">
+<img alt="LSTM" src="https://i.imgur.com/2byNBcz.png"></p>
+<h2>Some Other Models in Sequence Models</h2>
+
+<p>The word after Teddy cannot be guessed without looking words after it. </p>
+
+<p><img alt="BRNN" src="https://i.imgur.com/YHSdseM.png"></p>
+<p>"He said Teddy Bears are on sale"</p>
+
+<p>"He saig Teddy Rosevelt are a great president"</p>
+
+<p>These a1 left and a right blocks are not have to regular RNN blocks they can be GRU ore LSTM blocks. 
+Besides, LSTM + BRNNs are widely used in NLP tasks.</p>
+
+<p><img alt="Deep RNNs" src="https://i.imgur.com/6GgSMUn.png"></p>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="https://mutcato.github.io/tag/ai.html"><i class="fas fa-tag"></i>AI</a>&nbsp;
+	<a href="https://mutcato.github.io/tag/nn.html"><i class="fas fa-tag"></i>NN</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="https://mutcato.github.io/sequence-models-recurrent-neural-networks-and-lstms.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
         </div><!-- /content -->
 
         <div class="col-md-3 sidebar-nav" id="sidebar">
@@ -264,5 +315,30 @@
             crossorigin="anonymous"></script>
 
 
-  </body>
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
 </html>
