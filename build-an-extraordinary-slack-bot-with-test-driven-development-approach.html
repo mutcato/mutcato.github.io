@@ -8,7 +8,7 @@
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>What is Yield (Python Generators) - Things that i have learned</title>
+    <title>Build An Extraordinary Slack Bot With Test Driven Development Approach - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -83,11 +83,11 @@
 <article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
   <header class="article-header">
 <abbr class="article-header-date">
-  Cts 09 Haziran 2018
+  Sal 23 Temmuz 2019
 </abbr> <h1>
-  <a href="/what-is-yield-python-generators.html" rel="bookmark"
-     title="Permalink to What is Yield (Python Generators)">
-    What is Yield (Python Generators)
+  <a href="/build-an-extraordinary-slack-bot-with-test-driven-development-approach.html" rel="bookmark"
+     title="Permalink to Build An Extraordinary Slack Bot With Test Driven Development Approach">
+    Build An Extraordinary Slack Bot With Test Driven Development Approach
   </a>
 </h1><div class="article-header-info">
   <p>
@@ -99,99 +99,126 @@
   </p>
 </div> <!-- /.article-header-info -->  </header>
   <div class="content-body" itemprop="text articleBody">
-	<p>To understand what the mean of the yield keyword is in Python, there is some consepts needs to be known before.</p>
+	<h2>Introduction</h2>
+
+<p>
+If I describe Slack with a sentence. Slack is a modern MIRC. MIRC for bussiness. 
+If anybody doesn't know MIRC, then I say Slack is Whatsapp for bussiness. 
+But it is very different from Whatsapp.
+It has very uniqe features and cool design ofcourse. Beyond it's nifty design Slack gets it's real power from it's apps.
+There is a lot of Slack apps and bots which automates booring office jobs.
+For example, if your project gets a new commit from Github you can make Slack send you a notification about that commit.
+
+Everybody can develop a small Slack app which enhances it's existing power. Like Facebook Apps.
+</p>
+
+<p>
+Now I will develop a small Slack bot who repeats your posts in some particular times. 
+Somebody told me a learning technik
+when I was in elementary school or high I don't remember. The technik was about repetition. 
+If you repeat something that you have just learned after 12 hours It will remain in your memory for 2 days.
+If you review it after 2 days following your first review, It will remain with you for a week. 
+If you review It after a week, It will stay with you for a year. I am not sure the time periods but the principle is
+ about increasing time intervals between each review. Now the bot which makes you review your post after 4 hours, 12 hours and 4 days.
+Name wil be reinforceme and serving under <a href="https://reinforceme.slack.com">Reinforceme</a> workspace.
+</p>
 
 <ul>
-<li>What is iterators?</li>
-<li>What is generators?</li>
-</ul>
 
-<div class="highlight"><pre><span></span><span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">my_list</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
-</pre></div>
+<h2>Create your Slack Bot on Slack Platform</h2>
+Go to https://api.slack.com/ site and click create button
 
+<img style="max-width: 800px" src="https://i.imgur.com/0ChlYXr.png"> 
 
-<p><p>In above code;</p>
-<ul>
-<li>First; for loop calls <strong>iter</strong>() function of my_list object. This call returns an iterator that can iterate itself.</li>
-<li>Then; for loop calls <strong>next</strong>() function in each iteration. <strong>next</strong>() function returns next elemnt of that iterable object.</li>
-</ul></p>
-<p>In above code we have created my_list object. That loaded into memory and iterated it with __next__() function. 
-Generators has __next__() function like iterators. However they don't load all the items in memory. 
-Generators generates the next item when the loop calls __next__() function.</p>
+<p>Then create a bot</p>
+<img style="max-width: 800px" src="https://i.imgur.com/QwTVNVR.png">
 
-<h3>Lets jump intto an example:</h3>
+<img style="max-width: 800px" src="https://i.imgur.com/3PGXAK4.png">
 
-<p>Somebody ask us to sum all prime numbers below two million. <a href="https://projecteuler.net/problem=10">Project Euler (Problem:10)</a></p>
+<img style="max-width: 800px" alt="Show always online" src="https://i.imgur.com/9sK11fc.png">
+<p>I want my bot always shown online. But you may want your bot shown only RTM(Real Time Messaging) API is used.
+There is three kind of apis. Web API, Events API and Real Time Messaging (RTM) API. Some events works only with some API's.
+For example; sending a hello message a user when s/he connected to a channel requires RTM API. However sending direct messages requires 
+EVENTS API. Which event needs which api. All list is <a href="https://api.slack.com/events">here</a>. BTW event is a kind of action
+ which triggers some API methods. Like joining a channel, sending a message to a channel, posting a link inside the message, 
+ putting a star to a message or removing a star from a message, putting an emoji into the message. 
+ I am not kidding. You can trace whether a user puts an emoji in the message :)</p>
 
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<img style="max-width: 800px" alt="Install the APP to yout team" src="https://i.imgur.com/f2wodBE.png">
+<img style="max-width: 800px; min-width: 600px" alt="APP scopes" src="https://i.imgur.com/CZSCRgL.gif">
+<p>Then you need to give some permissions(scopes). I give there user:read and user:read:email permissions. Then you need to reinstall your app.</p>
 
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">number</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">for</span> <span class="n">current</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="n">current</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
-                <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">return</span> <span class="bp">True</span>
-    <span class="k">return</span> <span class="bp">False</span>
+<h2>Lets Code</h2>
+<p>Do I really need to do It in test driven development?</p>
+<p>Well, not really. But I love the hard way :)</p>
+<p>As well as I am a hard loving person, TDD has despisible benefits on developing process. Such as; making the code 
+more modular, more maintenable. It makes developer well understand their own code.</p> 
 
+<p>
+We develop in TDD approach. Then, firstly we start coding test file. 
+</p>
 
-<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">start</span>
+    #!python
+    from slack_bot import *
+    import pytest
+    import time;
 
-<span class="k">def</span> <span class="nf">solve_number_10</span><span class="p">():</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="k">for</span> <span class="n">next_prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">next_prime</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">2000000</span><span class="p">:</span>
-            <span class="n">total</span> <span class="o">+=</span> <span class="n">next_prime</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
-            <span class="k">return</span>
-</pre></div>
+    input = {'text': 'Hello my awesome bot', 'user': 'UH47MU0GN','ts': str(time.time())}
+    @pytest.mark.skip(reason = "Fully implemented.")
+    def test_post_instant_message():
+        assert post_instant_message(channel_id="UH47MU0GN", text="Naber Lan")
 
+    def test_get_ws_users():
+        users = get_ws_users()
+        for user in users:
+            print(user["name"])
 
-<p><p>
-The code above throws an error which the return value of get_primes() in for next_prime in get_primes(3): is not iterable. It is right. Because get_primes()
-returns an integer and integers are not iterable.
-When functions return they are done. Even if we guarentee the function would be called, 
-there is no way to say that continue in next call from where you left in the previous one. 
-Functions have one chance to return. 
-Thus, they must return all results at once.</p>
-<p>If a def body contains a yield keyword, even if it contains return keyword also, it turns into automatically generators(coroutuines)</p>
-<p>If we change the get_primes subroutine with a generator(co-routine) It will be work. Because generators generates an iterable objects.
-</p></p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">number</span>
-        <span class="n">number</span> <span class="o">+=</span> <span class="mi">1</span>
-</pre></div>
+    def test_get_BotID():
+        assert get_BotID("reinforceme") == "UL4UGDCBU"
 
+    @pytest.mark.skip(reason = "Not fully implemented.")
+    def test_slackReadRTM():
+        assert slackReadRTM()
 
-<p>Yield both passes a value to whoever called the next() and saves the state of the generator function.
-<ul>
-<li>When we pass the first value (3) to generator. is_prime catches that 3 is a prime number. Then passes the 3 value to for loop in solve_number_10 function.</li>
-<li>After sum with the total the for loop calls next() functions of e generator and requests the next element of the get_primes()</li>
-<li>This time instead of starting the get_primes function from beginning, It will continue where it lefts which is the yield keyword.</li>
-<li>number was 3 and it will be increased in number += 1 line. Then the new number is 4</li>
-<li>4 is not satisfy the is_prime function. So it will incease one more.</li>
-<li>5 is a prime number. So the generator yields a value which is 5.</li>
-<li>solve_number_10() functions sums the 5 with the total. Then calls the next() function of the generator again.</li>
-<li>Generator continues from the line number += 1, so the new number is 6 and it is not a prime number.</li>
-<li>It goes until 2 million</li>
-</ul>
- </p>
+    def test_post_scheduled_message():
+        assert post_scheduled_message(input,20)
+
+<p>
+Then we exported our SLACK_BOT_TOKEN as environmental variable. Never use sensitive data(passwords, tokens etc.) directly in your code. 
+It is not a good practice. You can push your code to a git server with theese sensitive data.
+</p>
+
+.. code-block:: python
+    print("Pelican is a static site generator.")
+
+<p>
+I use Ubuntu 18.04 Virtual Box in my Windows 10 machine. So, change the "xoxb..." with yours and put the export code below to your CLI (comand line interface)
+</p>
+
+    :::python
+    export SLACK_BOT_TOKEN="xoxb....."
+
+<p>
+Code above shows the scheme which talked earlier. Animal is superclass. Dog is subclass. Dog class inherits whole Animal class.
+It it needs to inherited only a spesific part of the super class we use super( method.
+Like super().__init__() method inherits only __init__ function of the superclass
+</p>
+
+<p>We have created private properties in __init__ method of the Animal class. These private properties cannot be accessed outside of the class.
+I mean running puppy.__height will throw an error. This is called encapsulation which is protecting the data from user. Because some other userdoesn't have to know
+the height and weight must be positive. They may be try to set the weight property directly with puppy.__height = -10</p>
+
+<p>Maybe later we will make a library with this classes and some other people will use our library. 
+They don't have to know taht weight parameter must be positive. As a developer we have to solve this issue while we developing thelibrary.
+ id est We want to prevent the user by encapsulation technik to set or get unwanted properties or parameters.</p>
   </div>
   
 <div class="article-tag-list">
 <span class="label label-default">Tags</span>
 	<a href="/tag/python.html"><i class="fas fa-tag"></i>python</a>&nbsp;
+	<a href="/tag/slack.html"><i class="fas fa-tag"></i>slack</a>&nbsp;
+	<a href="/tag/tdd.html"><i class="fas fa-tag"></i>tdd</a>&nbsp;
+	<a href="/tag/bot.html"><i class="fas fa-tag"></i>bot</a>&nbsp;
 </div>  <hr />
   <div class="well well-sm">  <!-- Social media sharing buttons -->
 
@@ -202,7 +229,7 @@ Thus, they must return all results at once.</p>
 
     <!-- Facebook -->
     <div class="fb-like" 
-        data-href="/what-is-yield-python-generators.html" 
+        data-href="/build-an-extraordinary-slack-bot-with-test-driven-development-approach.html" 
         data-layout="button_count" 
         data-action="like" data-show-faces="true" 
         data-share="true">

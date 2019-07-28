@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content=" Posts tagged with sequence models" />
+    <meta name="description" content="" />
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Tag:sequence models - Things that i have learned</title>
+    <title>Understanding Linux File Permissions - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -80,45 +80,81 @@
     <div class="container" id="main-container">
       <div class="row">
         <div class="col-md-9" id="content">
-<ol class="breadcrumb">
-    <li><a href="/" title="Home" rel="home">
-		<i class="fas fa-home fa-fw fa-lg"></i> </a></li>
-    <li>Tags </li>
-    <li class="active">sequence models</li>
-</ol>
-    <article>
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
 <abbr class="article-header-date">
-  Çrş 12 Eylül 2018
+  Cum 09 Kasım 2018
 </abbr> <h1>
-  <a href="/building-a-recurrent-neural-network-step-by-step-coursera-assignment-.html" rel="bookmark"
-     title="Permalink to Building a Recurrent Neural Network Step by Step - Coursera Assignment -">
-    Building a Recurrent Neural Network Step by Step - Coursera Assignment -
+  <a href="/understanding-linux-file-permissions.html" rel="bookmark"
+     title="Permalink to Understanding Linux File Permissions">
+    Understanding Linux File Permissions
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="/author/mutlucan.html">mutlucan</a>
     in 
-    <a href="/category/deep-learning.html">
-      Deep Learning</a>
+    <a href="/category/linux.html">
+      Linux</a>
     &nbsp;&nbsp;
   </p>
-</div> <!-- /.article-header-info -->
-      <div class="summary">
-		
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Building-your-Recurrent-Neural-Network---Step-by-Step">Building your Recurrent Neural Network - Step by Step<a class="anchor-link" href="#Building-your-Recurrent-Neural-Network---Step-by-Step">¶</a></h1><p>Welcome to Course 5's first assignment! In this assignment, you will implement your first Recurrent Neural Network in numpy.</p>
-<p>Recurrent Neural Networks (RNN) are very effective for Natural Language Processing and other sequence tasks because they have "memory". They can read inputs $x^{\langle t \rangle}$ (such as words) one at a time, and remember some information/context through the hidden layer activations that get passed from one time-step to the next. This allows a uni-directional RNN to take information from the past to process later inputs. A bidirection RNN can take context from both the past and the future.</p>
-		<p class="content-emphasis"><a href="/building-a-recurrent-neural-network-step-by-step-coursera-assignment-.html">
-			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
-		</a></p>
-      </div>    </article>
-    <hr />
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<p>
+File permissions is the pne of the biggest differences between Windows and Linux.
+This difference makes Linux more secure operating system. It has to be more secure because Linux is designed 
+usage for multiple people at the same time. So, each person should not be able to change or execute the each file.
+</p>
 
-<nav class="index-pager">
+<p>
+There is three tyes of permissions: read write and execute. There is three types of ownerships also: owner(user), group, other.
+</p>
 
-</nav> <!-- /index-pager -->
+<div class="highlight"><pre><span></span><span class="n">pi</span><span class="nd">@raspberrypi</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span> <span class="n">ls</span> <span class="o">-</span><span class="n">l</span>
+<span class="n">total</span> <span class="mi">15120</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Jul</span> <span class="mi">25</span> <span class="mo">02</span><span class="p">:</span><span class="mo">01</span> <span class="n">apache2</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">apt</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">78</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">69632</span> <span class="n">Jul</span> <span class="mi">25</span> <span class="mi">17</span><span class="p">:</span><span class="mi">49</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">12288</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">aspell</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">avahi</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Dec</span>  <span class="mi">3</span>  <span class="mi">2017</span> <span class="n">binfmt</span><span class="o">.</span><span class="n">d</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">blt2</span><span class="o">.</span><span class="mi">5</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">bluetooth</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span>  <span class="mi">2</span> <span class="mi">22</span><span class="p">:</span><span class="mo">05</span> <span class="n">cgi</span><span class="o">-</span><span class="nb">bin</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">4</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">chromium</span><span class="o">-</span><span class="n">browser</span>
+</pre></div>
+
+
+<p>First characters shows file type. A - means it’s a normal file; a d is for a directory and l is for a link pointing to a file.</p>
+
+<p>After first character next three character shows permissions of owner of that file. In this case rwx means owner(root) has read, write and execute permissions</p>
+
+<p>Next three character shows permissions of group user type. In this case r-x means group type of user has read and execute permissions. But has not the write permission</p>
+
+<p>And then next three character shows other type uf users permissions. In this case r-x which is same with the group user type.</p>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="/tag/linux.html"><i class="fas fa-tag"></i>linux</a>&nbsp;
+	<a href="/tag/cli.html"><i class="fas fa-tag"></i>cli</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="/understanding-linux-file-permissions.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
         </div><!-- /content -->
 
         <div class="col-md-3 sidebar-nav" id="sidebar">
@@ -266,5 +302,30 @@
             crossorigin="anonymous"></script>
 
 
-  </body>
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
 </html>
