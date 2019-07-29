@@ -102,11 +102,11 @@
 	<p>
 File permissions is the pne of the biggest differences between Windows and Linux.
 This difference makes Linux more secure operating system. It has to be more secure because Linux is designed 
-usage for multiple people at the same time. So, each person should not be able to change or execute the each file.
+for usage multiple users at the same time. So, each user should not be able to change or execute the each file.
 </p>
 
 <p>
-There is three tyes of permissions: read write and execute. There is three types of ownerships also: owner(user), group, other.
+There is three types of permissions: read write and execute. There is three types of ownerships also: owner(user), group, other.
 </p>
 
 <div class="highlight"><pre><span></span><span class="n">pi</span><span class="nd">@raspberrypi</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span> <span class="n">ls</span> <span class="o">-</span><span class="n">l</span>
@@ -124,13 +124,82 @@ There is three tyes of permissions: read write and execute. There is three types
 </pre></div>
 
 
-<p>First characters shows file type. A - means it’s a normal file; a d is for a directory and l is for a link pointing to a file.</p>
+<p>If you get the detailed list of a directory with ls -l command
+ first characters shows file type. A - means it’s a normal file; a d is for a directory and l is for a link pointing to a file.</p>
 
 <p>After first character next three character shows permissions of owner of that file. In this case rwx means owner(root) has read, write and execute permissions</p>
 
 <p>Next three character shows permissions of group user type. In this case r-x means group type of user has read and execute permissions. But has not the write permission</p>
 
 <p>And then next three character shows other type uf users permissions. In this case r-x which is same with the group user type.</p>
+
+<p>Forget the file type representing first character of the sequence for a moment. Then if we had know the order of the permissions 
+then we can represent the characters with 0 and 1.
+Such as: 111 101 101 this ones and zeros has the same mean with the rwxr-xr-x. 
+Ones and zeros acts as switches. First three ones means that owner of that file has all read, write and execute permissions.
+Next three number means group type user has read and execute permissions but has not write permission.
+And if you convert these nine binary number into octal system you get very compact form of thet permission representation.
+</p>
+
+<p>
+111101101 in base 2 equals 755 in base 8.
+</p>
+
+<div class="highlight"><pre><span></span><span class="n">Octal</span>   <span class="n">Binary</span>
+<span class="mi">0</span>       <span class="mo">000</span>
+<span class="mi">1</span>       <span class="mo">001</span>
+<span class="mi">2</span>       <span class="mo">010</span>
+<span class="mi">3</span>       <span class="mo">011</span>
+<span class="mi">4</span>       <span class="mi">100</span>
+<span class="mi">5</span>       <span class="mi">101</span>
+<span class="mi">6</span>       <span class="mi">110</span>
+<span class="mi">7</span>       <span class="mi">111</span>
+</pre></div>
+
+
+<iframe width="420" height="315"
+src="https://www.youtube.com/watch?v=V9kN-rNxpFw">
+</iframe>
+
+<div class="highlight"><pre><span></span><span class="n">pi</span><span class="nd">@raspberrypi</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">g</span><span class="o">=</span><span class="n">rwx</span> <span class="n">chromium</span><span class="o">-</span><span class="n">browser</span><span class="o">/</span>
+</pre></div>
+
+
+<p>Comand above enables all read write and execute permission for chromium-browser directory.
+Then the user gets the permissions which one of the groups has.
+For example, If the user belongs the root group. Then the user get all root permissions Such
+read edit and execute files under chromium-brovser directory</p>
+
+<p>To see groups the current user belongs just type groups at the command line</p>
+
+<p>To see the groups that the spesific user belongs type: groups username</p>
+
+<h3>To create a new group</h3>
+
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">groupadd</span> <span class="n">mynewgroup</span>
+</pre></div>
+
+
+<h3>Add an existing user to a existing group</h3>
+
+<p>Adds user mutlu into sudo group</p>
+
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">sudo</span> <span class="n">mutlu</span>
+</pre></div>
+
+
+<h3>Change the users primary group</h3>
+
+<p>Small g makes the group primary group. Capital G adds a secondary group</p>
+
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">g</span> <span class="n">sudo</span> <span class="n">mutlu</span>
+</pre></div>
+
+
+<h3>Add a existing user into multipple existing groups</h3>
+
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">group1</span><span class="p">,</span><span class="n">group2</span><span class="p">,</span><span class="n">group3</span> <span class="n">exampleusername</span>
+</pre></div>
   </div>
   
 <div class="article-tag-list">
