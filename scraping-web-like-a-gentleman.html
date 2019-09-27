@@ -8,7 +8,7 @@
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Understanding Linux File Permissions - Things that i have learned</title>
+    <title>Scraping Web Like A Gentleman - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -83,130 +83,130 @@
 <article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
   <header class="article-header">
 <abbr class="article-header-date">
-  Cum 09 Kasım 2018
+  Çrş 25 Eylül 2019
 </abbr> <h1>
-  <a href="/understanding-linux-file-permissions.html" rel="bookmark"
-     title="Permalink to Understanding Linux File Permissions">
-    Understanding Linux File Permissions
+  <a href="/scraping-web-like-a-gentleman.html" rel="bookmark"
+     title="Permalink to Scraping Web Like A Gentleman">
+    Scraping Web Like A Gentleman
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="/author/mutlucan.html">mutlucan</a>
     in 
-    <a href="/category/linux.html">
-      Linux</a>
+    <a href="/category/programming.html">
+      Programming</a>
     &nbsp;&nbsp;
   </p>
 </div> <!-- /.article-header-info -->  </header>
   <div class="content-body" itemprop="text articleBody">
-	<p>
-File permissions is the pne of the biggest differences between Windows and Linux.
-This difference makes Linux more secure operating system. It has to be more secure because Linux is designed 
-for usage multiple users at the same time. So, each user should not be able to change or execute the each file.
+	<p>There is huge data in internet. Some of them can be accessable via legal ways. Such as APIs.
+However, most website don't make their API public. Then webscrapers and web crawlers come into the play. 
+But there is a problem. These websites don't want their data been used by 3rd party apps. For this reason 
+they haven't already opened APIs. </p>
+
+<p>Some websites don't care about crawlers and scrapers. However big ones, espesicially e-commerce sites, 
+which is very interested by scrapers, applies very sophisticated methods to prevent unusual access to their sites.
+I will try to explain my methods which turn around these sophisticated methods while crawling websites.</p>
+
+<h3>Don't use request libraries</h3>
+
+<p>Websites can detect a client come from request library or not. Instead of request, use browsers.
+There are some other alternatives but I will give examples from Python and Selenium. So, use Selenium, don't use Request.
 </p>
+
+<h3>Edit Chromedriver hex file</h3>
 
 <p>
-There is three types of permissions: read write and execute. There is three types of ownerships also: owner(user), group, other.
+For chromedriver, search and replace $cdc part with a arbitrary three letter word.
+For geckodriver, word be replaced is $wdc.
+<img src="https://i.imgur.com/Zzh63OL.png">
+<img src="https://i.imgur.com/05be2Mi.png">
 </p>
 
-<div class="highlight"><pre><span></span><span class="n">pi</span><span class="nd">@raspberrypi</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span> <span class="n">ls</span> <span class="o">-</span><span class="n">l</span>
-<span class="n">total</span> <span class="mi">15120</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Jul</span> <span class="mi">25</span> <span class="mo">02</span><span class="p">:</span><span class="mo">01</span> <span class="n">apache2</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">5</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">apt</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">78</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">69632</span> <span class="n">Jul</span> <span class="mi">25</span> <span class="mi">17</span><span class="p">:</span><span class="mi">49</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabihf</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">3</span> <span class="n">root</span> <span class="n">root</span>   <span class="mi">12288</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">aspell</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">avahi</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Dec</span>  <span class="mi">3</span>  <span class="mi">2017</span> <span class="n">binfmt</span><span class="o">.</span><span class="n">d</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">blt2</span><span class="o">.</span><span class="mi">5</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">bluetooth</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">2</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span>  <span class="mi">2</span> <span class="mi">22</span><span class="p">:</span><span class="mo">05</span> <span class="n">cgi</span><span class="o">-</span><span class="nb">bin</span>
-<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">4</span> <span class="n">root</span> <span class="n">root</span>    <span class="mi">4096</span> <span class="n">Apr</span> <span class="mi">18</span>  <span class="mi">2018</span> <span class="n">chromium</span><span class="o">-</span><span class="n">browser</span>
-</pre></div>
-
-
-<p>If you get the detailed list of a directory with ls -l command
- first character shows file type. A - means it’s a normal file; a d is for a directory and l is for a link pointing to a file.</p>
-
-<p>After first character next three character shows permissions of owner of that file. In this case rwx means owner(root) has read, write and execute permissions</p>
-
-<p>Next three character shows permissions of group user type. In this case r-x means group type of user has read and execute permissions. But has not the write permission</p>
-
-<p>And then next three character shows other type uf users permissions. In this case r-x which is same with the group user type.</p>
-
-<p>Forget the file type representing first character of the sequence for a moment. Then if we had know the order of the permissions 
-then we can represent the characters with 0 and 1.
-Such as: 111 101 101 this ones and zeros has the same mean with the rwxr-xr-x. 
-Ones and zeros acts as switches. First three ones means that owner of that file has all read, write and execute permissions.
-Next three number means group type user has read and execute permissions but has not write permission.
-And if you convert these nine binary number into octal system you get very compact form of thet permission representation.
-</p>
+<h3>Use headfull browsers instead of headless ones</h3>
 
 <p>
-111101101 in base 2 equals 755 in base 8.
+Don't add `options.add_argument('--headless')` in your Python code.
+If you use crontab the add `export DISPLAY=:0;` in cronjob rule. Or install xvfb and add xvfb-run in cronjob
 </p>
 
-<div class="highlight"><pre><span></span><span class="n">Octal</span>   <span class="n">Binary</span>
-<span class="mi">0</span>       <span class="mo">000</span>
-<span class="mi">1</span>       <span class="mo">001</span>
-<span class="mi">2</span>       <span class="mo">010</span>
-<span class="mi">3</span>       <span class="mo">011</span>
-<span class="mi">4</span>       <span class="mi">100</span>
-<span class="mi">5</span>       <span class="mi">101</span>
-<span class="mi">6</span>       <span class="mi">110</span>
-<span class="mi">7</span>       <span class="mi">111</span>
+<h3>Carefully set your webdriver options</h3>
+
+<p>
+It is better to use the browser in incognito mode. We have to be untrackable as much as possible.
+Start the browser with fullscreen. Most humanized usage is fullscreen usage.
+Even you can check by typing navigator.webdriver in your browser console.
+Websites can easily detect whether the request comes from Selenium or an organic user, with typing navigator.webdriver.
+So, you need tomake it 'undefined'
+</p>
+
+<div class="highlight"><pre><span></span>    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;user-agent={user_agent}&quot;</span><span class="p">)</span>
+    <span class="c1"># options.add_experimental_option(&#39;useAutomationExtension&#39;, False)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-infobars&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-extensions&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--profile-directory=Default&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--incognito&#39;</span><span class="p">)</span> <span class="c1"># starts Chrome in incognito mode</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-plugins-discovery&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--start-maximized&#39;</span><span class="p">)</span> <span class="c1"># starts the browser in fullscreen</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s2">&quot;excludeSwitches&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;enable-automation&#39;</span><span class="p">])</span> <span class="c1"># makes navigator.webdriver flag &quot;undefined&quot;</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">CHROME_DRIVER</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># Optional argument, if not specified will search path.</span>
 </pre></div>
 
 
-<iframe width="420" height="315"
-src="https://www.youtube.com/watch?v=V9kN-rNxpFw">
-</iframe>
+<h3>Add fake and random user agents</h3>
 
-<div class="highlight"><pre><span></span><span class="n">pi</span><span class="nd">@raspberrypi</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span> <span class="err">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">g</span><span class="o">=</span><span class="n">rwx</span> <span class="n">chromium</span><span class="o">-</span><span class="n">browser</span><span class="o">/</span>
+<p>
+Download some [user agent list]({static}/pdfs/user-agent-database-full.csv). Be carefull and clean bot agents or mobile agents.
+Pick a random user_agent and add a option parameter with that random agent in each time.
+</p>
+
+<div class="highlight"><pre><span></span>    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;user-agent={random_user_agent}&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<p>Comand above enables all read write and execute permission for chromium-browser directory for group user type.
-Then the user gets the permissions which any groups has. If the group that user belongs to has all three kinds permissions 
-then s/he can write on that directory while s/he can't before.
-For example, If the user belongs the root group. Then the user get all root permissions Such
-read edit and execute files under chromium-brovser directory</p>
+<h3>Put it together</h3>
 
-<p>To see groups the current user belongs just type groups at the command line</p>
-
-<p>To see the groups that the spesific user belongs type: groups username</p>
-
-<h3>To create a new group</h3>
-
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">groupadd</span> <span class="n">mynewgroup</span>
+<div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+    <span class="kn">from</span> <span class="nn">selenium.webdriver.chrome.options</span> <span class="kn">import</span> <span class="n">Options</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+    <span class="n">random_user_agent</span> <span class="o">=</span> <span class="n">scrapage</span><span class="o">.</span><span class="n">random_user_agent</span><span class="p">()</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;user-agent={random_user_agent}&quot;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-infobars&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-extensions&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--profile-directory=Default&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--incognito&#39;</span><span class="p">)</span> <span class="c1"># starts Chrome in incognito mode</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-plugins-discovery&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--start-maximized&#39;</span><span class="p">)</span> <span class="c1"># starts the browser in fullscreen</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s2">&quot;excludeSwitches&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;enable-automation&#39;</span><span class="p">])</span> <span class="c1"># makes navigator.webdriver flag &quot;undefined&quot;</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s2">&quot;/absolute/path/chromedriver&quot;</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># Optional argument, if not specified will search path.</span>
 </pre></div>
 
 
-<h3>Add an existing user to a existing group</h3>
+<h2>Run Away From Patterns</h2>
 
-<p>Adds user mutlu into sudo group</p>
+<p>
+Big websites uses machine learning and pattern recognition techniques for detecting bots.
+You must not build patterns. Your each movement must be human like.
+For example: Don't visit product pages from top to down at a time. Shuffle the initial list and then pick random amount at each time.
+Wait random periods between actions.
+Make the webdriver click on links instead of pulling the url and getting the page from url.
+(Clicking is more human behaviour and some JS may be work when user clicks)
+</p>
 
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">sudo</span> <span class="n">mutlu</span>
-</pre></div>
+<h2>Come from search engines</h2>
 
-
-<h3>Change the users primary group</h3>
-
-<p>Small g makes the group primary group. Capital G adds a secondary group</p>
-
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">g</span> <span class="n">sudo</span> <span class="n">mutlu</span>
-</pre></div>
-
-
-<h3>Add a existing user into multipple existing groups</h3>
-
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">G</span> <span class="n">group1</span><span class="p">,</span><span class="n">group2</span><span class="p">,</span><span class="n">group3</span> <span class="n">exampleusername</span>
-</pre></div>
+<p>
+Visiting directly in each time can generate a pattern. So try accesing from search engines.
+</p>
   </div>
   
 <div class="article-tag-list">
 <span class="label label-default">Tags</span>
-	<a href="/tag/linux.html"><i class="fas fa-tag"></i>linux</a>&nbsp;
-	<a href="/tag/cli.html"><i class="fas fa-tag"></i>cli</a>&nbsp;
+	<a href="/tag/python.html"><i class="fas fa-tag"></i>python</a>&nbsp;
+	<a href="/tag/selenium.html"><i class="fas fa-tag"></i>selenium</a>&nbsp;
+	<a href="/tag/bot.html"><i class="fas fa-tag"></i>bot</a>&nbsp;
+	<a href="/tag/webdriver.html"><i class="fas fa-tag"></i>webdriver</a>&nbsp;
+	<a href="/tag/scraping.html"><i class="fas fa-tag"></i>scraping</a>&nbsp;
 </div>  <hr />
   <div class="well well-sm">  <!-- Social media sharing buttons -->
 
@@ -217,7 +217,7 @@ read edit and execute files under chromium-brovser directory</p>
 
     <!-- Facebook -->
     <div class="fb-like" 
-        data-href="/understanding-linux-file-permissions.html" 
+        data-href="/scraping-web-like-a-gentleman.html" 
         data-layout="button_count" 
         data-action="like" data-show-faces="true" 
         data-share="true">
