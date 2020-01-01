@@ -73,7 +73,7 @@
 	<div class="jumbotron" id="overview">
 	  <div class="container">
 		<h1><a href="/">Things that i have learned</a></h1>
-		<p class="lead">Mostly things that i have learned</p>
+		<p class="lead">Geeky things that makes me happy</p>
 	  </div>
 	</div>
 
@@ -99,18 +99,18 @@
   </p>
 </div> <!-- /.article-header-info -->  </header>
   <div class="content-body" itemprop="text articleBody">
-	<p>There is huge data in internet. Some of them can be accessable via legal ways. Such as APIs.
-However, most website don't make their API public. Then webscrapers and web crawlers come into the play. 
-But there is a problem. These websites don't want their data been used by 3rd party apps. For this reason 
-they haven't already opened APIs. </p>
+	<p>There is shit load data in internet. Some of them can be accessible via legal ways like APIs. Some of them cannot...
+Most website doesn't make their API public. Then webscrapers and webcrawlers come into the play. 
+But there is a problem.  </p>
 
-<p>Some websites don't care about crawlers and scrapers. However big ones, espesicially e-commerce sites, 
-which is very interested by scrapers, applies very sophisticated methods to prevent unusual access to their sites.
+<p>These websites don't want their data been used by 3rd party apps. For this reason 
+they haven't already opened APIs. Some websites don't care about crawlers and scrapers. However big ones, espesicially e-commerce sites, 
+which is very interested by scrapers, applies very sophisticated methods to prevent unusual accesses to their sites.
 I will try to explain my methods which turn around these sophisticated methods while crawling websites.</p>
 
 <h3>Don't use request libraries</h3>
 
-<p>Websites can detect a client come from request library or not. Instead of request, use browsers.
+<p>Websites can detect whether client visits by request library or not. Instead of request, use browsers.
 There are some other alternatives but I will give examples from Python and Selenium. So, use Selenium, don't use Request.
 </p>
 
@@ -127,7 +127,7 @@ For geckodriver, word be replaced is $wdc.
 
 <p>
 Don't add `options.add_argument('--headless')` in your Python code.
-If you use crontab the add `export DISPLAY=:0;` in cronjob rule. Or install xvfb and add xvfb-run in cronjob
+If you use crontab then add `export DISPLAY=:0;` in your cronjob rule. Or install xvfb and add xvfb-run in cronjob
 </p>
 
 <h3>Carefully set your webdriver options</h3>
@@ -137,7 +137,7 @@ It is better to use the browser in incognito mode. We have to be untrackable as 
 Start the browser with fullscreen. Most humanized usage is fullscreen usage.
 Even you can check by typing navigator.webdriver in your browser console.
 Websites can easily detect whether the request comes from Selenium or an organic user, with typing navigator.webdriver.
-So, you need tomake it 'undefined'
+So, you need to make it 'undefined'
 </p>
 
 <div class="highlight"><pre><span></span>    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;user-agent={user_agent}&quot;</span><span class="p">)</span>
@@ -156,7 +156,7 @@ So, you need tomake it 'undefined'
 <h3>Add fake and random user agents</h3>
 
 <p>
-Download some [user agent list]({static}/pdfs/user-agent-database-full.csv). Be carefull and clean bot agents or mobile agents.
+Download some [user agent list]({static}/pdfs/user-agent-database-full.csv). If there is a bot agent in the list remove them all. You better remove mobile agents.
 Pick a random user_agent and add a option parameter with that random agent in each time.
 </p>
 
@@ -190,7 +190,7 @@ You must not build patterns. Your each movement must be human like.
 For example: Don't visit product pages from top to down at a time. Shuffle the initial list and then pick random amount at each time.
 Wait random periods between actions.
 Make the webdriver click on links instead of pulling the url and getting the page from url.
-(Clicking is more human behaviour and some JS may be work when user clicks)
+(Clicking is more human behaviour and some JS may work on user clicks)
 </p>
 
 <h2>Come from search engines</h2>
@@ -234,11 +234,11 @@ Visiting directly in each time can generate a pattern. So try accesing from sear
 <div class="col-xs-6 col-md-12">
 <h4><i class="fas fa-comment fa-fw fa-lg"></i> Social</h4>
 <ul class="list-unstyled social-links">
-    <li><a href="https://twitter.com/username" target="_blank">
+    <li><a href="https://twitter.com/mcan543" target="_blank">
 	  <i class="fab fa-twitter-square fa-fw fa-lg" title="Twitter"></i>
 		Twitter
 	</a></li>
-    <li><a href="http://linkedin-url" target="_blank">
+    <li><a href="http://linkedin/in/mutlucan" target="_blank">
 	  <i class="fab fa-linkedin fa-fw fa-lg" title="LinkedIn"></i>
 		LinkedIn
 	</a></li>
@@ -262,8 +262,6 @@ Visiting directly in each time can generate a pattern. So try accesing from sear
     <i class="fas fa-folder-open fa-fw fa-lg"></i> Linux</a></li>
   <li><a href="/category/programming.html" >
     <i class="fas fa-folder-open fa-fw fa-lg"></i> Programming</a></li>
-  <li><a href="/category/review.html" >
-    <i class="fas fa-folder-open fa-fw fa-lg"></i> Review</a></li>
   <li><a href="/category/system.html" >
     <i class="fas fa-folder-open fa-fw fa-lg"></i> System</a></li>
 </ul>
@@ -271,17 +269,6 @@ Visiting directly in each time can generate a pattern. So try accesing from sear
 
 </div> <!-- /row -->
 
-  <h4><i class="fas fa-link fa-fw fa-lg"></i> Links</h4>
-  <ul class="list-unstyled category-links">
-    <li><a href="http://getpelican.com/" >
-      <i class="fas fa-external-link-square-alt fa-fw fa-lg"></i> Pelican</a></li>
-    <li><a href="http://python.org/" >
-      <i class="fas fa-external-link-square-alt fa-fw fa-lg"></i> Python.org</a></li>
-    <li><a href="http://jinja.pocoo.org/" >
-      <i class="fas fa-external-link-square-alt fa-fw fa-lg"></i> Jinja2</a></li>
-    <li><a href="#" >
-      <i class="fas fa-external-link-square-alt fa-fw fa-lg"></i> You can modify those links in your config file</a></li>
-  </ul>
 <h4><i class="fas fa-tags fa-fw fa-lg"></i> Tags</h4>
 <p class="tag-cloud">
       <a href="/tag/python.html">
