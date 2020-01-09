@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="mutlucan" />
+    <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
+
+    <title>Extracting comments from a Linkedin post - Things that i have learned</title>
+
+   
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous" />
+      <link rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+            integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+            crossorigin="anonymous">
+
+
+      <link rel="stylesheet" href="/theme/css/pygment.css" />
+      <link rel="stylesheet" href="/theme/css/voidybootstrap.css" />
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" integrity="sha384-FFgGfda92tXC8nCNOxrCQ3R8x1TNkMFqDZVQdDaaJiiVbjkPBXIJBx0o7ETjy8Bh" crossorigin="anonymous"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36295151-11', '');
+  ga('send', 'pageview');
+
+</script>
+  </head>
+
+  <body>
+   
+    <nav class="navbar navbar-default">
+      <div class="container">
+	   <div class="navbar-header">
+		<button type="button" class="navbar-toggle" 
+				data-toggle="collapse" data-target="#main-navbar-collapse">
+		  <span class="sr-only">Toggle navigation</span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/" rel="home">
+          <i class="fas fa-home fa-fw fa-lg"> </i> </a>
+       </div>
+
+      <div class="collapse navbar-collapse" id="main-navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="divider"></li>
+            <li class="">
+              <a href="/archives.html">Archives</a>
+            </li>
+          <li class="divider"></li>
+        </ul> <!-- /nav -->
+      </div> <!-- /navbar-collapse -->
+	  </div> <!-- /container -->
+    </nav> <!-- /navbar -->
+
+	<div class="jumbotron" id="overview">
+	  <div class="container">
+		<h1><a href="/">Things that i have learned</a></h1>
+		<p class="lead">Geeky things that makes me happy</p>
+	  </div>
+	</div>
+
+    <div class="container" id="main-container">
+      <div class="row">
+        <div class="col-md-9" id="content">
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
+<abbr class="article-header-date">
+  Prş 09 Ocak 2020
+</abbr> <h1>
+  <a href="/extracting-comments-from-a-linkedin-post.html" rel="bookmark"
+     title="Permalink to Extracting comments from a Linkedin post">
+    Extracting comments from a Linkedin post
+  </a>
+</h1><div class="article-header-info">
+  <p>
+      Posted by <a href="/author/mutlucan.html">mutlucan</a>
+    in 
+    <a href="/category/programming.html">
+      Programming</a>
+    &nbsp;&nbsp;
+  </p>
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<p> 
+There is a marketing hack on Linkedin. Requesting readers to leave  a comment below their posts. In that way connections of the commenter
+will see the original post. One step further is to request email addresses as a comment.
+To make them put their email addresses ofcourse you have to promise them to send a value to that email. 
+</p>
+
+<p> 
+I have to say that, scraping email addresses is not my pleasure.
+On the other hand, I am not the person who asks for email addresses. I only harvest somebody elses attempt.
+Rest of the post I will tell scraping email addresses in that comments by using Python and gspread library.
+</p>
+
+<h3>Cookie sniffing</h3>
+
+<p><a href="/images/cookies.png"><img alt="Sniffing cookie" src="/images/cookies.png" width="100%"></a></p>
+<p>
+We get our cookies to declare Linkedin a identity. li_at and JSESSIONID cookies are neccessary but I am not sure for rest.
+Either ways I got whole cookies and put them into my cookies Python variable.
+Then, I have created a header dictionary which contains csrf-token element.
+</p>
+
+<h3>Downloading the info about comments and commentors</h3>
+
+<p>
+The code below creates json files each one contains 50 comments. I think there is a 100 commnets limit while using this request url.
+Hence, I cannot put all comments into a single json file. 
+</p>
+
+<div class="highlight"><pre><span></span>    <span class="kn">import</span> <span class="nn">requests</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="s2">&quot;put yours&quot;</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;csrf-token&#39;</span><span class="p">:</span><span class="s2">&quot;put yours&quot;</span><span class="p">}</span>
+    <span class="n">get_per_run</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Google Sheet Limit: 100 write per 100 seconds</span>
+<span class="sd">        Her iterasyonda 100 comment blocku ele alsak, cascade commentlerle birlikte 100&#39;ü geçiyor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># url = &quot;https://www.linkedin.com/voyager/api/feed/comments?count=&quot;+str(get_per_run)+&quot;&amp;amp;q=comments&amp;amp;sortOrder=REV_CHRON&amp;amp;start=&quot;+str((i-1)*50)+&quot;&amp;amp;updateId=activity%3A6619852082549702656&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://www.linkedin.com/voyager/api/feed/comments?count=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">get_per_run</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&amp;amp;q=comments&amp;amp;sortOrder=REV_CHRON&amp;amp;start=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;&amp;amp;updateId=activity%3A6619852082549702656&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">webpage</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">webpage</span><span class="p">)</span>
+        <span class="n">file1</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data4/0352_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span><span class="s2">&quot;w+&quot;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span> 
+        <span class="n">y</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">webpage</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">file1</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Creating a Google sheet file</h3>
+
+<p>This spreadsheet will contain the results.
+<a href="/images/sheet.png"><img alt="Result" src="/images/sheet.png" width="100%"></a>
+<p>A google cloud project needs to be created and 
+This sheet needs to be shared with cloud project credentials email in order to access the sheet with using Python</p></p>
+<h2>Sorting out JSON files</h2>
+
+<p>
+reduce user gets a dictionary and exract all the neccessary information from it.
+Then build another dictionary with this exracted information.
+</p>
+
+<div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">reduce_user</span><span class="p">(</span><span class="n">comment_block</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        param: {comment_block}: dict</span>
+<span class="sd">        return: {user}: {firstname:,lastname:, occupation:,email,pic}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pic_root_url</span> <span class="o">=</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;picture&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.common.VectorImage&quot;</span><span class="p">][</span><span class="s2">&quot;rootUrl&quot;</span><span class="p">]</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pic_400&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pic_root_url</span> <span class="o">+</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;picture&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.common.VectorImage&quot;</span><span class="p">][</span><span class="s2">&quot;artifacts&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;fileIdentifyingUrlPathSegment&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;pic_400&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;firstName&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;firstName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;lastName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;lastName&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;lastName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;occupation&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;occupation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;publicIdentifier&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://linkedin.com/in/&quot;</span><span class="o">+</span><span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;commenter&quot;</span><span class="p">][</span><span class="s2">&quot;com.linkedin.voyager.feed.MemberActor&quot;</span><span class="p">][</span><span class="s2">&quot;miniProfile&quot;</span><span class="p">][</span><span class="s2">&quot;publicIdentifier&quot;</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exract_emails</span><span class="p">(</span><span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">][</span><span class="s2">&quot;values&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span><span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_gender_age</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;pic_400&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;interests&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">interests</span>
+
+        <span class="k">return</span> <span class="n">row</span>
+</pre></div>
+
+
+<h3>Iterating JSON files</h3>
+
+<p>The outher for iterates the json files each one contains 50 comment blocks. At leas 50 because some of them has sub comments.
+Somebody else may answers directly to this comment. 
+Inner loop iterates these 50 comments.
+tablo is a sheet object which has its own write method checks if this user name is exists
+ before inserted.</p>
+
+<div class="highlight"><pre><span></span>    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">json_dir</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+    <span class="n">tablo</span> <span class="o">=</span> <span class="n">Sheet</span><span class="p">(</span><span class="s2">&quot;Email-Linkedin&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">values_Nth_column</span> <span class="o">=</span> <span class="n">tablo</span><span class="o">.</span><span class="n">get_Nth_column</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_dir</span><span class="o">+</span><span class="s2">&quot;/{f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>  
+        <span class="n">file_content</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">]</span>  <span class="c1"># It contains 100 comments</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;FILE: &quot;</span><span class="o">+</span><span class="n">f</span><span class="p">)</span>   
+        <span class="k">for</span> <span class="n">comment_block</span> <span class="ow">in</span> <span class="n">file_content</span><span class="p">:</span>
+            <span class="n">user_</span> <span class="o">=</span> <span class="n">reduce_user</span><span class="p">(</span><span class="n">comment_block</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">user_</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]:</span> <span class="n">tablo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">user_</span><span class="p">,</span> <span class="n">values_Nth_column</span><span class="p">)</span>
+
+            <span class="n">sub_comment_wrapper</span> <span class="o">=</span> <span class="n">comment_block</span><span class="p">[</span><span class="s2">&quot;socialDetail&quot;</span><span class="p">][</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span>
+            <span class="n">sub_comment_count</span> <span class="o">=</span> <span class="n">sub_comment_wrapper</span><span class="p">[</span><span class="s2">&quot;paging&quot;</span><span class="p">][</span><span class="s2">&quot;total&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sub_comment_count</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">sub_comment_content</span> <span class="o">=</span> <span class="n">sub_comment_wrapper</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">sub_comment_block</span> <span class="ow">in</span> <span class="n">sub_comment_content</span><span class="p">:</span>
+                    <span class="n">user_</span> <span class="o">=</span> <span class="n">reduce_user</span><span class="p">(</span><span class="n">sub_comment_block</span><span class="p">)</span>
+                    <span class="c1">#print(user_)</span>
+                    <span class="k">if</span> <span class="n">user_</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]:</span> <span class="n">tablo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">user_</span><span class="p">,</span> <span class="n">values_Nth_column</span><span class="p">)</span>
+</pre></div>
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jG04AfpGxU8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="/tag/python.html"><i class="fas fa-tag"></i>python</a>&nbsp;
+	<a href="/tag/bot.html"><i class="fas fa-tag"></i>bot</a>&nbsp;
+	<a href="/tag/scraping.html"><i class="fas fa-tag"></i>scraping</a>&nbsp;
+	<a href="/tag/email.html"><i class="fas fa-tag"></i>email</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="/extracting-comments-from-a-linkedin-post.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
+        </div><!-- /content -->
+
+        <div class="col-md-3 sidebar-nav" id="sidebar">
+
+<div class="row">
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fas fa-comment fa-fw fa-lg"></i> Social</h4>
+<ul class="list-unstyled social-links">
+    <li><a href="https://twitter.com/mcan543" target="_blank">
+	  <i class="fab fa-twitter-square fa-fw fa-lg" title="Twitter"></i>
+		Twitter
+	</a></li>
+    <li><a href="http://linkedin.com/in/mutlucan" target="_blank">
+	  <i class="fab fa-linkedin fa-fw fa-lg" title="LinkedIn"></i>
+		LinkedIn
+	</a></li>
+    <li><a href="https://github.com/mutcato" target="_blank">
+	  <i class="fab fa-github-square fa-fw fa-lg" title="GitHub"></i>
+		GitHub
+	</a></li>
+</ul>
+</div>
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fas fa-folder fa-fw fa-lg"></i> Categories</h4>
+<ul class="list-unstyled category-links">
+  <li><a href="/category/ai.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> AI</a></li>
+  <li><a href="/category/data.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> Data</a></li>
+  <li><a href="/category/deep-learning.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> Deep Learning</a></li>
+  <li><a href="/category/linux.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> Linux</a></li>
+  <li><a href="/category/programming.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> Programming</a></li>
+  <li><a href="/category/system.html" >
+    <i class="fas fa-folder-open fa-fw fa-lg"></i> System</a></li>
+</ul>
+</div>
+
+</div> <!-- /row -->
+
+<h4><i class="fas fa-tags fa-fw fa-lg"></i> Tags</h4>
+<p class="tag-cloud">
+      <a href="/tag/python.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>python
+      </a>
+      <a href="/tag/bot.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>bot
+      </a>
+      <a href="/tag/scraping.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>scraping
+      </a>
+      <a href="/tag/email.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>email
+      </a>
+      <a href="/tag/selenium.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>selenium
+      </a>
+      <a href="/tag/webdriver.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>webdriver
+      </a>
+      <a href="/tag/slack.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>slack
+      </a>
+      <a href="/tag/tdd.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>tdd
+      </a>
+      <a href="/tag/ai.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>AI
+      </a>
+      <a href="/tag/nn.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>NN
+      </a>
+      <a href="/tag/linux.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>linux
+      </a>
+      <a href="/tag/cli.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>cli
+      </a>
+      <a href="/tag/sequence-models.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>sequence models
+      </a>
+      <a href="/tag/lstm.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>lstm
+      </a>
+      <a href="/tag/nlp.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>nlp
+      </a>
+      <a href="/tag/ssl.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>ssl
+      </a>
+      <a href="/tag/raspberrypi.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>raspberrypi
+      </a>
+      <a href="/tag/ubuntu.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>ubuntu
+      </a>
+      <a href="/tag/oop.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>OOP
+      </a>
+      <a href="/tag/data-visualition.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>data visualition
+      </a>
+      <a href="/tag/pandas.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>pandas
+      </a>
+      <a href="/tag/kaggle.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>kaggle
+      </a>
+      <a href="/tag/plotly.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>plotly
+      </a>
+      <a href="/tag/data.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>data
+      </a>
+      <a href="/tag/pytorch.html">
+        <i class="fas fa-tag fa-fw fa-lg"></i>pytorch
+      </a>
+</p>
+
+<hr />
+
+        </div><!--/sidebar -->
+      </div><!--/row-->
+    </div><!--/.container /#main-container -->
+
+    <footer id="site-footer">
+ 
+      <address id="site-colophon">
+        <p class="text-center text-muted">
+        Site built using <a href="http://getpelican.com/" target="_blank">Pelican</a>
+        &nbsp;&bull;&nbsp; Theme based on
+        <a href="http://www.voidynullness.net/page/voidy-bootstrap-pelican-theme/"
+           target="_blank">VoidyBootstrap</a> by 
+        <a href="http://voidynullness.net"
+           target="_blank">RKI</a>  
+        </p>
+      </address><!-- /colophon  -->
+    </footer>
+
+
+    <!-- javascript -->
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
+</html>
