@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content=" Posts tagged with sequence models" />
+    <meta name="description" content=" Posts tagged with mongodb" />
     <meta name="author" content="mutlucan" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Tag:sequence models - Things that i have learned</title>
+    <title>Tag:mongodb - Things that i have learned</title>
 
    
         <link rel="stylesheet"
@@ -84,33 +84,75 @@
     <li><a href="/" title="Home" rel="home">
 		<i class="fas fa-home fa-fw fa-lg"></i> </a></li>
     <li>Tags </li>
-    <li class="active">sequence models</li>
+    <li class="active">mongodb</li>
 </ol>
     <article>
 <abbr class="article-header-date">
-  Çrş 12 Eylül 2018
+  Pzt 30 Mart 2020
 </abbr> <h1>
-  <a href="/building-a-recurrent-neural-network-step-by-step-coursera-assignment-.html" rel="bookmark"
-     title="Permalink to Building a Recurrent Neural Network Step by Step - Coursera Assignment -">
-    Building a Recurrent Neural Network Step by Step - Coursera Assignment -
+  <a href="/mongodb-mongoengine-cheatsheet.html" rel="bookmark"
+     title="Permalink to Mongodb Mongoengine Cheatsheet">
+    Mongodb Mongoengine Cheatsheet
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="/author/mutlucan.html">mutlucan</a>
     in 
-    <a href="/category/deep-learning.html">
-      Deep Learning</a>
+    <a href="/category/database.html">
+      Database</a>
     &nbsp;&nbsp;
   </p>
 </div> <!-- /.article-header-info -->
       <div class="summary">
-		
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Building-your-Recurrent-Neural-Network---Step-by-Step">Building your Recurrent Neural Network - Step by Step<a class="anchor-link" href="#Building-your-Recurrent-Neural-Network---Step-by-Step">¶</a></h1><p>Welcome to Course 5's first assignment! In this assignment, you will implement your first Recurrent Neural Network in numpy.</p>
-<p>Recurrent Neural Networks (RNN) are very effective for Natural Language Processing and other sequence tasks because they have "memory". They can read inputs $x^{\langle t \rangle}$ (such as words) one at a time, and remember some information/context through the hidden layer activations that get passed from one time-step to the next. This allows a uni-directional RNN to take information from the past to process later inputs. A bidirection RNN can take context from both the past and the future.</p>
-		<p class="content-emphasis"><a href="/building-a-recurrent-neural-network-step-by-step-coursera-assignment-.html">
+		<h3>install and run mongodb</h3>
+
+<div class="highlight"><pre><span></span>    sudo apt install mongo-client
+
+::bash
+    mongo
+</pre></div>
+
+
+<h3>show current database</h3>
+
+<div class="highlight"><pre><span></span>    db
+</pre></div>
+
+
+<h3>List databases on current server</h3>
+
+<div class="highlight"><pre><span></span>    show dbs
+</pre></div>
+
+
+<h3>use a spesific database</h3>
+
+<div class="highlight"><pre><span></span>    use dbname
+</pre></div>
+
+
+<h3>create a database</h3>
+
+<div class="highlight"><pre><span></span>    use dbname
+</pre></div>
+
+
+<h3>delete a database</h3>
+
+<div class="highlight"><pre><span></span>    db.dropDatabase<span class="o">()</span>
+</pre></div>
+
+
+<h3>show all collections in db</h3>
+
+<div class="highlight"><pre><span></span>    show collections
+</pre></div>
+
+
+<h3>get size information</h3>
+
+<div class="highlight"><pre><span></span>    db.dbname.dataSize …</pre></div>
+		<p class="content-emphasis"><a href="/mongodb-mongoengine-cheatsheet.html">
 			Read more... <i class="fas fa-arrow-circle-right fa-fw fa-lg"></i> 
 		</a></p>
       </div>    </article>
